@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>컴플라이언스 — PACTIQ</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="index.html" class="nav-logo">PAC<span>TIQ</span></a>
+    <div class="nav-links">
+      <a href="about.html">회사 소개</a>
+      <a href="compliance.html" class="active">컴플라이언스</a>
+      <a href="pricing.html">요금제</a>
+    </div>
+    <div class="nav-r">
+      <a href="pricing.html" class="btn-nav-ghost">로그인</a>
+      <a href="pricing.html#demo" class="btn-nav-fill">데모 신청</a>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="메뉴" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav-drawer" id="nav-drawer">
+    <a href="about.html">회사 소개</a>
+    <a href="compliance.html">컴플라이언스</a>
+    <a href="pricing.html">요금제</a>
+    <a href="pricing.html#demo" style="color:var(--blue);font-weight:700;">데모 신청 →</a>
+  </div>
+</nav>
+
+
+<!-- 히어로 -->
+<div class="page-hero">
+  <div class="wrap">
+    <p class="sec-label">컴플라이언스 & 보안</p>
+    <h1>규제 기준이 AI 안에<br><em>내장</em>되어 있습니다.</h1>
+    <p>GCP, KGCP, ICH E6(R3), 스폰서 SOP — PACTIQ는 이 기준들을 참고 문서가 아닌 실시간 판정의 근거로 사용합니다.</p>
+  </div>
+</div>
+
+
+<!-- 규제 프레임워크 -->
+<section class="page-section">
+  <div class="wrap">
+    <div class="section-h">
+      <p class="sec-label">규제 프레임워크</p>
+      <h2>내장된 규제 기준.</h2>
+    </div>
+    <div class="reg-table">
+      <div class="reg-row">
+        <div class="reg-code">ICH E6(R3)</div>
+        <div class="reg-title">Good Clinical Practice 가이드라인</div>
+        <div class="reg-desc">임상시험 설계·수행·기록·보고에 관한 국제 표준. 계약서 조항의 허용 범위를 결정하는 1차 기준으로 사용됩니다.</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-code">KGCP</div>
+        <div class="reg-title">한국 의약품 임상시험 관리 기준</div>
+        <div class="reg-desc">식품의약품안전처(MFDS) 고시 기준. 국내 임상시험 계약에서 ICH GCP와 함께 적용되며, 더 엄격한 기준이 우선됩니다.</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-code">Sponsor SOP</div>
+        <div class="reg-title">스폰서 내부 표준 운영 절차</div>
+        <div class="reg-desc">스폰서별로 업로드된 SOP가 AI에 내장됩니다. 동일한 조항 변경도 스폰서에 따라 다른 판정이 내려집니다.</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-code">Master CTA</div>
+        <div class="reg-title">마스터 기본계약서 조항 범위</div>
+        <div class="reg-desc">Order 및 Amendment의 변경 가능 범위는 기본계약서로 제한됩니다. PACTIQ는 이 계층 구조를 자동으로 반영합니다.</div>
+      </div>
+      <div class="reg-row">
+        <div class="reg-code">21 CFR Pt 11</div>
+        <div class="reg-title">전자기록 및 전자서명 규정</div>
+        <div class="reg-desc">FDA 전자기록 요건에 따른 감사 기록 및 전자서명 관리. 글로벌 임상시험 운영 시 적용됩니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- 데이터 보안 (다크) -->
+<section class="dark-section">
+  <div class="wrap">
+    <p class="sec-label">데이터 보안</p>
+    <h2>각 스폰서의 데이터는<br>다른 스폰서에게 완전히 차단됩니다.</h2>
+    <p class="body-lg">한 병원이 동시에 여러 스폰서의 임상시험을 진행할 수 있습니다. PACTIQ는 테넌트 간 완전 격리를 인프라 레벨에서 강제합니다.</p>
+    <div class="dark-row-list">
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">테넌트 격리</span>
+          <h4>스폰서 단위 워크스페이스 분리</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>모든 스폰서는 완전히 격리된 환경에서 운영됩니다. 계약서, AI 세션, SOP 참조 자료, 감사 기록은 애플리케이션 로직이 아닌 인프라 레벨에서 테넌트 간 접근이 차단됩니다.</p>
+        </div>
+      </div>
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">RBAC</span>
+          <h4>역할 기반 접근 제어</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>기관 계약담당자는 본인이 배정된 Order만 볼 수 있습니다. 스폰서 A의 IRB 담당자는 같은 병원에서 진행 중인 스폰서 B의 Order에 접근할 수 없습니다.</p>
+        </div>
+      </div>
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">모델 학습 제외</span>
+          <h4>계약서가 공유 모델 학습에 사용되지 않습니다</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>업로드된 계약서, AI 대화, 검토 세션은 공유 모델 학습에 사용되지 않습니다. 암호화 키는 스폰서별로 분리되며 필요 시 교체 가능합니다.</p>
+        </div>
+      </div>
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">감사 기록</span>
+          <h4>모든 접근이 불변 기록으로 남습니다</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>열람·수정·에스컬레이션·승인 — 모든 이벤트가 타임스탬프와 함께 변경 불가능하게 기록됩니다. 규제 실사, 스폰서 감사 시 내보내기가 가능합니다.</p>
+        </div>
+      </div>
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">암호화</span>
+          <h4>전송 중·저장 중 전 구간 암호화</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>모든 데이터는 전송 중 TLS 1.2 이상, 저장 중 AES-256으로 암호화됩니다. 암호화 키는 스폰서 테넌트별로 분리되며 필요 시 교체 가능합니다.</p>
+        </div>
+      </div>
+      <div class="dark-row">
+        <div class="dark-row-head">
+          <span class="sec-badge">SOC 2 Type 2</span>
+          <h4>독립 감사 기반 보안 인증</h4>
+        </div>
+        <div class="dark-row-body">
+          <p>헬스케어 기관 및 글로벌 제약사에 요구되는 SOC 2 Type 2 기준에 따라 운영됩니다. 보안·가용성·기밀성 통제 항목에 대한 연간 독립 감사를 수행합니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AI 판정 방식 -->
+<section class="page-section">
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <div class="section-h">
+          <p class="sec-label">AI 판정 방식</p>
+          <h2>블랙박스 판정은 없습니다.</h2>
+        </div>
+        <p class="body-lg">AI가 "안 된다"고 하면, 왜 안 되는지 반드시 근거를 제시합니다. 모든 판정에는 출처 조항이 함께 표시됩니다. 담당자가 직접 확인하고 이의를 제기할 수 있습니다.</p>
+      </div>
+      <div>
+        <div class="verdict-list">
+          <div class="verdict-row">
+            <div class="verdict-icon warn">⚠</div>
+            <div>
+              <div class="verdict-label warn">승인 필요</div>
+              <div class="verdict-desc">변경이 SOP 또는 기본계약 범위를 벗어납니다. 스폰서 법무의 서면 승인이 필요하며, 출처 조항이 함께 표시됩니다.</div>
+            </div>
+          </div>
+          <div class="verdict-row">
+            <div class="verdict-icon ok">✓</div>
+            <div>
+              <div class="verdict-label ok">수용 가능</div>
+              <div class="verdict-desc">변경이 기본계약서 및 SOP 허용 범위 내에 있습니다. 별도 에스컬레이션 없이 반영될 수 있습니다.</div>
+            </div>
+          </div>
+          <div class="verdict-row">
+            <div class="verdict-icon block">✕</div>
+            <div>
+              <div class="verdict-label block">차단</div>
+              <div class="verdict-desc">규제 요건 또는 기본계약서의 필수 조항에 위배됩니다. 어떤 경우에도 허용되지 않는 변경입니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="page-section" style="text-align:center;padding:80px 0;">
+  <div class="wrap">
+    <p class="sec-label" style="justify-content:center;">문의</p>
+    <h2 style="font-size:clamp(22px,2.8vw,36px);font-weight:800;letter-spacing:-.04em;margin-bottom:16px;word-break:keep-all;">컴플라이언스 요건에 대해<br>더 자세히 알고 싶으시다면</h2>
+    <p style="font-size:16px;color:var(--mid);margin-bottom:32px;word-break:keep-all;">규제 프레임워크 적용 방식, 데이터 처리 방침, 보안 아키텍처에 대해 문의해 주세요.</p>
+    <a href="pricing.html#demo" class="btn btn-dark">데모 신청하기</a>
+  </div>
+</section>
+
+
+<footer id="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="foot-logo">PAC<span>TIQ</span></div>
+        <p>글로벌 임상팀을 위한<br>계약 인텔리전스 플랫폼.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h5>페이지</h5>
+          <a href="about.html">회사 소개</a>
+          <a href="compliance.html">컴플라이언스</a>
+          <a href="pricing.html">요금제</a>
+          <a href="pricing.html#demo">데모 신청</a>
+        </div>
+        <div class="foot-col">
+          <h5>회사</h5>
+          <a href="about.html">PACTIQ 소개</a>
+          <a href="pricing.html#demo">채용</a>
+          <a href="pricing.html#demo">보도자료</a>
+        </div>
+        <div class="foot-col">
+          <h5>리소스</h5>
+          <a href="compliance.html">GCP 가이드</a>
+          <a href="compliance.html">KGCP 가이드</a>
+          <a href="compliance.html">보안 개요</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-copy">© 2026 PACTIQ Inc. All rights reserved.</span>
+      <div class="foot-legal">
+        <a href="#">개인정보 처리방침</a>
+        <a href="#">이용약관</a>
+        <a href="#">보안</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
