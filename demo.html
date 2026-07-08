@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PACTIQ — 라이브 데모</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+      background: #f0efe9;
+      color: #0c0c0b;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── TOP BAR ── */
+    .demo-topbar {
+      height: 52px;
+      background: #0c0c0b;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      border-bottom: 1px solid #1a1a18;
+    }
+    .demo-topbar-left { display: flex; align-items: center; gap: 20px; }
+    .demo-logo { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: #f0efe9; }
+    .demo-logo span { color: #4a7cff; }
+    .demo-breadcrumb { display: flex; align-items: center; gap: 8px; }
+    .demo-breadcrumb span { font-size: 11px; color: #4a4a48; }
+    .demo-breadcrumb strong { font-size: 11px; color: #888886; font-weight: 600; }
+    .demo-badge {
+      font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      background: #1a3a8f; color: #8ab0ff; padding: 3px 8px; border-radius: 2px;
+    }
+    .demo-topbar-right { display: flex; align-items: center; gap: 12px; }
+    .demo-user { font-size: 11px; color: #505050; }
+    .demo-send-btn {
+      font-size: 11px; font-weight: 700; background: #1541c8; color: #fff;
+      border: none; padding: 6px 14px; cursor: pointer; letter-spacing: .02em;
+    }
+    .demo-send-btn:hover { background: #0d31a0; }
+
+    /* ── LAYOUT ── */
+    .demo-body {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── LEFT: CONTRACT ── */
+    .contract-panel {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #1a1a18;
+      overflow: hidden;
+    }
+    .contract-toolbar {
+      height: 44px;
+      background: #141412;
+      border-bottom: 1px solid #1e1e1c;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+    .ct-label { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3a3a38; }
+    .ct-doc-name { font-size: 11px; color: #686864; font-weight: 600; }
+    .ct-spacer { flex: 1; }
+    .ct-status { display: flex; align-items: center; gap: 6px; font-size: 10.5px; color: #505050; }
+    .ct-status-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+    .contract-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 40px 48px;
+      background: #fafaf8;
+    }
+    .contract-scroll::-webkit-scrollbar { width: 4px; }
+    .contract-scroll::-webkit-scrollbar-thumb { background: #d4d2cc; }
+
+    .contract-doc-title {
+      font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      color: #0c0c0b; text-align: center; margin-bottom: 4px;
+    }
+    .contract-doc-sub {
+      font-size: 11px; color: #8c8c88; text-align: center; margin-bottom: 32px;
+      font-family: "SF Mono", monospace; letter-spacing: .04em;
+    }
+    .contract-parties {
+      border: 1px solid #e6e4de;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      background: #f7f6f2;
+    }
+    .contract-parties p { font-size: 12px; color: #525250; line-height: 1.9; }
+    .contract-parties strong { color: #0c0c0b; font-weight: 700; }
+
+    .contract-section { margin-bottom: 28px; }
+    .contract-section-title {
+      font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      color: #0c0c0b; margin-bottom: 12px; padding-bottom: 8px;
+      border-bottom: 1.5px solid #0c0c0b;
+    }
+    .contract-clause {
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: all .15s;
+      position: relative;
+    }
+    .contract-clause:hover { background: #f0efe9; }
+    .contract-clause.active { background: #eef2ff; border-left-color: #1541c8; }
+
+    .contract-clause.ok { border-left-color: #16a34a; background: #f0faf4; }
+    .contract-clause.ok.active { background: #dcfce7; }
+    .contract-clause.warn { border-left-color: #d97706; background: #fffbeb; }
+    .contract-clause.warn.active { background: #fef3c7; }
+    .contract-clause.block { border-left-color: #dc2626; background: #fff5f5; }
+    .contract-clause.block.active { background: #fee2e2; }
+
+    .clause-num {
+      font-size: 9.5px; font-weight: 700; font-family: "SF Mono", monospace;
+      letter-spacing: .08em; color: #8c8c88; margin-bottom: 5px;
+    }
+    .clause-text { font-size: 12.5px; line-height: 1.85; color: #1a1a18; word-break: keep-all; }
+
+    .clause-verdict-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 9.5px; font-weight: 700; letter-spacing: .04em;
+      padding: 2px 7px; margin-top: 6px;
+    }
+    .chip-ok { background: #dcfce7; color: #15803d; }
+    .chip-warn { background: #fef3c7; color: #b45309; }
+    .chip-block { background: #fee2e2; color: #b91c1c; }
+
+    /* tracked change */
+    .del-text { text-decoration: line-through; color: #dc2626; background: #fee2e2; }
+    .ins-text { color: #15803d; background: #dcfce7; text-decoration: underline; }
+
+    /* comment marker */
+    .comment-mark {
+      display: inline-block; width: 14px; height: 14px; background: #f59e0b;
+      color: #fff; font-size: 8px; font-weight: 800; text-align: center; line-height: 14px;
+      border-radius: 2px; margin-left: 4px; cursor: pointer; vertical-align: middle;
+    }
+
+    /* ── RIGHT: AI PANEL ── */
+    .ai-panel {
+      display: flex;
+      flex-direction: column;
+      background: #111110;
+      overflow: hidden;
+    }
+    .ai-panel-header {
+      height: 44px;
+      background: #0a0a09;
+      border-bottom: 1px solid #1e1e1c;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .ai-panel-title { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #3a3a38; }
+    .ai-scanning {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 10px; color: #22c55e; margin-left: auto;
+    }
+    .scan-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; animation: pulse 1.5s infinite; }
+
+    .ai-panel-scroll { flex: 1; overflow-y: auto; padding: 20px; }
+    .ai-panel-scroll::-webkit-scrollbar { width: 3px; }
+    .ai-panel-scroll::-webkit-scrollbar-thumb { background: #2a2a28; }
+
+    /* verdict card */
+    .verdict-card {
+      border: 1px solid #1e1e1c;
+      margin-bottom: 16px;
+      transition: all .2s;
+    }
+    .verdict-card.highlighted { border-color: #2a4aa0; }
+    .verdict-card-header {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid #1a1a18;
+      cursor: pointer;
+    }
+    .verdict-icon-sm {
+      width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+    }
+    .vi-ok { background: #14532d; color: #4ade80; }
+    .vi-warn { background: #451a03; color: #fb923c; }
+    .vi-block { background: #450a0a; color: #f87171; }
+    .verdict-card-clause { font-size: 10px; font-weight: 700; letter-spacing: .06em; color: #4a4a48; }
+    .verdict-card-status { font-size: 10.5px; font-weight: 800; margin-left: auto; }
+    .vs-ok { color: #4ade80; }
+    .vs-warn { color: #fb923c; }
+    .vs-block { color: #f87171; }
+    .verdict-card-body { padding: 12px 14px; display: none; }
+    .verdict-card-body.open { display: block; }
+    .verdict-card-reason {
+      font-size: 11.5px; color: #a0a09e; line-height: 1.8; margin-bottom: 10px; word-break: keep-all;
+    }
+    .verdict-ref {
+      font-size: 10px; font-family: "SF Mono", monospace; color: #686864;
+      background: #0a0a09; padding: 6px 10px; border-left: 2px solid #3a3a38;
+      margin-bottom: 8px; line-height: 1.6;
+    }
+    .verdict-action-row { display: flex; gap: 8px; margin-top: 12px; }
+    .verdict-action-btn {
+      font-size: 10px; font-weight: 700; padding: 5px 10px; border: 1px solid;
+      cursor: pointer; letter-spacing: .02em; transition: .1s; background: none;
+    }
+    .btn-escalate { border-color: #fb923c; color: #fb923c; }
+    .btn-escalate:hover { background: #451a03; }
+    .btn-accept { border-color: #4ade80; color: #4ade80; }
+    .btn-accept:hover { background: #14532d; }
+    .btn-comment { border-color: #4a4a48; color: #686864; }
+    .btn-comment:hover { background: #1a1a18; }
+
+    /* ── MEMO PANEL ── */
+    .memo-panel {
+      border-top: 1px solid #1e1e1c;
+      background: #0d0d0c;
+      flex-shrink: 0;
+      max-height: 220px;
+      display: flex;
+      flex-direction: column;
+    }
+    .memo-header {
+      height: 36px;
+      display: flex; align-items: center; padding: 0 16px; gap: 10px;
+      border-bottom: 1px solid #1a1a18;
+    }
+    .memo-title { font-size: 9.5px; font-weight: 700; letter-spacing: .1em; color: #3a3a38; text-transform: uppercase; }
+    .memo-count { font-size: 9px; color: #2a2a28; background: #1a1a18; padding: 2px 6px; border-radius: 2px; }
+    .memo-list { flex: 1; overflow-y: auto; padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .memo-list::-webkit-scrollbar { width: 2px; }
+
+    .memo-item { display: flex; gap: 8px; }
+    .memo-avatar {
+      width: 20px; height: 20px; border-radius: 2px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 8px; font-weight: 800; color: #fff;
+    }
+    .av-blue { background: #1541c8; }
+    .av-green { background: #15803d; }
+    .av-amber { background: #b45309; }
+    .memo-bubble { flex: 1; }
+    .memo-meta { font-size: 9px; color: #505050; margin-bottom: 3px; }
+    .memo-meta strong { color: #888886; }
+    .memo-text { font-size: 11px; color: #a0a09e; line-height: 1.6; word-break: keep-all; }
+    .memo-input-row {
+      display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+      border-top: 1px solid #1a1a18;
+    }
+    .memo-input {
+      flex: 1; background: #1a1a18; border: 1px solid #3a3a38; color: #c8c7c3;
+      font-size: 11.5px; padding: 7px 10px; outline: none;
+      font-family: inherit;
+    }
+    .memo-input::placeholder { color: #505050; }
+    .memo-input:focus { border-color: #3a5adf; }
+    .memo-submit {
+      background: #1541c8; border: none; color: #fff; font-size: 10px; font-weight: 700;
+      padding: 7px 12px; cursor: pointer; letter-spacing: .02em; white-space: nowrap;
+    }
+    .memo-submit:hover { background: #0d31a0; }
+
+    /* ── ACTIVITY FEED ── */
+    .activity-bar {
+      height: 32px;
+      background: #0a0a09;
+      border-top: 1px solid #1a1a18;
+      display: flex; align-items: center; padding: 0 20px; gap: 6px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .activity-dot { width: 5px; height: 5px; background: #22c55e; border-radius: 50%; flex-shrink: 0; }
+    .activity-text { font-size: 10px; color: #686864; white-space: nowrap; }
+    .activity-text span { color: #a0a09e; }
+
+    /* ── INTRO OVERLAY ── */
+    .intro-overlay {
+      position: fixed; inset: 0; background: rgba(12,12,11,.88);
+      display: flex; align-items: center; justify-content: center; z-index: 100;
+      backdrop-filter: blur(2px);
+    }
+    .intro-box {
+      background: #0c0c0b; border: 1px solid #2a2a28;
+      padding: 48px; max-width: 480px; width: 90%;
+    }
+    .intro-label {
+      font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: #4a7cff; margin-bottom: 16px;
+    }
+    .intro-title { font-size: 26px; font-weight: 800; letter-spacing: -.04em; color: #e8e7e3; line-height: 1.2; margin-bottom: 12px; }
+    .intro-desc { font-size: 13px; color: #686864; line-height: 1.8; margin-bottom: 32px; word-break: keep-all; }
+    .intro-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .intro-step { display: flex; gap: 12px; align-items: flex-start; }
+    .intro-step-n { font-size: 9px; font-weight: 700; font-family: "SF Mono", monospace; color: #2a4aa0; background: #0d1f5c; padding: 2px 6px; flex-shrink: 0; margin-top: 2px; }
+    .intro-step-text { font-size: 12px; color: #686864; line-height: 1.6; word-break: keep-all; }
+    .intro-btn {
+      width: 100%; padding: 14px; background: #1541c8; border: none; color: #fff;
+      font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: .02em;
+      font-family: inherit;
+    }
+    .intro-btn:hover { background: #0d31a0; }
+    .intro-note { font-size: 10px; color: #2a2a28; text-align: center; margin-top: 12px; }
+
+    /* ── ESCALATION MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(12,12,11,.8);
+      display: none; align-items: center; justify-content: center; z-index: 200;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #0c0c0b; border: 1px solid #2a4aa0;
+      padding: 32px; max-width: 440px; width: 90%;
+    }
+    .modal-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fb923c; margin-bottom: 12px; }
+    .modal-title { font-size: 18px; font-weight: 800; color: #e8e7e3; margin-bottom: 10px; letter-spacing: -.03em; }
+    .modal-desc { font-size: 12.5px; color: #686864; line-height: 1.8; margin-bottom: 20px; word-break: keep-all; }
+    .modal-pkg {
+      background: #0a0a09; border: 1px solid #1e1e1c; padding: 14px 16px; margin-bottom: 24px;
+    }
+    .modal-pkg-item { display: flex; gap: 10px; font-size: 11px; color: #4a4a48; padding: 4px 0; }
+    .modal-pkg-item span:first-child { color: #2a2a28; font-family: "SF Mono", monospace; width: 90px; flex-shrink: 0; }
+    .modal-btns { display: flex; gap: 8px; }
+    .modal-btn-cancel { flex: 1; padding: 10px; background: none; border: 1px solid #2a2a28; color: #686864; font-size: 12px; cursor: pointer; font-family: inherit; }
+    .modal-btn-send { flex: 1; padding: 10px; background: #b45309; border: none; color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .modal-btn-send:hover { background: #92400e; }
+    .modal-success { display: none; text-align: center; padding: 12px 0; }
+    .modal-success-icon { font-size: 28px; margin-bottom: 8px; }
+    .modal-success-text { font-size: 13px; color: #4ade80; font-weight: 700; }
+    .modal-success-sub { font-size: 11px; color: #4a4a48; margin-top: 4px; }
+
+    /* ── VIEW TOGGLE ── */
+    .view-toggle { display: flex; gap: 2px; margin-right: 16px; }
+    .vt-btn {
+      font-size: 10px; font-weight: 700; letter-spacing: .02em;
+      padding: 5px 10px; border: 1px solid #2a2a28; background: none;
+      color: #3a3a38; cursor: pointer; font-family: inherit; white-space: nowrap;
+      transition: all .12s;
+    }
+    .vt-btn:hover { color: #686864; border-color: #3a3a38; }
+    .vt-btn.active { background: #1541c8; border-color: #1541c8; color: #fff; }
+
+    /* view modes */
+    /* "changes" mode — hide pure-ok clauses */
+    .view-changes .contract-clause.ok:not([data-changed]) { display: none; }
+    /* section becomes empty → hide title too */
+    .view-changes .contract-section:not(:has(.contract-clause:not([style*="display: none"]):not(.ok:not([data-changed])))) .contract-section-title { opacity: .25; }
+
+    /* "original" mode — hide insertions, show deletions as normal */
+    .view-original .ins-text { display: none; }
+    .view-original .del-text { text-decoration: none; color: inherit; background: none; }
+    .view-original .comment-mark { display: none; }
+    .view-original .clause-verdict-chip { display: none; }
+    .view-original .contract-clause { border-left-color: transparent !important; background: none !important; }
+    .view-original .contract-clause:hover { background: #f0efe9 !important; }
+
+    .av-pactiq { background: #1541c8; font-size: 7px; letter-spacing: .02em; }
+
+    .typing-dots { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+    .typing-dots span {
+      display: inline-block; width: 5px; height: 5px; background: #3a3a38; border-radius: 50%;
+      animation: typingBounce 1.2s infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: .2s; }
+    .typing-dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes typingBounce {
+      0%,60%,100% { transform: translateY(0); opacity:.4; }
+      30% { transform: translateY(-4px); opacity:1; }
+    }
+
+    .av-pactiq-bg { background: linear-gradient(135deg,#1541c8,#4a7cff); }
+
+    /* PACTIQ AI memo bubble — slightly distinguished */
+    .memo-item:has(.av-pactiq) .memo-bubble .memo-text {
+      color: #8ab0ff;
+    }
+    .memo-item:has(.av-pactiq) .memo-bubble .memo-meta strong {
+      color: #4a7cff;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .demo-body { grid-template-columns: 1fr; }
+      .ai-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- INTRO OVERLAY -->
+<div class="intro-overlay" id="intro-overlay">
+  <div class="intro-box">
+    <div class="intro-label">PACTIQ — Interactive Demo</div>
+    <h2 class="intro-title">CTA Order<br>AI 실시간 검토</h2>
+    <p class="intro-desc">실제 CTA Order 계약서(IRB No. 410598)를 기반으로 PACTIQ가 어떻게 작동하는지 직접 확인하세요.</p>
+    <div class="intro-steps">
+      <div class="intro-step">
+        <span class="intro-step-n">01</span>
+        <span class="intro-step-text">조항을 클릭하면 AI 판정 근거와 출처 규정이 오른쪽 패널에 표시됩니다</span>
+      </div>
+      <div class="intro-step">
+        <span class="intro-step-n">02</span>
+        <span class="intro-step-text">변경 추적된 조항(취소선/밑줄)은 기관 담당자가 제안한 수정 내용입니다</span>
+      </div>
+      <div class="intro-step">
+        <span class="intro-step-n">03</span>
+        <span class="intro-step-text">법무 검토 요청 버튼으로 법무팀에 패키지를 전달하는 과정을 체험할 수 있습니다</span>
+      </div>
+    </div>
+    <button class="intro-btn" onclick="startDemo()">데모 시작하기</button>
+    <p class="intro-note">실제 계약서 기반 — 가상의 스폰서 및 기관 정보 사용</p>
+  </div>
+</div>
+
+<!-- ESCALATION MODAL -->
+<div class="modal-overlay" id="escalate-modal">
+  <div class="modal-box">
+    <div class="modal-label">법무 검토 요청 패키지</div>
+    <h3 class="modal-title">법무팀 검토 요청</h3>
+    <p class="modal-desc">정책 범위를 벗어난 조항 변경 내용을 법무팀에 전달합니다. 이메일 체인 없이 단일 패키지로 전달됩니다.</p>
+    <div class="modal-pkg">
+      <div class="modal-pkg-item"><span>문서</span><span>CTA_Order_410598.docx</span></div>
+      <div class="modal-pkg-item"><span>조항</span><span>§2.3 — EDC 데이터 입력 기한</span></div>
+      <div class="modal-pkg-item"><span>판정</span><span style="color:#fb923c">승인 필요 — SOP 기준 초과</span></div>
+      <div class="modal-pkg-item"><span>요청자</span><span>김민준 (CTM, Sangsang Med)</span></div>
+      <div class="modal-pkg-item"><span>수신</span><span>legal@sangsangmed.com</span></div>
+    </div>
+    <div class="modal-btns" id="modal-btns">
+      <button class="modal-btn-cancel" onclick="closeEscalate()">취소</button>
+      <button class="modal-btn-send" onclick="sendEscalate()">법무팀에 전송</button>
+    </div>
+    <div class="modal-success" id="modal-success">
+      <div class="modal-success-icon">✓</div>
+      <div class="modal-success-text">법무팀에 전달되었습니다</div>
+      <div class="modal-success-sub">검토 요청 기록이 감사 추적 로그에 저장되었습니다</div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP BAR -->
+<div class="demo-topbar">
+  <div class="demo-topbar-left">
+    <div class="demo-logo">PAC<span>TIQ</span></div>
+    <div class="demo-breadcrumb">
+      <span>Sangsang Med</span>
+      <span style="color:#2a2a28">›</span>
+      <strong>CTA Order #410598</strong>
+      <span style="color:#2a2a28">›</span>
+      <strong>아주대학교 의료원</strong>
+    </div>
+    <div class="demo-badge">AI 검토 활성</div>
+  </div>
+  <div class="demo-topbar-right">
+    <div class="demo-user">김민준 · CTM</div>
+    <button class="demo-send-btn" onclick="alert('데모 환경에서는 실제 전송이 비활성화됩니다.')">기관에 전달 →</button>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="demo-body">
+
+  <!-- LEFT: CONTRACT -->
+  <div class="contract-panel">
+    <div class="contract-toolbar">
+      <span class="ct-label">계약서</span>
+      <span class="ct-doc-name">CTA_Order_410598.docx</span>
+      <span class="ct-spacer"></span>
+      <div class="view-toggle" id="view-toggle">
+        <button class="vt-btn" data-mode="all" onclick="setView('all')">전체</button>
+        <button class="vt-btn active" data-mode="changes" onclick="setView('changes')">변경</button>
+        <button class="vt-btn" data-mode="original" onclick="setView('original')">원본</button>
+      </div>
+      <div class="ct-status">
+        <span class="ct-status-dot"></span>
+        AI 실시간 검토 중
+      </div>
+    </div>
+    <div class="contract-scroll" id="contract-scroll">
+
+      <div class="contract-doc-title">CLINICAL TRIAL AGREEMENT ORDER</div>
+      <div class="contract-doc-sub">IRB No.: 410598 &nbsp;·&nbsp; Contract No.: 0101010 &nbsp;·&nbsp; Rev. 2</div>
+
+      <div class="contract-parties">
+        <p><strong>Sponsor:</strong> Sangsang Med, 142 Mangwon-dong, Mapo-gu, Seoul, 01116, Korea<br>
+        <strong>Institution:</strong> Ajou University Hospital, 164 Worldcup-ro, Yeongtong-gu, Suwon-si<br>
+        <strong>Principal Investigator:</strong> Eun Ah Lim, MD · Ajou University Hospital<br>
+        <strong>CRO:</strong> FUTURE CRO, 142 Hyehwa-dong, Jongno-gu, Seoul 05510</p>
+      </div>
+
+      <!-- SECTION 1 -->
+      <div class="contract-section">
+        <div class="contract-section-title">1. Governing Terms & Effective Date</div>
+
+        <div class="contract-clause ok" data-id="1_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 1.1 — Governing Terms</div>
+          <div class="clause-text">By executing this Order, the parties agree that this Order and the parties' performance hereunder shall be governed by the terms and conditions of the Agreement (contract number 0101010), which are incorporated by this reference as if fully set forth herein.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="1_2" onclick="selectClause(this)">
+          <div class="clause-num">§ 1.2 — Effective Date</div>
+          <div class="clause-text">The anticipated study period is from effective date (After IRB approval) to 27 May 2030. This Agreement shall remain in full force and effect until completion of the Study or earlier termination.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="1_3" onclick="selectClause(this)">
+          <div class="clause-num">§ 1.3 — Korean Law</div>
+          <div class="clause-text">The Study will be conducted by the Site in accordance with Pharmaceutical Affairs Law, Korean Good Clinical Practice Guideline, Clinical Trial Administration Guidelines, and all applicable Korean regulatory requirements, whichever affords the greater protection to the Subject.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="contract-section">
+        <div class="contract-section-title">2. Study Conduct</div>
+
+        <div class="contract-clause ok" data-id="2_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 2.1 — Protocol</div>
+          <div class="clause-text">The Protocol for the Study is Company Protocol No. 203040 entitled "A Randomized, Double-Blind, Phase 3 Study of Palcancide Versus Standard of Care in Patients with Advanced Prostate Cancer", as may be amended. When Company offers meals and beverages during domestic Investigator Meetings, the total value shall not exceed <strong>KRW 50,000</strong> per person.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause warn" data-id="2_3" data-changed onclick="selectClause(this)">
+          <div class="clause-num">§ 2.3 — Use of Electronic Data Capture</div>
+          <div class="clause-text">Site agrees that it will enter such Study data into EDC within <span class="del-text">5 business days</span><span class="ins-text"> 10 business days</span> of the Subject visit<span class="comment-mark" title="기관 담당자 메모">1</span>, and resolve all queries issued in the EDC system within 5 business days of the query being issued. In addition, Principal Investigator or sub-investigator shall apply electronic signature within 90 calendar days of Subject visit.</div>
+          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="2_2" onclick="selectClause(this)">
+          <div class="clause-num">§ 2.2 — Data Protection</div>
+          <div class="clause-text">Subject to applicable law, Company may collect and process information regarding investigators or other personnel involved in Studies. Company will notify such personnel as required by applicable law.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="contract-section">
+        <div class="contract-section-title">3. Reagents & Study Drug</div>
+
+        <div class="contract-clause ok" data-id="3_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 3.1 — Study Drug</div>
+          <div class="clause-text">Company shall provide Study Drug(s) PACD012 to Site as required by Protocol. The Site agrees and warrants that it will not seek payment or reimbursement from any Subject or third party for the cost of the Study Drug(s).</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause block" data-id="3_2" data-changed onclick="selectClause(this)">
+          <div class="clause-num">§ 3.2 — Required Materials</div>
+          <div class="clause-text">If non-Company drugs, materials or reagents are required by the Protocol ("Required Materials"), Company will <span class="del-text">reimburse Site for the Required Materials</span><span class="ins-text"> provide Required Materials free of charge and additionally compensate Site at a rate of 15% above purchase cost</span>. Such reimbursement costs shall not exceed the amount set forth in Schedule A.</div>
+          <span class="clause-verdict-chip chip-block">✕ 수용 불가</span>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="contract-section">
+        <div class="contract-section-title">4. Performance Period & Enrollment</div>
+
+        <div class="contract-clause warn" data-id="4_1" data-changed onclick="selectClause(this)">
+          <div class="clause-num">§ 4.1 — Study Commencement</div>
+          <div class="clause-text">The Study will commence upon execution of this Agreement, approval of the IRB/IEC, and any required approvals of applicable governmental authorities. <span class="del-text">The Site shall enroll the first Subject within 30 days of Study commencement.</span><span class="ins-text"> The Site shall use commercially reasonable efforts to enroll the first Subject within 60 days of Study commencement.</span></div>
+          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
+        </div>
+      </div>
+
+      <!-- SECTION 5 -->
+      <div class="contract-section">
+        <div class="contract-section-title">5. Required Equipment</div>
+
+        <div class="contract-clause ok" data-id="5_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 5.1 — Required Equipment</div>
+          <div class="clause-text">The parties acknowledge that Site will require the following equipment for the performance of the Study ("Required Equipment"): TABLETS, THERMOMETERS. Such Required Equipment will be lent by Company or its representative to Site for use in the Study.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="5_2" onclick="selectClause(this)">
+          <div class="clause-num">§ 5.2 — Delivery</div>
+          <div class="clause-text">As necessary, Company or its representative shall arrange for the delivery of the Required Equipment, which such equipment shall be delivered to the Site at the address provided by Site during the Site evaluation visit.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="5_3" onclick="selectClause(this)">
+          <div class="clause-num">§ 5.3 — Installation of Required Equipment</div>
+          <div class="clause-text">Company or its representative shall provide for installation of the following equipment: TABLETS, THERMOMETERS.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="5_4" onclick="selectClause(this)">
+          <div class="clause-num">§ 5.4 — Technical Support</div>
+          <div class="clause-text">Company or its representative shall provide for technical support and maintenance of the following equipment: TABLETS, THERMOMETERS.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+      </div>
+
+      <!-- SECTION 6 -->
+      <div class="contract-section">
+        <div class="contract-section-title">6. Compensation</div>
+
+        <div class="contract-clause ok" data-id="6_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 6.1 — Compensation Terms</div>
+          <div class="clause-text">Compensation and payment terms are as set forth in Schedule A, attached hereto and incorporated herein.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="6_2" onclick="selectClause(this)">
+          <div class="clause-num">§ 6.2 — Payment Details</div>
+          <div class="clause-text">Payments from Company to Site shall be made payable to: Ajou University Hospital (아주대학교의료원). Bank: Kookmin Bank, Account: 287937-00-003703. Site may request in writing a change in Payee information by providing Company with a signed letter from a duly authorized representative.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+      </div>
+
+      <!-- SECTION 7 -->
+      <div class="contract-section">
+        <div class="contract-section-title">7. Miscellaneous</div>
+
+        <div class="contract-clause ok" data-id="7_1" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.1 — Disclosure to Affiliated Institutions</div>
+          <div class="clause-text">The Site represents and warrants that Site has disclosed the existence and content of this Agreement to any institutions to which Site is affiliated or is a member and that require such disclosure.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="7_2" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.2 — Personal Data</div>
+          <div class="clause-text">Principal Investigator understands and agrees that Personal Information including name, contact details, curriculum vitae, and areas of specialization will be Processed by Company, its affiliates and contractual partners for purposes of complying with this Agreement and applicable regulatory obligations. Transfers among Company entities follow applicable laws and Binding Corporate Rules (BCRs). Data Protection Officer: privacy@sangsangmed.com.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="7_3" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.3 — Public Disclosure</div>
+          <div class="clause-text">Site acknowledges and agrees that Company shall have the right to disclose publicly the terms and conditions of the Agreement, including Site's name, description of services, and amount of payment.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="7_4" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.4 — Company's Reporting Obligations</div>
+          <div class="clause-text">If during an audit/monitoring of Site, Company identifies findings that may affect Subject safety or Study conduct, Company will provide written notice within 30 calendar days. Company will, pursuant to 21 C.F.R. § 312.50, ensure the Site is promptly informed of significant new adverse effects or risks with respect to the Study Drug, including data and safety monitoring reports.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="7_5" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.5 — CRO Delegation</div>
+          <div class="clause-text">Company has delegated the conduct of the study related activities at Institution to FUTURE CRO, as set forth in the Letter of Delegation attached hereto. However, ultimate responsibility for the quality and integrity of the Study data resides with Company. FUTURE CRO shall implement quality assurance and quality control and Company shall oversee FUTURE CRO's performance.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+
+        <div class="contract-clause ok" data-id="7_6" onclick="selectClause(this)">
+          <div class="clause-num">§ 7.6 — Institution Policy Compliance</div>
+          <div class="clause-text">Company complies with Institution's policies and processes for monitoring and evaluating the quality, safety and ethics of the Study.</div>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+      </div>
+
+    </div><!-- /contract-scroll -->
+  </div><!-- /contract-panel -->
+
+  <!-- RIGHT: AI PANEL -->
+  <div class="ai-panel">
+    <div class="ai-panel-header">
+      <span class="ai-panel-title">AI 판정 결과</span>
+      <div class="ai-scanning">
+        <span class="scan-dot"></span>
+        실시간 검토 중
+      </div>
+    </div>
+
+    <div class="ai-panel-scroll" id="ai-panel-scroll">
+
+      <div style="font-size:10.5px;color:#686864;padding:4px 0 16px;line-height:1.7;">
+        조항을 클릭하면 판정 근거가 표시됩니다. 현재 <span style="color:#fb923c;font-weight:700;">2개 승인 필요</span>, <span style="color:#f87171;font-weight:700;">1개 수용 불가</span> 감지.
+      </div>
+
+      <!-- 2_3 WARN -->
+      <div class="verdict-card" id="card-2_3">
+        <div class="verdict-card-header" onclick="toggleCard('2_3')">
+          <div class="verdict-icon-sm vi-warn">⚠</div>
+          <div>
+            <div class="verdict-card-clause">§ 2.3 — EDC 데이터 입력 기한</div>
+          </div>
+          <div class="verdict-card-status vs-warn">승인 필요</div>
+        </div>
+        <div class="verdict-card-body" id="body-2_3">
+          <div class="verdict-card-reason">기관 담당자가 EDC 입력 기한을 <strong style="color:#e8e7e3;">5 → 10 영업일</strong>로 변경 요청했습니다. 스폰서 SOP §4.2는 Subject visit 후 5 영업일 이내 입력을 명시하고 있어 스폰서 법무의 서면 승인이 필요합니다.</div>
+          <div class="verdict-ref">SOP §4.2 · EDC Data Entry Timeline<br>ICH E6(R3) 5.5.3 · Timely Data Entry<br>KGCP 제23조 · 기록 및 보고</div>
+          <div style="font-size:10px;color:#2a2a28;margin-bottom:4px;">기관 담당자 메모 (임계장, 아주대병원):</div>
+          <div style="font-size:11px;color:#505050;background:#0a0a09;padding:8px 10px;border-left:2px solid #505050;line-height:1.6;">"방사선 판독 의뢰 후 결과 수령까지 5 영업일 이상 소요되는 경우가 빈번합니다. 10 영업일로 조정 요청드립니다."</div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">법무팀 검토 요청</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3_2 BLOCK -->
+      <div class="verdict-card" id="card-3_2">
+        <div class="verdict-card-header" onclick="toggleCard('3_2')">
+          <div class="verdict-icon-sm vi-block">✕</div>
+          <div>
+            <div class="verdict-card-clause">§ 3.2 — Required Materials 보상</div>
+          </div>
+          <div class="verdict-card-status vs-block">수용 불가</div>
+        </div>
+        <div class="verdict-card-body" id="body-3_2">
+          <div class="verdict-card-reason">기관이 Required Materials 비용 외 <strong style="color:#e8e7e3;">구매가 15% 추가 보상</strong>을 요구했습니다. 이는 Master CTA §7.1의 "비용 초과 보상 금지" 조항에 직접 위배됩니다. 어떤 경우에도 허용되지 않는 변경입니다.</div>
+          <div class="verdict-ref">Master CTA §7.1 · Cost Cap Clause<br>SOP §12.3 · No Additional Compensation<br>KGCP 제18조 · 부당한 이익 제공 금지</div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">법무팀 검토 요청</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4_1 WARN -->
+      <div class="verdict-card" id="card-4_1">
+        <div class="verdict-card-header" onclick="toggleCard('4_1')">
+          <div class="verdict-icon-sm vi-warn">⚠</div>
+          <div>
+            <div class="verdict-card-clause">§ 4.1 — 첫 피험자 등록 기한</div>
+          </div>
+          <div class="verdict-card-status vs-warn">승인 필요</div>
+        </div>
+        <div class="verdict-card-body" id="body-4_1">
+          <div class="verdict-card-reason">기관이 "30일 이내" 등록을 <strong style="color:#e8e7e3;">"commercially reasonable efforts within 60일"</strong>로 완화 요청했습니다. SOP는 첫 환자 등록 기한을 30일로 규정하나, 기관별 예외 적용 시 CTM 승인이 필요합니다.</div>
+          <div class="verdict-ref">SOP §8.1 · First Patient In Timeline<br>ICH E6(R3) 4.2.1 · Site Initiation</div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-accept" onclick="acceptClause()">CTM 승인으로 수용</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- OK cards summary -->
+      <div style="border:1px solid #1a1a18;padding:12px 14px;margin-top:4px;">
+        <div style="font-size:9.5px;font-weight:700;color:#4ade80;letter-spacing:.06em;margin-bottom:8px;">✓ 수용 가능 — 13개 조항</div>
+        <div style="font-size:10.5px;color:#686864;line-height:2;">§1.1 · §1.2 · §1.3 · §2.1 · §2.2 · §3.1 · §5.1 · §5.2 · §5.3 · §5.4 · §6.1 · §6.2 · §7.1 · §7.3 · §7.4 · §7.5 · §7.6</div>
+      </div>
+
+    </div><!-- /ai-panel-scroll -->
+
+    <!-- MEMO PANEL -->
+    <div class="memo-panel">
+      <div class="memo-header">
+        <span class="memo-title">협상 메모</span>
+        <span class="memo-count">3</span>
+      </div>
+      <div class="memo-list" id="memo-list">
+        <div class="memo-item">
+          <div class="memo-avatar av-green">임</div>
+          <div class="memo-bubble">
+            <div class="memo-meta"><strong>임계장 · 아주대병원</strong> &nbsp;·&nbsp; 14:22</div>
+            <div class="memo-text">§2.3 EDC 입력 기한 관련 — 방사선 결과 수령 지연 건으로 10일 요청드립니다. 이전 계약(No.0100987)에서도 동일 조건 적용된 사례 있습니다.</div>
+          </div>
+        </div>
+        <div class="memo-item">
+          <div class="memo-avatar av-amber">정</div>
+          <div class="memo-bubble">
+            <div class="memo-meta"><strong>정법무 · Sangsang Med Legal</strong> &nbsp;·&nbsp; 14:35</div>
+            <div class="memo-text">§3.2 15% 추가보상 요청은 Master CTA 위반으로 수용 불가. §2.3은 개별 사유 검토 후 CTM 판단 필요.</div>
+          </div>
+        </div>
+        <div class="memo-item">
+          <div class="memo-avatar av-blue">김</div>
+          <div class="memo-bubble">
+            <div class="memo-meta"><strong>김민준 · CTM</strong> &nbsp;·&nbsp; 14:41</div>
+            <div class="memo-text">§2.3 방사선 판독 지연 사례 확인됨. 8 영업일로 절충안 제시 예정. §3.2는 원안 유지.</div>
+          </div>
+        </div>
+      </div>
+      <div class="memo-input-row">
+        <input class="memo-input" id="memo-input" type="text" placeholder="메모를 입력하세요 — 협상 기록에 저장됩니다">
+        <button class="memo-submit" onclick="addMemo()">전송</button>
+      </div>
+    </div><!-- /memo-panel -->
+
+    <!-- ACTIVITY BAR -->
+    <div class="activity-bar">
+      <div class="activity-dot"></div>
+      <div class="activity-text" id="activity-text"><span>임계장 (아주대)</span>이 §2.3을 방금 열람했습니다</div>
+    </div>
+
+  </div><!-- /ai-panel -->
+
+</div><!-- /demo-body -->
+
+<script>
+  let activeClause = null;
+  let currentView = 'changes';
+
+  function setView(mode) {
+    currentView = mode;
+    const scroll = document.getElementById('contract-scroll');
+    scroll.classList.remove('view-all', 'view-changes', 'view-original');
+    scroll.classList.add('view-' + mode);
+
+    document.querySelectorAll('.vt-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === mode);
+    });
+
+    // original 모드: 섹션 타이틀도 일반 스타일로
+    const aiPanel = document.getElementById('ai-panel-scroll');
+    if (mode === 'original') {
+      aiPanel.style.opacity = '.35';
+      aiPanel.style.pointerEvents = 'none';
+      document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>원본 초안 보기 중';
+    } else {
+      aiPanel.style.opacity = '1';
+      aiPanel.style.pointerEvents = '';
+      document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>실시간 검토 중';
+    }
+  }
+
+  // 초기 적용
+  document.addEventListener('DOMContentLoaded', () => setView('changes'));
+
+  function startDemo() {
+    document.getElementById('intro-overlay').style.display = 'none';
+    // auto-open first warn card
+    setTimeout(() => {
+      selectClauseById('2_3');
+    }, 400);
+  }
+
+  function selectClause(el) {
+    if (activeClause) activeClause.classList.remove('active');
+    el.classList.add('active');
+    activeClause = el;
+    const id = el.dataset.id;
+    // highlight corresponding card
+    document.querySelectorAll('.verdict-card').forEach(c => c.classList.remove('highlighted'));
+    const card = document.getElementById('card-' + id);
+    if (card) {
+      card.classList.add('highlighted');
+      document.querySelectorAll('.verdict-card-body').forEach(b => b.classList.remove('open'));
+      const body = document.getElementById('body-' + id);
+      if (body) body.classList.add('open');
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    // update activity
+    const activities = {
+      '2_3': '<span>AI</span>가 §2.3 기한 변경을 감지했습니다 — 승인 필요',
+      '3_2': '<span>AI</span>가 §3.2 비용 초과 조항을 수용 불가 처리했습니다',
+      '4_1': '<span>AI</span>가 §4.1 등록 기한 변경을 감지했습니다 — 승인 필요',
+      '1_1': '<span>AI</span>가 §1.1을 검토했습니다 — 수용 가능',
+      '1_2': '<span>AI</span>가 §1.2를 검토했습니다 — 수용 가능',
+      '1_3': '<span>AI</span>가 §1.3 KGCP 준수를 확인했습니다 — 수용 가능',
+      '2_1': '<span>AI</span>가 §2.1 KRW 50,000 한도를 확인했습니다 — 수용 가능',
+      '2_2': '<span>AI</span>가 §2.2를 검토했습니다 — 수용 가능',
+      '3_1': '<span>AI</span>가 §3.1을 검토했습니다 — 수용 가능',
+    };
+    if (activities[id]) {
+      document.getElementById('activity-text').innerHTML = activities[id];
+    }
+  }
+
+  function selectClauseById(id) {
+    const el = document.querySelector('[data-id="' + id + '"]');
+    if (el) selectClause(el);
+  }
+
+  function toggleCard(id) {
+    const body = document.getElementById('body-' + id);
+    if (body) {
+      const isOpen = body.classList.contains('open');
+      document.querySelectorAll('.verdict-card-body').forEach(b => b.classList.remove('open'));
+      if (!isOpen) body.classList.add('open');
+    }
+    selectClauseById(id);
+  }
+
+  function openEscalate() {
+    document.getElementById('escalate-modal').classList.add('open');
+    document.getElementById('modal-btns').style.display = 'flex';
+    document.getElementById('modal-success').style.display = 'none';
+  }
+
+  function closeEscalate() {
+    document.getElementById('escalate-modal').classList.remove('open');
+  }
+
+  function sendEscalate() {
+    document.getElementById('modal-btns').style.display = 'none';
+    document.getElementById('modal-success').style.display = 'block';
+    setTimeout(() => {
+      closeEscalate();
+      document.getElementById('activity-text').innerHTML = '<span>정법무</span>에게 §2.3 법무 검토 패키지가 전달되었습니다';
+      addMemoText('법무팀 검토 요청 완료 — §2.3을 법무팀(정법무)에 전달했습니다. 감사 추적 기록에 저장되었습니다.', '김', 'av-blue', '김민준 · CTM');
+    }, 1800);
+  }
+
+  function acceptClause() {
+    const el = document.querySelector('[data-id="4_1"]');
+    if (el) {
+      el.classList.remove('warn');
+      el.classList.add('ok');
+      const chip = el.querySelector('.clause-verdict-chip');
+      if (chip) { chip.className = 'clause-verdict-chip chip-ok'; chip.textContent = '✓ CTM 승인'; }
+    }
+    const card = document.getElementById('card-4_1');
+    if (card) card.style.display = 'none';
+    document.getElementById('activity-text').innerHTML = '<span>김민준 CTM</span>이 §4.1 변경을 승인했습니다';
+    addMemoText('§4.1 — CTM 권한으로 60일 등록 기한 수용 승인. 감사 로그에 기록되었습니다.', '김', 'av-blue', '김민준 · CTM');
+  }
+
+  function focusMemo() {
+    document.getElementById('memo-input').focus();
+  }
+
+  function addMemo() {
+    const input = document.getElementById('memo-input');
+    const text = input.value.trim();
+    if (!text) return;
+    addMemoText(text, '임', 'av-green', '임계장 · 아주대병원');
+    input.value = '';
+    // PACTIQ AI auto-responds after short delay
+    setTimeout(() => showTyping(), 800);
+    setTimeout(() => {
+      removeTyping();
+      const reply = getPactiqReply(text);
+      addMemoText(reply, 'P', 'av-pactiq', 'PACTIQ AI');
+      document.getElementById('activity-text').innerHTML = '<span>PACTIQ</span>가 메모에 대한 검토 결과를 제공했습니다';
+    }, 2400);
+  }
+
+  function getPactiqReply(text) {
+    const t = text.replace(/\s/g,'');
+    // EDC 기한 관련 숫자 추출
+    const dayMatch = text.match(/(\d+)\s*(?:영업)?일/);
+    const days = dayMatch ? parseInt(dayMatch[1]) : null;
+
+    if (/7일|7영업|7\s*business/.test(t)) {
+      return '§2.3 검토 결과 — 스폰서 SOP §4.2는 Subject visit 후 5 영업일 이내 EDC 입력을 요구합니다. 7 영업일은 SOP 기준을 초과하지만, 방사선·병리 결과 수령 지연 등 기관 사유가 문서화된 경우 CTM 서면 승인 하에 수용 가능합니다. 현재 판정은 "승인 필요"로 유지됩니다. 스폰서 CTM의 확인이 필요합니다.';
+    }
+    if (/5일|5영업/.test(t)) {
+      return '§2.3 검토 결과 — 5 영업일은 스폰서 SOP §4.2 기준과 일치합니다. 수용 가능한 범위입니다.';
+    }
+    if (/10일|10영업/.test(t)) {
+      return '§2.3 검토 결과 — 10 영업일은 SOP §4.2 기준(5 영업일)을 2배 초과합니다. 스폰서 법무의 별도 승인 없이는 수용 불가합니다. 법무팀 검토 요청을 권장합니다.';
+    }
+    if (days !== null && days <= 5) {
+      return `§2.3 검토 결과 — ${days} 영업일은 SOP §4.2 기준(5 영업일) 이내입니다. 수용 가능합니다.`;
+    }
+    if (days !== null && days <= 8) {
+      return `§2.3 검토 결과 — ${days} 영업일은 SOP §4.2 기준을 소폭 초과합니다. 기관 사유가 타당한 경우 CTM 승인 하에 수용 가능 범위입니다. 판정: 승인 필요.`;
+    }
+    if (days !== null && days > 8) {
+      return `§2.3 검토 결과 — ${days} 영업일은 스폰서 SOP §4.2 허용 범위(최대 8 영업일, 사유 있을 시)를 초과합니다. 법무팀 검토 요청이 필요합니다.`;
+    }
+    if (/가능|수용|ok|괜찮|된다/.test(t)) {
+      return '현재 활성 조항(§2.3)을 기준으로 검토합니다 — EDC 입력 기한 변경 요청은 스폰서 SOP §4.2와 충돌합니다. 구체적인 기한(영업일 수)을 말씀해주시면 즉시 판정 결과를 알려드립니다.';
+    }
+    if (/15%|보상|추가|compensation/.test(t)) {
+      return '§3.2 검토 결과 — 구매가 15% 추가 보상은 Master CTA §7.1 "비용 초과 보상 금지" 조항에 직접 위배됩니다. KGCP 제18조에 따른 부당 이익 제공 금지 규정도 적용됩니다. 어떤 경우에도 수용 불가합니다.';
+    }
+    if (/감사|고맙|알겠/.test(t)) {
+      return '네, 추가 질문이 있으시면 언제든지 메모로 남겨주세요. 조항 변경 요청 시 구체적인 수치나 사유를 포함하시면 더 정확한 검토 결과를 드릴 수 있습니다.';
+    }
+    // default
+    return '메모 확인했습니다. 검토 중인 조항과 관련된 구체적인 변경 내용(예: 기한 수정, 조건 변경 등)을 말씀해주시면 SOP·KGCP·ICH E6(R3) 기준으로 즉시 판정 결과를 제공합니다.';
+  }
+
+  function showTyping() {
+    const list = document.getElementById('memo-list');
+    const el = document.createElement('div');
+    el.className = 'memo-item typing-indicator';
+    el.innerHTML = `
+      <div class="memo-avatar av-pactiq">P</div>
+      <div class="memo-bubble">
+        <div class="memo-meta"><strong>PACTIQ AI</strong> &nbsp;·&nbsp; 검토 중</div>
+        <div class="memo-text typing-dots"><span>·</span><span>·</span><span>·</span></div>
+      </div>`;
+    list.appendChild(el);
+    list.scrollTop = list.scrollHeight;
+  }
+
+  function removeTyping() {
+    const el = document.querySelector('.typing-indicator');
+    if (el) el.remove();
+  }
+
+  function addMemoText(text, initial, avatarClass, name) {
+    const now = new Date();
+    const time = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    const item = document.createElement('div');
+    item.className = 'memo-item';
+    item.innerHTML = `
+      <div class="memo-avatar ${avatarClass}">${initial}</div>
+      <div class="memo-bubble">
+        <div class="memo-meta"><strong>${name}</strong> &nbsp;·&nbsp; ${time}</div>
+        <div class="memo-text">${text}</div>
+      </div>`;
+    const list = document.getElementById('memo-list');
+    list.appendChild(item);
+    list.scrollTop = list.scrollHeight;
+    const count = document.querySelector('.memo-count');
+    if (count) count.textContent = list.querySelectorAll('.memo-item:not(.typing-indicator)').length;
+  }
+
+  // memo enter key
+  document.getElementById('memo-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addMemo();
+  });
+
+  // rotate activity feed
+  const activityMessages = [
+    '<span>임계장 (아주대)</span>이 §2.3을 방금 열람했습니다',
+    '<span>AI</span>가 §3.2 비용 초과 조항을 수용 불가 처리했습니다',
+    '<span>김민준 CTM</span>이 문서에 접속했습니다',
+    '감사 기록 &nbsp;·&nbsp; 마지막 수정: 14:41 KST',
+    '<span>임계장 (아주대)</span>이 §4.1 수정안을 제출했습니다',
+  ];
+  let actIdx = 0;
+  setInterval(() => {
+    if (!document.querySelector('.verdict-card.highlighted')) {
+      actIdx = (actIdx + 1) % activityMessages.length;
+      document.getElementById('activity-text').innerHTML = activityMessages[actIdx];
+    }
+  }, 4000);
+</script>
+</body>
+</html>
