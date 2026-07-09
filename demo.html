@@ -320,6 +320,71 @@
     .intro-btn:hover { background: #0d31a0; }
     .intro-note { font-size: 10px; color: #2a2a28; text-align: center; margin-top: 12px; }
 
+    /* ── 기관 합의 이력 패널 ── */
+    .hist-panel {
+      background: #080e1e; border: 1px solid #1e3060;
+      margin-top: 12px; overflow: hidden;
+    }
+    .hist-panel-header {
+      padding: 11px 14px; display: flex; align-items: center; gap: 10px;
+      cursor: pointer; user-select: none;
+    }
+    .hist-panel-header:hover { background: rgba(255,255,255,.02); }
+    .hist-panel-icon { font-size: 12px; }
+    .hist-panel-title {
+      font-size: 10px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: #4a7cff;
+    }
+    .hist-panel-tag {
+      font-size: 9px; font-weight: 700; color: #8ab0ff;
+      background: rgba(74,124,255,.1); border: 1px solid rgba(74,124,255,.2);
+      padding: 2px 8px;
+    }
+    .hist-toggle { margin-left: auto; color: #3a3a60; font-size: 11px; transition: transform .2s; }
+    .hist-toggle.open { transform: rotate(180deg); }
+    .hist-panel-body { padding: 0 14px 14px; display: none; }
+    .hist-panel-body.open { display: block; }
+    .hist-desc {
+      font-size: 10.5px; color: #2a3a6a; line-height: 1.7; margin-bottom: 14px;
+      padding: 8px 10px; border-left: 2px solid #1e3060;
+    }
+    .hist-order { margin-bottom: 14px; }
+    .hist-order-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .hist-order-id { font-size: 10px; font-weight: 800; color: #4a7cff; font-family: "SF Mono", monospace; letter-spacing: .04em; }
+    .hist-order-date { font-size: 10px; color: #2a3a58; }
+    .hist-order-title { font-size: 10.5px; color: #3a5080; margin-bottom: 8px; }
+    .hist-clause-item {
+      display: flex; gap: 10px; padding: 7px 0;
+      border-top: 1px solid #0e1830;
+    }
+    .hist-clause-num {
+      font-size: 9.5px; font-weight: 700; color: #2a4070;
+      font-family: "SF Mono", monospace; width: 32px; flex-shrink: 0; padding-top: 1px;
+    }
+    .hist-clause-label { font-size: 10px; color: #3a5080; margin-bottom: 2px; }
+    .hist-clause-result { font-size: 10.5px; color: #687090; line-height: 1.5; word-break: keep-all; }
+    .hist-clause-result strong { color: #8ab0ff; }
+    .hist-insight {
+      display: flex; gap: 8px; align-items: flex-start;
+      background: rgba(74,124,255,.06); border: 1px solid rgba(74,124,255,.15);
+      border-left: 3px solid #4a7cff;
+      padding: 9px 11px; margin-top: 4px; margin-bottom: 12px;
+    }
+    .hist-insight-icon { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+    .hist-insight span { font-size: 10.5px; color: #6888b0; line-height: 1.65; word-break: keep-all; }
+    .hist-insight span strong { color: #8ab0ff; }
+    .hist-upload-btn {
+      display: flex; align-items: center; gap: 6px; width: 100%;
+      padding: 8px 12px; background: none; border: 1px dashed #1e3060;
+      color: #3a5080; font-size: 10.5px; font-family: inherit; cursor: pointer;
+      transition: border-color .15s, color .15s;
+    }
+    .hist-upload-btn:hover { border-color: #4a7cff; color: #4a7cff; }
+    .hist-upload-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
     /* ── ESCALATION MODAL ── */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(12,12,11,.8);
@@ -456,7 +521,7 @@
       </div>
       <div class="intro-step">
         <span class="intro-step-n">03</span>
-        <span class="intro-step-text">법무 검토 요청 버튼으로 법무팀에 패키지를 전달하는 과정을 체험할 수 있습니다</span>
+        <span class="intro-step-text">계약담당자 검토 요청 버튼으로 계약담당자에게 패키지를 전달하는 과정을 체험할 수 있습니다</span>
       </div>
     </div>
     <button class="intro-btn" onclick="startDemo()">데모 시작하기</button>
@@ -467,9 +532,9 @@
 <!-- ESCALATION MODAL -->
 <div class="modal-overlay" id="escalate-modal">
   <div class="modal-box">
-    <div class="modal-label">법무 검토 요청 패키지</div>
-    <h3 class="modal-title">법무팀 검토 요청</h3>
-    <p class="modal-desc">정책 범위를 벗어난 조항 변경 내용을 법무팀에 전달합니다. 이메일 체인 없이 단일 패키지로 전달됩니다.</p>
+    <div class="modal-label">계약담당자 검토 요청 패키지</div>
+    <h3 class="modal-title">계약담당자 검토 요청</h3>
+    <p class="modal-desc">정책 범위를 벗어난 조항 변경 내용을 계약담당자에게 전달합니다. 이메일 체인 없이 단일 패키지로 전달됩니다.</p>
     <div class="modal-pkg">
       <div class="modal-pkg-item"><span>문서</span><span>CTA_Order_410598.docx</span></div>
       <div class="modal-pkg-item"><span>조항</span><span>§2.3 — EDC 데이터 입력 기한</span></div>
@@ -479,11 +544,11 @@
     </div>
     <div class="modal-btns" id="modal-btns">
       <button class="modal-btn-cancel" onclick="closeEscalate()">취소</button>
-      <button class="modal-btn-send" onclick="sendEscalate()">법무팀에 전송</button>
+      <button class="modal-btn-send" onclick="sendEscalate()">계약담당자에게 전송</button>
     </div>
     <div class="modal-success" id="modal-success">
       <div class="modal-success-icon">✓</div>
-      <div class="modal-success-text">법무팀에 전달되었습니다</div>
+      <div class="modal-success-text">계약담당자에게 전달되었습니다</div>
       <div class="modal-success-sub">검토 요청 기록이 감사 추적 로그에 저장되었습니다</div>
     </div>
   </div>
@@ -729,12 +794,12 @@
           <div class="verdict-card-status vs-warn">승인 필요</div>
         </div>
         <div class="verdict-card-body" id="body-2_3">
-          <div class="verdict-card-reason">기관 담당자가 EDC 입력 기한을 <strong style="color:#e8e7e3;">5 → 10 영업일</strong>로 변경 요청했습니다. 스폰서 SOP §4.2는 Subject visit 후 5 영업일 이내 입력을 명시하고 있어 스폰서 법무의 서면 승인이 필요합니다.</div>
+          <div class="verdict-card-reason">기관 담당자가 EDC 입력 기한을 <strong style="color:#e8e7e3;">5 → 10 영업일</strong>로 변경 요청했습니다. 스폰서 SOP §4.2는 Subject visit 후 5 영업일 이내 입력을 명시하고 있어 스폰서 계약담당자의 서면 승인이 필요합니다.</div>
           <div class="verdict-ref">SOP §4.2 · EDC Data Entry Timeline<br>ICH E6(R3) 5.5.3 · Timely Data Entry<br>KGCP 제23조 · 기록 및 보고</div>
           <div style="font-size:10px;color:#2a2a28;margin-bottom:4px;">기관 담당자 메모 (임계장, 아주대병원):</div>
           <div style="font-size:11px;color:#505050;background:#0a0a09;padding:8px 10px;border-left:2px solid #505050;line-height:1.6;">"방사선 판독 의뢰 후 결과 수령까지 5 영업일 이상 소요되는 경우가 빈번합니다. 10 영업일로 조정 요청드립니다."</div>
           <div class="verdict-action-row">
-            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">법무팀 검토 요청</button>
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
           </div>
         </div>
@@ -753,7 +818,7 @@
           <div class="verdict-card-reason">기관이 Required Materials 비용 외 <strong style="color:#e8e7e3;">구매가 15% 추가 보상</strong>을 요구했습니다. 이는 Master CTA §7.1의 "비용 초과 보상 금지" 조항에 직접 위배됩니다. 어떤 경우에도 허용되지 않는 변경입니다.</div>
           <div class="verdict-ref">Master CTA §7.1 · Cost Cap Clause<br>SOP §12.3 · No Additional Compensation<br>KGCP 제18조 · 부당한 이익 제공 금지</div>
           <div class="verdict-action-row">
-            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">법무팀 검토 요청</button>
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
           </div>
         </div>
@@ -856,6 +921,80 @@
         </div>
       </div>
 
+      <!-- 기관 합의 이력 -->
+      <div class="hist-panel" id="hist-panel">
+        <div class="hist-panel-header" onclick="toggleHist()">
+          <span class="hist-panel-icon">🏥</span>
+          <span class="hist-panel-title">기관 합의 이력</span>
+          <span class="hist-panel-tag">아주대학교병원</span>
+          <span class="hist-toggle" id="hist-toggle">▾</span>
+        </div>
+        <div class="hist-panel-body open" id="hist-panel-body">
+          <div class="hist-desc">이 기관과 Sangsang Med가 체결한 과거 CTA Order에서 합의한 조항 이력입니다. AI 판정 시 자동 참조됩니다.</div>
+
+          <div class="hist-order">
+            <div class="hist-order-header">
+              <span class="hist-order-id">#AJU-2023-089</span>
+              <span class="hist-order-date">2023.09.12 체결</span>
+            </div>
+            <div class="hist-order-title">폐암 1상 임상시험 · PROlume-101</div>
+            <div class="hist-clause-item">
+              <div class="hist-clause-num">§2.3</div>
+              <div>
+                <div class="hist-clause-label">EDC 입력 기한</div>
+                <div class="hist-clause-result">원안 5일 → <strong>7 영업일</strong>로 합의 (방사선 판독 대기 사유)</div>
+              </div>
+            </div>
+            <div class="hist-clause-item">
+              <div class="hist-clause-num">§4.1</div>
+              <div>
+                <div class="hist-clause-label">첫 피험자 등록 기한</div>
+                <div class="hist-clause-result">원안 30일 유지 (변경 없음)</div>
+              </div>
+            </div>
+            <div class="hist-clause-item">
+              <div class="hist-clause-num">§3.2</div>
+              <div>
+                <div class="hist-clause-label">Required Materials 보상</div>
+                <div class="hist-clause-result">기관 추가 보상 요청 거절 — 원안 유지</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hist-order">
+            <div class="hist-order-header">
+              <span class="hist-order-id">#AJU-2022-041</span>
+              <span class="hist-order-date">2022.04.20 체결</span>
+            </div>
+            <div class="hist-order-title">당뇨병 2상 임상시험 · DM-CARE-202</div>
+            <div class="hist-clause-item">
+              <div class="hist-clause-num">§2.3</div>
+              <div>
+                <div class="hist-clause-label">EDC 입력 기한</div>
+                <div class="hist-clause-result">원안 5일 → <strong>7 영업일</strong>로 합의 (동일 사유)</div>
+              </div>
+            </div>
+            <div class="hist-clause-item">
+              <div class="hist-clause-num">§4.1</div>
+              <div>
+                <div class="hist-clause-label">첫 피험자 등록 기한</div>
+                <div class="hist-clause-result">원안 30일 유지 (변경 없음)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hist-insight">
+            <span class="hist-insight-icon">💡</span>
+            <span>이 기관은 §2.3을 <strong>2회 연속 7 영업일</strong>로 요청·합의한 이력이 있습니다. 이번 10 영업일 요청은 이례적이며, <strong>7 영업일로 반협상</strong>하는 것을 권장합니다.</span>
+          </div>
+
+          <button class="hist-upload-btn" onclick="alert('과거 CTA Order(PDF/Word)를 업로드하면 PACTIQ가 합의 이력을 자동 추출해 저장합니다.')">
+            <svg viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 4.5L7 2l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+            과거 CTA Order 업로드하기
+          </button>
+        </div>
+      </div>
+
     </div><!-- /ai-panel-scroll -->
 
     <!-- MEMO PANEL -->
@@ -875,7 +1014,7 @@
         <div class="memo-item">
           <div class="memo-avatar av-amber">정</div>
           <div class="memo-bubble">
-            <div class="memo-meta"><strong>정법무 · Sangsang Med Legal</strong> &nbsp;·&nbsp; 14:35</div>
+            <div class="memo-meta"><strong>정담당 · Sangsang Med 계약팀</strong> &nbsp;·&nbsp; 14:35</div>
             <div class="memo-text">§3.2 15% 추가보상 요청은 Master CTA 위반으로 수용 불가. §2.3은 개별 사유 검토 후 CTM 판단 필요.</div>
           </div>
         </div>
@@ -1003,8 +1142,8 @@
     document.getElementById('modal-success').style.display = 'block';
     setTimeout(() => {
       closeEscalate();
-      document.getElementById('activity-text').innerHTML = '<span>정법무</span>에게 §2.3 법무 검토 패키지가 전달되었습니다';
-      addMemoText('법무팀 검토 요청 완료 — §2.3을 법무팀(정법무)에 전달했습니다. 감사 추적 기록에 저장되었습니다.', '김', 'av-blue', '김민준 · CTM');
+      document.getElementById('activity-text').innerHTML = '<span>정담당</span>에게 §2.3 계약담당자 검토 패키지가 전달되었습니다';
+      addMemoText('계약담당자 검토 요청 완료 — §2.3을 계약담당자(정담당)에 전달했습니다. 감사 추적 기록에 저장되었습니다.', '김', 'av-blue', '김민준 · CTM');
     }, 1800);
   }
 
@@ -1055,7 +1194,7 @@
       return '§2.3 검토 결과 — 5 영업일은 스폰서 SOP §4.2 기준과 일치합니다. 수용 가능한 범위입니다.';
     }
     if (/10일|10영업/.test(t)) {
-      return '§2.3 검토 결과 — 10 영업일은 SOP §4.2 기준(5 영업일)을 2배 초과합니다. 스폰서 법무의 별도 승인 없이는 수용 불가합니다. 법무팀 검토 요청을 권장합니다.';
+      return '§2.3 검토 결과 — 10 영업일은 SOP §4.2 기준(5 영업일)을 2배 초과합니다. 스폰서 계약담당자의 별도 승인 없이는 수용 불가합니다. 계약담당자 검토 요청을 권장합니다.';
     }
     if (days !== null && days <= 5) {
       return `§2.3 검토 결과 — ${days} 영업일은 SOP §4.2 기준(5 영업일) 이내입니다. 수용 가능합니다.`;
@@ -1064,7 +1203,7 @@
       return `§2.3 검토 결과 — ${days} 영업일은 SOP §4.2 기준을 소폭 초과합니다. 기관 사유가 타당한 경우 CTM 승인 하에 수용 가능 범위입니다. 판정: 승인 필요.`;
     }
     if (days !== null && days > 8) {
-      return `§2.3 검토 결과 — ${days} 영업일은 스폰서 SOP §4.2 허용 범위(최대 8 영업일, 사유 있을 시)를 초과합니다. 법무팀 검토 요청이 필요합니다.`;
+      return `§2.3 검토 결과 — ${days} 영업일은 스폰서 SOP §4.2 허용 범위(최대 8 영업일, 사유 있을 시)를 초과합니다. 계약담당자 검토 요청이 필요합니다.`;
     }
     if (/가능|수용|ok|괜찮|된다/.test(t)) {
       return '현재 활성 조항(§2.3)을 기준으로 검토합니다 — EDC 입력 기한 변경 요청은 스폰서 SOP §4.2와 충돌합니다. 구체적인 기한(영업일 수)을 말씀해주시면 즉시 판정 결과를 알려드립니다.';
@@ -1127,6 +1266,14 @@
     const isOpen = body.classList.contains('open');
     body.classList.toggle('open', !isOpen);
     toggle.classList.toggle('open', !isOpen);
+  }
+
+  function toggleHist() {
+    const body = document.getElementById('hist-panel-body');
+    const toggle = document.getElementById('hist-toggle');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    toggle.textContent = isOpen ? '▾' : '▴';
   }
 
   // rotate activity feed
