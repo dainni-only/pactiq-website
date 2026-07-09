@@ -396,6 +396,40 @@
       color: #4a7cff;
     }
 
+    /* ── REF PANEL ── */
+    .ref-panel {
+      border-top: 1px solid #1e1e1c;
+      background: #0d0d0c;
+      flex-shrink: 0;
+    }
+    .ref-panel-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 16px; cursor: pointer;
+      border-bottom: 1px solid transparent;
+      transition: background .1s;
+    }
+    .ref-panel-header:hover { background: #141412; }
+    .ref-panel-title { font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #505050; }
+    .ref-panel-count { font-size: 9px; color: #2a2a28; background: #1a1a18; padding: 2px 6px; border-radius: 2px; }
+    .ref-toggle { font-size: 10px; color: #3a3a38; margin-left: auto; transition: transform .2s; }
+    .ref-toggle.open { transform: rotate(180deg); }
+
+    .ref-panel-body { display: none; max-height: 320px; overflow-y: auto; padding: 4px 0; }
+    .ref-panel-body.open { display: block; }
+    .ref-panel-body::-webkit-scrollbar { width: 2px; }
+    .ref-panel-body::-webkit-scrollbar-thumb { background: #2a2a28; }
+
+    .ref-item { padding: 12px 16px; border-bottom: 1px solid #151513; }
+    .ref-item-top { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .ref-code { font-size: 9.5px; font-weight: 800; font-family: "SF Mono", monospace; letter-spacing: .06em; color: #686864; }
+    .ref-status { font-size: 8.5px; font-weight: 700; padding: 2px 6px; letter-spacing: .04em; }
+    .ref-status.active { background: #14532d; color: #4ade80; }
+    .ref-status.uploaded { background: #1e3a5f; color: #60a5fa; }
+    .ref-name { font-size: 11px; font-weight: 700; color: #a0a09e; margin-bottom: 4px; }
+    .ref-desc { font-size: 10.5px; color: #686864; line-height: 1.7; margin-bottom: 6px; word-break: keep-all; }
+    .ref-link { font-size: 9.5px; font-family: "SF Mono", monospace; color: #4a7cff; text-decoration: none; letter-spacing: .02em; }
+    .ref-link:hover { text-decoration: underline; }
+
     /* responsive */
     @media (max-width: 768px) {
       .demo-body { grid-template-columns: 1fr; }
@@ -750,6 +784,78 @@
         <div style="font-size:10.5px;color:#686864;line-height:2;">§1.1 · §1.2 · §1.3 · §2.1 · §2.2 · §3.1 · §5.1 · §5.2 · §5.3 · §5.4 · §6.1 · §6.2 · §7.1 · §7.3 · §7.4 · §7.5 · §7.6</div>
       </div>
 
+      <!-- 참조 규정 -->
+      <div class="ref-panel" id="ref-panel">
+        <div class="ref-panel-header" onclick="toggleRef()">
+          <span class="ref-panel-title">참조 규정 · 출처</span>
+          <span class="ref-panel-count">6</span>
+          <span class="ref-toggle" id="ref-toggle">▾</span>
+        </div>
+        <div class="ref-panel-body" id="ref-panel-body">
+
+          <div class="ref-item">
+            <div class="ref-item-top">
+              <span class="ref-code">ICH E6(R3)</span>
+              <span class="ref-status active">현행</span>
+            </div>
+            <div class="ref-name">Good Clinical Practice 가이드라인</div>
+            <div class="ref-desc">임상시험 계약 조항 허용 범위의 국제 1차 기준. 2024년 5월 최종본(Step 4) 기준 적용.</div>
+            <a class="ref-link" href="https://www.ich.org/page/efficacy-guidelines" target="_blank" rel="noopener">ich.org/page/efficacy-guidelines ↗</a>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-item-top">
+              <span class="ref-code">KGCP</span>
+              <span class="ref-status active">현행</span>
+            </div>
+            <div class="ref-name">의약품 임상시험 관리기준</div>
+            <div class="ref-desc">식품의약품안전처(MFDS) 고시. ICH GCP와 동시 적용되며, 더 엄격한 기준이 우선됨. 국내 임상시험 계약의 법적 준거.</div>
+            <a class="ref-link" href="https://www.law.go.kr/행정규칙/의약품임상시험관리기준" target="_blank" rel="noopener">law.go.kr · 의약품임상시험관리기준 ↗</a>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-item-top">
+              <span class="ref-code">약사법</span>
+              <span class="ref-status active">현행</span>
+            </div>
+            <div class="ref-name">약사법 (의약품 임상시험 법적 근거)</div>
+            <div class="ref-desc">제34조~제34조의5. 임상시험 실시기관 지정, 임상시험계획 승인, IRB 운영 등 임상시험 계약의 법적 근거 조항.</div>
+            <a class="ref-link" href="https://www.law.go.kr/법령/약사법" target="_blank" rel="noopener">law.go.kr · 약사법 ↗</a>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-item-top">
+              <span class="ref-code">식약처 고시</span>
+              <span class="ref-status active">현행</span>
+            </div>
+            <div class="ref-name">임상시험 실시기관 지정에 관한 규정</div>
+            <div class="ref-desc">임상시험 실시기관 지정 요건, 의무 사항, 계약 시 기관이 갖춰야 할 조건 명시. CTA 체결 전 기관 자격 확인 기준.</div>
+            <a class="ref-link" href="https://www.mfds.go.kr/brd/m_218/list.do" target="_blank" rel="noopener">mfds.go.kr · 임상시험 고시 목록 ↗</a>
+          </div>
+
+          <div class="ref-item">
+            <div class="ref-item-top">
+              <span class="ref-code">21 CFR Part 11</span>
+              <span class="ref-status active">현행</span>
+            </div>
+            <div class="ref-name">FDA 전자기록 및 감사 추적 규정</div>
+            <div class="ref-desc">글로벌 임상시험 시 적용. 전자기록의 신뢰성, 접근 제어, 감사 추적 요건. EDC 및 eISF 시스템 요구사항의 근거.</div>
+            <a class="ref-link" href="https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11" target="_blank" rel="noopener">ecfr.gov · 21 CFR Part 11 ↗</a>
+          </div>
+
+          <div class="ref-item" style="border-bottom:none;">
+            <div class="ref-item-top">
+              <span class="ref-code">Sponsor SOP</span>
+              <span class="ref-status uploaded">업로드됨</span>
+            </div>
+            <div class="ref-name">Sangsang Med 내부 SOP</div>
+            <div class="ref-desc">스폰서가 PACTIQ에 업로드한 내부 표준 운영 절차. 동일 조항이라도 스폰서별 SOP에 따라 판정이 달라짐. 비공개 문서.</div>
+            <span class="ref-link" style="cursor:default;opacity:.5;">내부 문서 · 비공개</span>
+          </div>
+
+        </div>
+      </div>
+
     </div><!-- /ai-panel-scroll -->
 
     <!-- MEMO PANEL -->
@@ -1014,6 +1120,14 @@
   document.getElementById('memo-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') addMemo();
   });
+
+  function toggleRef() {
+    const body = document.getElementById('ref-panel-body');
+    const toggle = document.getElementById('ref-toggle');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    toggle.classList.toggle('open', !isOpen);
+  }
 
   // rotate activity feed
   const activityMessages = [
