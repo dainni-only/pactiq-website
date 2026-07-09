@@ -197,7 +197,10 @@ img { display: block; max-width: 100%; }
    홈페이지 히어로 — 센터 정렬 대형 타이포
 ══════════════════════════════════════════════ */
 #hero {
-  background: var(--white);
+  background:
+    radial-gradient(ellipse 90% 70% at 15% -5%, rgba(21,65,200,.10) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 80% at 85% 110%, rgba(21,65,200,.07) 0%, transparent 50%),
+    linear-gradient(165deg, #d6e8f8 0%, #e4eff9 22%, #eef5fb 45%, #f6fafd 70%, #ffffff 100%);
   border-bottom: 1px solid var(--line);
 }
 .hero-top {
