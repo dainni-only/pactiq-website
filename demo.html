@@ -294,10 +294,52 @@
 
     /* ── INTRO OVERLAY ── */
     .intro-overlay {
-      position: fixed; inset: 0; background: rgba(12,12,11,.88);
+      position: fixed; inset: 0; background: rgba(6,8,18,.95);
       display: flex; align-items: center; justify-content: center; z-index: 100;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(4px);
     }
+    /* STEP 1 — Outlook pain point */
+    .intro-step1 { max-width: 860px; width: 95%; }
+    .intro-step1-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+    .intro-step1-badge { font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #f87171; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.25); padding: 3px 9px; }
+    .intro-step1-title { font-size: 22px; font-weight: 800; color: #e8e7e3; letter-spacing: -.03em; }
+
+    /* Outlook window mockup */
+    .ol-window { background: #1c1c2e; border: 1px solid #2a2a40; border-radius: 4px; overflow: hidden; }
+    .ol-titlebar { background: #1a3a6b; padding: 7px 14px; display: flex; align-items: center; gap: 8px; }
+    .ol-app-name { font-size: 11px; color: #a8c4f0; font-weight: 600; letter-spacing: .04em; }
+    .ol-subject { font-size: 10.5px; color: #7ba8d8; flex: 1; text-align: center; }
+    .ol-winbtns { display: flex; gap: 6px; margin-left: auto; }
+    .ol-winbtn { width: 11px; height: 11px; border-radius: 50%; }
+    .ol-winbtn.red { background: #ff5f57; } .ol-winbtn.yellow { background: #febc2e; } .ol-winbtn.green { background: #28c840; }
+
+    .ol-thread { max-height: 340px; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+    .ol-thread::-webkit-scrollbar { width: 4px; } .ol-thread::-webkit-scrollbar-track { background: transparent; } .ol-thread::-webkit-scrollbar-thumb { background: #2a2a40; }
+
+    .ol-mail { background: #13131f; border: 1px solid #22223a; border-radius: 3px; padding: 10px 12px; }
+    .ol-mail.unread { border-color: #1a3a6b; }
+    .ol-mail-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .ol-avatar { width: 26px; height: 26px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ol-avatar.sponsor { background: #1541c8; color: #fff; }
+    .ol-avatar.hospital { background: #374151; color: #9ca3af; }
+    .ol-sender { font-size: 11px; font-weight: 700; color: #c8c8d0; }
+    .ol-time { font-size: 9.5px; color: #3a3a58; margin-left: auto; }
+    .ol-mail-body { font-size: 11.5px; color: #686880; line-height: 1.6; word-break: keep-all; }
+    .ol-attach { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .ol-file { display: flex; align-items: center; gap: 5px; background: #1c1c38; border: 1px solid #2a2a50; padding: 4px 8px; border-radius: 2px; font-size: 10px; color: #7a8aaa; }
+    .ol-file-icon { font-size: 12px; }
+    .ol-file.latest { border-color: #1541c8; color: #4a7cff; background: rgba(21,65,200,.1); }
+    .ol-chaos-tag { display: inline-block; font-size: 9px; font-weight: 700; color: #f87171; background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.2); padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+
+    .intro-step1-cta { display: flex; align-items: center; gap: 16px; margin-top: 20px; }
+    .intro-step1-cta-desc { font-size: 12px; color: #3a3a58; line-height: 1.6; word-break: keep-all; flex: 1; }
+    .intro-step1-cta-desc strong { color: #686880; }
+    .intro-next-btn { padding: 13px 28px; background: #1541c8; border: none; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; letter-spacing: .01em; }
+    .intro-next-btn:hover { background: #0d31a0; }
+    .intro-next-arrow { font-size: 16px; margin-left: 6px; }
+
+    /* STEP 2 — PACTIQ intro */
+    .intro-step2 { display: none; }
     .intro-box {
       background: #0c0c0b; border: 1px solid #2a2a28;
       padding: 48px; max-width: 480px; width: 90%;
@@ -506,27 +548,137 @@
 
 <!-- INTRO OVERLAY -->
 <div class="intro-overlay" id="intro-overlay">
-  <div class="intro-box">
-    <div class="intro-label">PACTIQ — Interactive Demo</div>
-    <h2 class="intro-title">CTA Order<br>AI 실시간 검토</h2>
-    <p class="intro-desc">실제 CTA Order 계약서(IRB No. 410598)를 기반으로 PACTIQ가 어떻게 작동하는지 직접 확인하세요.</p>
-    <div class="intro-steps">
-      <div class="intro-step">
-        <span class="intro-step-n">01</span>
-        <span class="intro-step-text">조항을 클릭하면 AI 판정 근거와 출처 규정이 오른쪽 패널에 표시됩니다</span>
+
+  <!-- STEP 1: 기존 아웃룩 방식 -->
+  <div class="intro-step1" id="intro-step1">
+    <div class="intro-step1-header">
+      <span class="intro-step1-badge">기존 방식</span>
+      <span class="intro-step1-title">지금 이 계약, 이렇게 진행되고 있습니다</span>
+    </div>
+
+    <div class="ol-window">
+      <div class="ol-titlebar">
+        <div class="ol-winbtns"><span class="ol-winbtn red"></span><span class="ol-winbtn yellow"></span><span class="ol-winbtn green"></span></div>
+        <span class="ol-app-name">Microsoft Outlook</span>
+        <span class="ol-subject">RE: RE: RE: RE: RE: [CTA] 아주대학교병원 계약서 검토 요청 — IRB No.410598</span>
       </div>
-      <div class="intro-step">
-        <span class="intro-step-n">02</span>
-        <span class="intro-step-text">변경 추적된 조항(취소선/밑줄)은 기관 담당자가 제안한 수정 내용입니다</span>
-      </div>
-      <div class="intro-step">
-        <span class="intro-step-n">03</span>
-        <span class="intro-step-text">계약담당자 검토 요청 버튼으로 계약담당자에게 패키지를 전달하는 과정을 체험할 수 있습니다</span>
+      <div class="ol-thread">
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar sponsor">김</span>
+            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
+            <span class="ol-time">2024.03.04 09:12</span>
+          </div>
+          <div class="ol-mail-body">안녕하세요 담당자님, CTA Order 초안 첨부드립니다. 검토 후 의견 주시면 감사하겠습니다.</div>
+          <div class="ol-attach">
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v1.docx</span>
+          </div>
+        </div>
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar hospital">임</span>
+            <span class="ol-sender">임계장 (아주대학교병원 계약담당자)</span>
+            <span class="ol-time">2024.03.11 16:48</span>
+          </div>
+          <div class="ol-mail-body">§2.3 EDC 입력 기한 5일은 어렵습니다. 방사선 판독 대기가 있어서요. 수정 버전 첨부합니다.</div>
+          <div class="ol-attach">
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v1_수정.docx</span>
+          </div>
+        </div>
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar sponsor">김</span>
+            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
+            <span class="ol-time">2024.03.14 10:22</span>
+          </div>
+          <div class="ol-mail-body">내부 검토 후 §2.3은 7일로 조율 가능하나, §4.1 등록 기한은 그대로 유지 요청드립니다. v2 첨부드립니다.</div>
+          <div class="ol-attach">
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2.docx</span>
+          </div>
+        </div>
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar hospital">임</span>
+            <span class="ol-sender">임계장 (아주대학교병원 계약담당자)</span>
+            <span class="ol-time">2024.03.26 14:05</span>
+          </div>
+          <div class="ol-mail-body">담당자가 변경되어 인수인계 중입니다. 죄송하지만 다음 주 다시 연락드리겠습니다. <span class="ol-chaos-tag">담당자 교체</span></div>
+        </div>
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar hospital">정</span>
+            <span class="ol-sender">정담당 (아주대학교병원 계약담당자 — 신규)</span>
+            <span class="ol-time">2024.04.08 09:50</span>
+          </div>
+          <div class="ol-mail-body">안녕하세요, 담당자 변경되었습니다. 계약서를 처음부터 검토하겠습니다. 최신 버전 다시 보내주실 수 있을까요? <span class="ol-chaos-tag">처음부터 재검토</span></div>
+        </div>
+
+        <div class="ol-mail">
+          <div class="ol-mail-header">
+            <span class="ol-avatar sponsor">김</span>
+            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
+            <span class="ol-time">2024.04.08 11:33</span>
+          </div>
+          <div class="ol-mail-body">안녕하세요, v2가 최신본입니다. 다만 §2.3 수정 경위는 이전 이메일 스레드 참고 부탁드립니다…</div>
+          <div class="ol-attach">
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2.docx</span>
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2_최종.docx</span>
+            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2_최종_진짜최종.docx <span class="ol-chaos-tag">?</span></span>
+          </div>
+        </div>
+
+        <div class="ol-mail unread">
+          <div class="ol-mail-header">
+            <span class="ol-avatar hospital">정</span>
+            <span class="ol-sender">정담당 (아주대학교병원 계약담당자)</span>
+            <span class="ol-time">2024.05.03 17:21</span>
+          </div>
+          <div class="ol-mail-body">검토 완료했습니다. §3.2 보상 조항도 추가 논의 필요할 것 같습니다. 수정본 첨부드립니다.</div>
+          <div class="ol-attach">
+            <span class="ol-file latest"><span class="ol-file-icon">📄</span>CTA_Draft_v3_정담당수정.docx</span>
+            <span style="font-size:10px;color:#3a3a58;align-self:center;">← 이게 최신인가요?</span>
+          </div>
+        </div>
+
       </div>
     </div>
-    <button class="intro-btn" onclick="startDemo()">데모 시작하기</button>
-    <p class="intro-note">실제 계약서 기반 — 가상의 스폰서 및 기관 정보 사용</p>
+
+    <div class="intro-step1-cta">
+      <p class="intro-step1-cta-desc"><strong>협상 시작 후 61일째</strong> — 어느 파일이 최신인지, 어떤 조항이 합의됐는지, 누가 마지막으로 수정했는지 아무도 모릅니다. PACTIQ는 이 과정 전체를 단일 플랫폼으로 대체합니다.</p>
+      <button class="intro-next-btn" onclick="showIntroStep2()">PACTIQ로 어떻게 달라지나요? <span class="intro-next-arrow">→</span></button>
+    </div>
   </div>
+
+  <!-- STEP 2: PACTIQ 소개 -->
+  <div class="intro-step2" id="intro-step2">
+    <div class="intro-box">
+      <div class="intro-label">PACTIQ — Interactive Demo</div>
+      <h2 class="intro-title">CTA Order<br>AI 실시간 검토</h2>
+      <p class="intro-desc">동일한 계약서(IRB No. 410598)를 PACTIQ에서는 어떻게 다루는지 직접 체험하세요. 이메일 없이, 버전 혼선 없이.</p>
+      <div class="intro-steps">
+        <div class="intro-step">
+          <span class="intro-step-n">01</span>
+          <span class="intro-step-text">조항을 클릭하면 AI 판정 근거와 출처 규정이 오른쪽 패널에 즉시 표시됩니다</span>
+        </div>
+        <div class="intro-step">
+          <span class="intro-step-n">02</span>
+          <span class="intro-step-text">변경 추적된 조항(취소선/밑줄)은 기관 담당자가 제안한 수정 — 이메일 첨부 없이 문서 안에서 바로 확인</span>
+        </div>
+        <div class="intro-step">
+          <span class="intro-step-n">03</span>
+          <span class="intro-step-text">기관 합의 이력 패널: 같은 기관과 과거 체결한 CTA의 조항별 합의 결과를 AI가 자동 참조</span>
+        </div>
+      </div>
+      <button class="intro-btn" onclick="startDemo()">데모 시작하기</button>
+      <p class="intro-note">실제 계약서 기반 — 가상의 스폰서 및 기관 정보 사용</p>
+    </div>
+  </div>
+
 </div>
 
 <!-- ESCALATION MODAL -->
@@ -1266,6 +1418,11 @@
     const isOpen = body.classList.contains('open');
     body.classList.toggle('open', !isOpen);
     toggle.classList.toggle('open', !isOpen);
+  }
+
+  function showIntroStep2() {
+    document.getElementById('intro-step1').style.display = 'none';
+    document.getElementById('intro-step2').style.display = 'block';
   }
 
   function toggleHist() {
