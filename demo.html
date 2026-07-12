@@ -295,70 +295,103 @@
 
     /* ── INTRO OVERLAY ── */
     .intro-overlay {
-      position: fixed; inset: 0; background: rgba(6,8,18,.95);
+      position: fixed; inset: 0; background: rgba(15,30,56,.92);
       display: flex; align-items: center; justify-content: center; z-index: 100;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
     }
-    /* STEP 1 — Outlook pain point */
-    .intro-step1 { max-width: 860px; width: 95%; }
-    .intro-step1-header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
-    .intro-step1-badge { font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #f87171; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.25); padding: 3px 9px; }
-    .intro-step1-title { font-size: 22px; font-weight: 800; color: #e8e7e3; letter-spacing: -.03em; }
 
-    /* Outlook window mockup */
-    .ol-window { background: #1c1c2e; border: 1px solid #2a2a40; border-radius: 4px; overflow: hidden; }
-    .ol-titlebar { background: #1a3a6b; padding: 7px 14px; display: flex; align-items: center; gap: 8px; }
-    .ol-app-name { font-size: 11px; color: #a8c4f0; font-weight: 600; letter-spacing: .04em; }
-    .ol-subject { font-size: 10.5px; color: #7ba8d8; flex: 1; text-align: center; }
-    .ol-winbtns { display: flex; gap: 6px; margin-left: auto; }
-    .ol-winbtn { width: 11px; height: 11px; border-radius: 50%; }
-    .ol-winbtn.red { background: #ff5f57; } .ol-winbtn.yellow { background: #febc2e; } .ol-winbtn.green { background: #28c840; }
+    /* ── STEP 1: Outlook INBOX (before) ── */
+    .intro-step1 { width: 1100px; max-width: 96vw; }
+    .intro-step1-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .intro-step1-badge { font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #f87171; background: rgba(248,113,113,.15); border: 1px solid rgba(248,113,113,.3); padding: 3px 10px; }
+    .intro-step1-title { font-size: 20px; font-weight: 800; color: #e8edf5; letter-spacing: -.03em; }
+    .intro-step1-sub { font-size: 12px; color: #6a80a8; margin-left: auto; }
 
-    .ol-thread { max-height: 340px; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-    .ol-thread::-webkit-scrollbar { width: 4px; } .ol-thread::-webkit-scrollbar-track { background: transparent; } .ol-thread::-webkit-scrollbar-thumb { background: #2a2a40; }
+    /* Outlook window */
+    .ol-window { background: #f3f2f1; border-radius: 6px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .ol-ribbon { background: #1565c0; padding: 0 16px; display: flex; align-items: center; height: 38px; gap: 12px; }
+    .ol-ribbon-logo { font-size: 12px; font-weight: 800; color: #fff; letter-spacing: .04em; }
+    .ol-ribbon-tabs { display: flex; gap: 2px; margin-left: 8px; }
+    .ol-ribbon-tab { font-size: 10px; color: rgba(255,255,255,.7); padding: 4px 10px; cursor: default; }
+    .ol-ribbon-tab.active { color: #fff; background: rgba(255,255,255,.15); }
+    .ol-winbtns { display: flex; gap: 0; margin-left: auto; }
+    .ol-winbtn-bar { width: 32px; height: 28px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.8); font-size: 14px; cursor: default; }
+    .ol-winbtn-bar:hover { background: rgba(255,255,255,.15); }
+    .ol-winbtn-bar.close:hover { background: #c42b1c; }
 
-    .ol-mail { background: #13131f; border: 1px solid #22223a; border-radius: 3px; padding: 10px 12px; }
-    .ol-mail.unread { border-color: #1a3a6b; }
-    .ol-mail-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .ol-avatar { width: 26px; height: 26px; border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ol-avatar.sponsor { background: #1541c8; color: #fff; }
-    .ol-avatar.hospital { background: #374151; color: #9ca3af; }
-    .ol-sender { font-size: 11px; font-weight: 700; color: #c8c8d0; }
-    .ol-time { font-size: 9.5px; color: #3a3a58; margin-left: auto; }
-    .ol-mail-body { font-size: 11.5px; color: #686880; line-height: 1.6; word-break: keep-all; }
-    .ol-attach { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-    .ol-file { display: flex; align-items: center; gap: 5px; background: #1c1c38; border: 1px solid #2a2a50; padding: 4px 8px; border-radius: 2px; font-size: 10px; color: #7a8aaa; }
-    .ol-file-icon { font-size: 12px; }
-    .ol-file.latest { border-color: #1541c8; color: #4a7cff; background: rgba(21,65,200,.1); }
-    .ol-chaos-tag { display: inline-block; font-size: 9px; font-weight: 700; color: #f87171; background: rgba(248,113,113,.1); border: 1px solid rgba(248,113,113,.2); padding: 1px 6px; margin-left: 6px; vertical-align: middle; }
+    /* Three-pane layout */
+    .ol-body { display: grid; grid-template-columns: 180px 300px 1fr; height: 400px; }
 
-    .intro-step1-cta { display: flex; align-items: center; gap: 16px; margin-top: 20px; }
-    .intro-step1-cta-desc { font-size: 12px; color: #3a3a58; line-height: 1.6; word-break: keep-all; flex: 1; }
-    .intro-step1-cta-desc strong { color: #686880; }
+    /* Left: folder tree */
+    .ol-sidebar { background: #f3f2f1; border-right: 1px solid #d8d8d8; padding: 8px 0; overflow: hidden; }
+    .ol-folder { display: flex; align-items: center; gap: 8px; padding: 5px 14px; font-size: 11px; color: #323130; cursor: default; }
+    .ol-folder:hover { background: #e8e8e8; }
+    .ol-folder.active { background: #deecf9; color: #0078d4; font-weight: 700; }
+    .ol-folder-icon { font-size: 12px; }
+    .ol-folder-name { flex: 1; }
+    .ol-folder-badge { font-size: 9px; font-weight: 700; background: #0078d4; color: #fff; padding: 1px 5px; border-radius: 8px; }
+    .ol-folder-badge.red { background: #c42b1c; }
+
+    /* Middle: email list */
+    .ol-list { background: #fff; border-right: 1px solid #d8d8d8; overflow-y: auto; }
+    .ol-list::-webkit-scrollbar { width: 4px; } .ol-list::-webkit-scrollbar-thumb { background: #c8c8c8; }
+    .ol-list-header { padding: 8px 12px; font-size: 10px; font-weight: 700; color: #605e5c; border-bottom: 1px solid #edebe9; display: flex; align-items: center; gap: 6px; }
+    .ol-list-sort { font-size: 9.5px; color: #0078d4; margin-left: auto; cursor: default; }
+    .ol-row { padding: 10px 12px; border-bottom: 1px solid #f3f2f1; cursor: default; transition: background .1s; }
+    .ol-row:hover { background: #f5f5f5; }
+    .ol-row.active { background: #deecf9; border-left: 3px solid #0078d4; }
+    .ol-row.unread .ol-row-sender { font-weight: 800; color: #0f1e38; }
+    .ol-row.unread .ol-row-subject { color: #0f1e38; font-weight: 700; }
+    .ol-row.flagged .ol-row-sender::before { content: '⚑ '; color: #d83b01; }
+    .ol-row-top { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; }
+    .ol-row-sender { font-size: 11px; color: #323130; font-weight: 400; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ol-row-time { font-size: 9px; color: #605e5c; flex-shrink: 0; }
+    .ol-row-subject { font-size: 10.5px; color: #605e5c; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-bottom: 2px; }
+    .ol-row-preview { font-size: 10px; color: #a0a0a0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ol-unread-dot { width: 7px; height: 7px; border-radius: 50%; background: #0078d4; flex-shrink: 0; }
+
+    /* Right: open email */
+    .ol-content { background: #fff; display: flex; flex-direction: column; overflow: hidden; }
+    .ol-content-header { padding: 16px 20px 12px; border-bottom: 1px solid #edebe9; }
+    .ol-content-subject { font-size: 14px; font-weight: 700; color: #0f1e38; margin-bottom: 10px; word-break: keep-all; line-height: 1.4; }
+    .ol-content-meta { display: flex; align-items: flex-start; gap: 10px; }
+    .ol-content-avatar { width: 32px; height: 32px; border-radius: 50%; background: #d83b01; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .ol-content-from { font-size: 11px; color: #323130; font-weight: 700; }
+    .ol-content-to { font-size: 10px; color: #605e5c; margin-top: 2px; }
+    .ol-content-time { font-size: 10px; color: #a0a0a0; margin-left: auto; }
+    .ol-content-body { flex: 1; overflow-y: auto; padding: 16px 20px; font-size: 12px; color: #323130; line-height: 1.8; }
+    .ol-content-body::-webkit-scrollbar { width: 4px; } .ol-content-body::-webkit-scrollbar-thumb { background: #c8c8c8; }
+    .ol-quote { border-left: 3px solid #d8d8d8; padding-left: 10px; color: #605e5c; margin: 8px 0; font-size: 11px; }
+    .ol-attach-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; padding-top: 10px; border-top: 1px solid #edebe9; }
+    .ol-file { display: flex; align-items: center; gap: 5px; background: #f3f2f1; border: 1px solid #d8d8d8; padding: 5px 10px; border-radius: 3px; font-size: 10px; color: #323130; }
+    .ol-file-icon { font-size: 13px; }
+    .ol-file.highlight { border-color: #0078d4; background: #deecf9; color: #0078d4; font-weight: 700; }
+    .ol-chaos-tag { display: inline-block; font-size: 9px; font-weight: 700; color: #c42b1c; background: #fde7e9; border: 1px solid #f4b8bc; padding: 1px 6px; border-radius: 2px; margin-left: 6px; vertical-align: middle; }
+    .ol-thread-count { font-size: 10px; color: #0078d4; background: #deecf9; padding: 2px 8px; border-radius: 2px; display: inline-block; margin-top: 6px; }
+
+    .intro-step1-cta { display: flex; align-items: center; gap: 20px; margin-top: 16px; }
+    .intro-step1-cta-desc { font-size: 12px; color: #7a90b8; line-height: 1.65; word-break: keep-all; flex: 1; }
+    .intro-step1-cta-desc strong { color: #c8d8f0; }
     .intro-next-btn { padding: 13px 28px; background: #1541c8; border: none; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; letter-spacing: .01em; }
     .intro-next-btn:hover { background: #0d31a0; }
-    .intro-next-arrow { font-size: 16px; margin-left: 6px; }
 
-    /* STEP 2 — PACTIQ intro */
+    /* ── STEP 2: PACTIQ intro (light) ── */
     .intro-step2 { display: none; }
     .intro-box {
-      background: #ffffff; border: 1px solid #e2e8f0;
-      padding: 48px; max-width: 480px; width: 90%;
+      background: #ffffff; border: 1px solid #dde6f0;
+      padding: 48px 52px; max-width: 520px; width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
     }
-    .intro-label {
-      font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
-      color: #4a7cff; margin-bottom: 16px;
-    }
-    .intro-title { font-size: 26px; font-weight: 800; letter-spacing: -.04em; color: #0f1e38; line-height: 1.2; margin-bottom: 12px; }
-    .intro-desc { font-size: 13px; color: #475569; line-height: 1.8; margin-bottom: 32px; word-break: keep-all; }
-    .intro-steps { display: flex; flex-direction: column; gap: 10px; margin-bottom: 32px; }
+    .intro-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #1541c8; margin-bottom: 16px; }
+    .intro-title { font-size: 28px; font-weight: 800; letter-spacing: -.04em; color: #0f1e38; line-height: 1.2; margin-bottom: 12px; }
+    .intro-desc { font-size: 13px; color: #475569; line-height: 1.8; margin-bottom: 28px; word-break: keep-all; }
+    .intro-steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
     .intro-step { display: flex; gap: 12px; align-items: flex-start; }
-    .intro-step-n { font-size: 9px; font-weight: 700; font-family: "SF Mono", monospace; color: #1541c8; background: #dce4ff; padding: 2px 6px; flex-shrink: 0; margin-top: 2px; }
-    .intro-step-text { font-size: 12px; color: #475569; line-height: 1.6; word-break: keep-all; }
+    .intro-step-n { font-size: 9px; font-weight: 800; font-family: "SF Mono", monospace; color: #1541c8; background: #dce4ff; padding: 3px 7px; flex-shrink: 0; margin-top: 1px; }
+    .intro-step-text { font-size: 12.5px; color: #374151; line-height: 1.65; word-break: keep-all; }
     .intro-btn {
-      width: 100%; padding: 14px; background: #1541c8; border: none; color: #fff;
-      font-size: 13px; font-weight: 700; cursor: pointer; letter-spacing: .02em;
-      font-family: inherit;
+      width: 100%; padding: 15px; background: #1541c8; border: none; color: #fff;
+      font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: .02em; font-family: inherit;
     }
     .intro-btn:hover { background: #0d31a0; }
     .intro-note { font-size: 10px; color: #b0bdd0; text-align: center; margin-top: 12px; }
@@ -550,108 +583,184 @@
 <!-- INTRO OVERLAY -->
 <div class="intro-overlay" id="intro-overlay">
 
-  <!-- STEP 1: 기존 아웃룩 방식 -->
+  <!-- STEP 1: 아웃룩 인박스 (병원 계약담당자 시점) -->
   <div class="intro-step1" id="intro-step1">
     <div class="intro-step1-header">
       <span class="intro-step1-badge">기존 방식</span>
-      <span class="intro-step1-title">지금 이 계약, 이렇게 진행되고 있습니다</span>
+      <span class="intro-step1-title">병원 계약담당자의 오늘 받은 편지함</span>
+      <span class="intro-step1-sub">정담당 · 아주대학교병원 임상시험센터</span>
     </div>
 
     <div class="ol-window">
-      <div class="ol-titlebar">
-        <div class="ol-winbtns"><span class="ol-winbtn red"></span><span class="ol-winbtn yellow"></span><span class="ol-winbtn green"></span></div>
-        <span class="ol-app-name">Microsoft Outlook</span>
-        <span class="ol-subject">RE: RE: RE: RE: RE: [CTA] 아주대학교병원 계약서 검토 요청 — IRB No.410598</span>
+      <!-- Ribbon -->
+      <div class="ol-ribbon">
+        <span class="ol-ribbon-logo">Outlook</span>
+        <div class="ol-ribbon-tabs">
+          <span class="ol-ribbon-tab active">홈</span>
+          <span class="ol-ribbon-tab">보내기/받기</span>
+          <span class="ol-ribbon-tab">폴더</span>
+          <span class="ol-ribbon-tab">보기</span>
+        </div>
+        <div class="ol-winbtns">
+          <span class="ol-winbtn-bar">─</span>
+          <span class="ol-winbtn-bar">□</span>
+          <span class="ol-winbtn-bar close">✕</span>
+        </div>
       </div>
-      <div class="ol-thread">
 
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar sponsor">김</span>
-            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
-            <span class="ol-time">2024.03.04 09:12</span>
+      <!-- Three-pane body -->
+      <div class="ol-body">
+
+        <!-- Folder tree -->
+        <div class="ol-sidebar">
+          <div class="ol-folder active">
+            <span class="ol-folder-icon">📥</span>
+            <span class="ol-folder-name">받은 편지함</span>
+            <span class="ol-folder-badge red">23</span>
           </div>
-          <div class="ol-mail-body">안녕하세요 담당자님, CTA Order 초안 첨부드립니다. 검토 후 의견 주시면 감사하겠습니다.</div>
-          <div class="ol-attach">
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v1.docx</span>
+          <div class="ol-folder">
+            <span class="ol-folder-icon">📤</span>
+            <span class="ol-folder-name">보낸 편지함</span>
+          </div>
+          <div class="ol-folder">
+            <span class="ol-folder-icon">📁</span>
+            <span class="ol-folder-name">CTA 계약서</span>
+            <span class="ol-folder-badge">41</span>
+          </div>
+          <div class="ol-folder">
+            <span class="ol-folder-icon">📁</span>
+            <span class="ol-folder-name">스폰서별</span>
+          </div>
+          <div class="ol-folder">
+            <span class="ol-folder-icon">🗑️</span>
+            <span class="ol-folder-name">지운 편지함</span>
           </div>
         </div>
 
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar hospital">임</span>
-            <span class="ol-sender">임계장 (아주대학교병원 계약담당자)</span>
-            <span class="ol-time">2024.03.11 16:48</span>
+        <!-- Email list -->
+        <div class="ol-list">
+          <div class="ol-list-header">
+            받은 편지함 · 128통
+            <span class="ol-list-sort">날짜순 ▾</span>
           </div>
-          <div class="ol-mail-body">§2.3 EDC 입력 기한 5일은 어렵습니다. 방사선 판독 대기가 있어서요. 수정 버전 첨부합니다.</div>
-          <div class="ol-attach">
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v1_수정.docx</span>
+
+          <div class="ol-row active unread flagged" onclick="">
+            <div class="ol-row-top">
+              <span class="ol-unread-dot"></span>
+              <span class="ol-row-sender">삼성바이오로직스 CTM</span>
+              <span class="ol-row-time">오늘 17:43</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE:RE: [CTA] IRB#51039 폐암3상 계약서 검토 요청</div>
+            <div class="ol-row-preview">CTA_Draft_v8_최종수정본.docx 첨부드립니다. §4.1...</div>
+          </div>
+
+          <div class="ol-row unread">
+            <div class="ol-row-top">
+              <span class="ol-unread-dot"></span>
+              <span class="ol-row-sender">한국MSD 임상팀</span>
+              <span class="ol-row-time">오늘 14:22</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE: [CTA] 아주대 당뇨병 2상 — Draft v5 수정</div>
+            <div class="ol-row-preview">이전 버전(v4)에서 §3.2 보상 조항만 수정했습니다...</div>
+          </div>
+
+          <div class="ol-row unread">
+            <div class="ol-row-top">
+              <span class="ol-unread-dot"></span>
+              <span class="ol-row-sender">Sangsang Med (Sangsang)</span>
+              <span class="ol-row-time">오늘 11:05</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE:RE:RE: [CTA] IRB#410598 — §2.3 최종협의</div>
+            <div class="ol-row-preview">v2_최종_진짜최종.docx 기준으로 한번 더 확인 부탁드...</div>
+          </div>
+
+          <div class="ol-row">
+            <div class="ol-row-top">
+              <span class="ol-row-sender" style="padding-left:13px">화이자 코리아</span>
+              <span class="ol-row-time">어제 16:30</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE:RE: [긴급] CTA Order #PF-2024-88 최종확인</div>
+            <div class="ol-row-preview">계약 완료 목표일이 이번 주 금요일인데, 아직 §5.1...</div>
+          </div>
+
+          <div class="ol-row">
+            <div class="ol-row-top">
+              <span class="ol-row-sender" style="padding-left:13px">유한양행 임상개발팀</span>
+              <span class="ol-row-time">어제 10:14</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE: [CTA] 소화기내과 1상 — §3.2 보상조항 재논의</div>
+            <div class="ol-row-preview">담당자 변경으로 인해 처음부터 검토가 필요합니다...</div>
+          </div>
+
+          <div class="ol-row">
+            <div class="ol-row-top">
+              <span class="ol-row-sender" style="padding-left:13px">노바티스 코리아</span>
+              <span class="ol-row-time">3일 전</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE:RE: [CTA] 심장내과 2상 — 수정본 v6</div>
+            <div class="ol-row-preview">v5에서 §2.1만 변경했는데 전체 문서를 다시 보내드...</div>
+          </div>
+
+          <div class="ol-row">
+            <div class="ol-row-top">
+              <span class="ol-row-sender" style="padding-left:13px">아스트라제네카</span>
+              <span class="ol-row-time">4일 전</span>
+            </div>
+            <div class="ol-row-subject">RE:RE: [CTA] 호흡기내과 3상 초안 — 첫 검토 의견</div>
+            <div class="ol-row-preview">CTA_AZ_Draft_v1_아주대.docx 검토 의견 인라인으로...</div>
+          </div>
+
+          <div class="ol-row">
+            <div class="ol-row-top">
+              <span class="ol-row-sender" style="padding-left:13px">암젠 코리아</span>
+              <span class="ol-row-time">1주 전</span>
+            </div>
+            <div class="ol-row-subject">RE:RE:RE:RE: [CTA] 혈액내과 1상 — 최종 서명 전 확인</div>
+            <div class="ol-row-preview">최종본 CTA_Amgen_v4_FINAL_signed.docx 첨부합니다...</div>
           </div>
         </div>
 
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar sponsor">김</span>
-            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
-            <span class="ol-time">2024.03.14 10:22</span>
+        <!-- Open email content -->
+        <div class="ol-content">
+          <div class="ol-content-header">
+            <div class="ol-content-subject">RE:RE:RE:RE:RE: [CTA] IRB#51039 폐암3상 계약서 검토 요청 — 삼성바이오로직스 × 아주대학교병원</div>
+            <div class="ol-content-meta">
+              <div class="ol-content-avatar">삼</div>
+              <div>
+                <div class="ol-content-from">박연구 (삼성바이오로직스 CTM) &lt;park.y@samsung-bio.com&gt;</div>
+                <div class="ol-content-to">받는 사람: 정담당 &lt;jung.d@ajoumc.or.kr&gt; | CC: 법무팀, QA팀, CRO담당</div>
+              </div>
+              <div class="ol-content-time">오늘 오후 5:43</div>
+            </div>
           </div>
-          <div class="ol-mail-body">내부 검토 후 §2.3은 7일로 조율 가능하나, §4.1 등록 기한은 그대로 유지 요청드립니다. v2 첨부드립니다.</div>
-          <div class="ol-attach">
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2.docx</span>
+          <div class="ol-content-body">
+            <p>정 선생님, 안녕하세요.</p>
+            <p style="margin-top:8px">지난번 말씀하신 §4.1 등록 기한 관련해서 내부 협의 완료했습니다.<br>
+            수정본 v8 첨부드리니 확인 부탁드립니다. <span class="ol-chaos-tag">8번째 수정</span></p>
+            <p style="margin-top:8px;color:#c42b1c;font-weight:600">⚠️ 참고: v7과 v8의 차이는 §4.1 단 한 줄입니다. 나머지는 동일합니다.</p>
+
+            <div class="ol-attach-row">
+              <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_SB_Draft_v8_최종수정본.docx</span>
+              <span class="ol-file highlight"><span class="ol-file-icon">📄</span>CTA_SB_Draft_v8_최종수정본_검토요청.docx <span class="ol-chaos-tag">어느게 최신?</span></span>
+              <span class="ol-file"><span class="ol-file-icon">📄</span>변경이력_v7_vs_v8.xlsx</span>
+            </div>
+
+            <div class="ol-thread-count">📧 이 스레드에 메일 23통 · 첨부파일 31개</div>
+
+            <div class="ol-quote" style="margin-top:14px">
+              <p style="color:#0078d4;font-size:10.5px;margin-bottom:4px">─── 이전 메일 (2024.06.12, 박연구) ───</p>
+              <p>§4.1 수정본 v7 첨부드립니다. v6에서 "30일" → "45일"로만 수정…</p>
+              <div style="color:#a0a0a0;margin-top:4px">[이전 메일 더 보기 ▾ · 21통]</div>
+            </div>
           </div>
         </div>
 
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar hospital">임</span>
-            <span class="ol-sender">임계장 (아주대학교병원 계약담당자)</span>
-            <span class="ol-time">2024.03.26 14:05</span>
-          </div>
-          <div class="ol-mail-body">담당자가 변경되어 인수인계 중입니다. 죄송하지만 다음 주 다시 연락드리겠습니다. <span class="ol-chaos-tag">담당자 교체</span></div>
-        </div>
-
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar hospital">정</span>
-            <span class="ol-sender">정담당 (아주대학교병원 계약담당자 — 신규)</span>
-            <span class="ol-time">2024.04.08 09:50</span>
-          </div>
-          <div class="ol-mail-body">안녕하세요, 담당자 변경되었습니다. 계약서를 처음부터 검토하겠습니다. 최신 버전 다시 보내주실 수 있을까요? <span class="ol-chaos-tag">처음부터 재검토</span></div>
-        </div>
-
-        <div class="ol-mail">
-          <div class="ol-mail-header">
-            <span class="ol-avatar sponsor">김</span>
-            <span class="ol-sender">김민준 (Sangsang Med CTM)</span>
-            <span class="ol-time">2024.04.08 11:33</span>
-          </div>
-          <div class="ol-mail-body">안녕하세요, v2가 최신본입니다. 다만 §2.3 수정 경위는 이전 이메일 스레드 참고 부탁드립니다…</div>
-          <div class="ol-attach">
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2.docx</span>
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2_최종.docx</span>
-            <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_Draft_v2_최종_진짜최종.docx <span class="ol-chaos-tag">?</span></span>
-          </div>
-        </div>
-
-        <div class="ol-mail unread">
-          <div class="ol-mail-header">
-            <span class="ol-avatar hospital">정</span>
-            <span class="ol-sender">정담당 (아주대학교병원 계약담당자)</span>
-            <span class="ol-time">2024.05.03 17:21</span>
-          </div>
-          <div class="ol-mail-body">검토 완료했습니다. §3.2 보상 조항도 추가 논의 필요할 것 같습니다. 수정본 첨부드립니다.</div>
-          <div class="ol-attach">
-            <span class="ol-file latest"><span class="ol-file-icon">📄</span>CTA_Draft_v3_정담당수정.docx</span>
-            <span style="font-size:10px;color:#3a3a58;align-self:center;">← 이게 최신인가요?</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
+      </div><!-- /ol-body -->
+    </div><!-- /ol-window -->
 
     <div class="intro-step1-cta">
-      <p class="intro-step1-cta-desc"><strong>협상 시작 후 61일째</strong> — 어느 파일이 최신인지, 어떤 조항이 합의됐는지, 누가 마지막으로 수정했는지 아무도 모릅니다. PACTIQ는 이 과정 전체를 단일 플랫폼으로 대체합니다.</p>
-      <button class="intro-next-btn" onclick="showIntroStep2()">PACTIQ로 어떻게 달라지나요? <span class="intro-next-arrow">→</span></button>
+      <p class="intro-step1-cta-desc">이게 오늘 <strong>한 명의 병원 계약담당자</strong>가 받은 편지함입니다. 스폰서마다 다른 Draft 버전, 쌓이는 RE:RE:RE, 어디서 무엇이 바뀌었는지 모르는 채 다음 회의가 잡힙니다.</p>
+      <button class="intro-next-btn" onclick="showIntroStep2()">PACTIQ에서는 어떻게 달라지나요? →</button>
     </div>
   </div>
 
