@@ -647,6 +647,26 @@
   .cr-ai-refs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
   .cr-ai-refs li{padding:5px 9px;background:#f5f6fa;border-radius:5px;font-size:11.5px;color:#555;line-height:1.5}
   .cr-ai-refs li::before{content:'📌 '}
+  .cr-history{margin-top:10px;padding:10px 12px;background:#f8f5ff;border:1px solid #d4b8f5;border-radius:8px}
+  .cr-history-title{font-size:11px;font-weight:700;color:#6a3cba;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+  .cr-history-row{font-size:11.5px;color:#444;margin-bottom:4px;line-height:1.5}
+  .cr-history-row b{color:#1a1a2e}
+  .cr-history-agreed{margin-top:6px;padding:7px 10px;background:#fff;border-left:3px solid #6a3cba;border-radius:0 4px 4px 0;font-size:12px;color:#333;line-height:1.6;font-style:italic}
+  .cr-ref-btn{margin-top:8px;padding:6px 12px;background:#6a3cba;color:#fff;border:none;border-radius:5px;font-size:11.5px;font-weight:700;cursor:pointer;width:100%;text-align:left}
+  .cr-ref-btn:hover{background:#5530a0}
+  #prev-contract-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center}
+  .pcm-box{background:#fff;border-radius:14px;width:700px;max-height:82vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+  .pcm-header{padding:16px 22px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:10px;flex-shrink:0}
+  .pcm-title{font-weight:700;font-size:14px;color:#1a1a2e}
+  .pcm-meta{font-size:11px;color:#999}
+  .pcm-close{margin-left:auto;background:none;border:none;font-size:20px;cursor:pointer;color:#999;line-height:1;padding:0}
+  .pcm-body{overflow-y:auto;padding:20px 24px;flex:1}
+  .pcm-clause{padding:9px 12px;margin-bottom:3px;border-radius:6px;font-size:13px;line-height:1.75;color:#555;border:1.5px solid transparent}
+  .pcm-clause-num{font-weight:700;color:#6a3cba;margin-right:4px}
+  .pcm-clause.hl{background:#f8f5ff;border-color:#6a3cba;color:#1a1a2e}
+  .pcm-num{font-weight:700;color:#4f6ef7;margin-right:3px}
+  .pcm-hl-badge{display:inline-block;margin-left:8px;padding:2px 8px;background:#6a3cba;color:#fff;border-radius:10px;font-size:10px;font-weight:700;vertical-align:middle}
+  .pcm-stamp{margin-top:18px;padding:12px 16px;background:#f0f4ff;border-radius:8px;font-size:12px;color:#555;line-height:1.8}
   </style>
 </head>
 <body>
@@ -1506,7 +1526,6 @@
         '→ 삭제 불가. 한도를 200% → 300%로 상향하는 타협안을 제안합니다.'
       ]
     },
-    // comment fallbacks (any clause)
     '_comment': {
       verdict:'escalate', label:'검토 요청',
       ref:'코멘트 등록됨',
@@ -1516,6 +1535,79 @@
         '해당 조항 검토 이력 및 코멘트는 계약 완료 후 감사 로그에 보존됩니다.',
         '→ 이메일 없이 플랫폼 내에서 직접 회신을 확인하실 수 있습니다.'
       ]
+    }
+  };
+
+  /* ── PREVIOUS CONTRACT REFERENCE DATA ── */
+  const prevContracts = {
+    'NND-2022-T2D-001': {
+      title:'NND-2022-T2D-001',
+      meta:'노보노디스크 코리아 × 아주대학교병원 · 2022.08.15 체결 · 기밀 보존 중',
+      stamp:'본 계약서는 Pactiq 기밀 저장소에 보관 중입니다. 열람은 계약 당사자에 한하며 접근 로그가 기록됩니다.',
+      clauses:[
+        {num:'1.4', text:'The anticipated study completion date shall be 30 June 2025, extendable by mutual written agreement.'},
+        {num:'2.2', text:'The Institution shall notify the Sponsor within 48 hours by email upon occurrence of any SAE. Written report within 7 business days. For SUSARs, ICH E6(R2) timelines apply.', hl:true, hlNote:'이전 합의 조항'},
+        {num:'2.3', text:'All clinical data shall be entered into the EDC system within 7 business days of the subject visit date.', hl:true, hlNote:'이전 합의 조항'},
+        {num:'4.1', text:'The Institution shall enroll the first subject within 45 calendar days of final IRB approval.', hl:true, hlNote:'이전 합의 조항'},
+        {num:'5.1', text:'Start-up Fee: KRW 5,500,000 (payable within 30 days of Agreement execution).'},
+        {num:'5.2', text:'The Institution shall be entitled to charge an indirect cost (overhead) of 8% of total direct costs.', hl:true, hlNote:'8%로 합의 (기관 요청 10%)'},
+        {num:'5.3', text:'The Sponsor shall remit payment within 60 days of receipt of a valid invoice.', hl:true, hlNote:'이전 합의 조항'},
+        {num:'6.2', text:'A draft manuscript shall be provided to the Sponsor at least 45 days prior to submission.', hl:true, hlNote:'45일로 합의 (기관 요청 30일)'},
+        {num:'7.1', text:'Each party shall maintain confidentiality for five (5) years following expiration or termination.', hl:true, hlNote:'5년으로 합의 (스폰서 원안 10년)'},
+        {num:'8.3', text:'The aggregate liability shall not exceed three hundred percent (300%) of total fees paid in the preceding 12 months.', hl:true, hlNote:'300%로 합의 (스폰서 원안 200%)'},
+      ]
+    }
+  };
+
+  /* ── HISTORY DATA PER CLAUSE ── */
+  const crHistory = {
+    '2-2': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "24시간 → 48시간, 이메일 통보로 변경"',
+      reason:'ICH E6(R2) SUSAR 규정 충돌로 완전 수용 불가 — SUSAR에 한해 별도 규정 적용 조건으로 부분 합의',
+      agreed:'"within 48 hours by email upon occurrence of any SAE… For SUSARs, ICH E6(R2) timelines apply."'
+    },
+    '2-3': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "5영업일 → 7영업일로 연장"',
+      reason:'ICH E6(R2) 별도 기한 없음 — 기관 운영 현실 반영하여 수용',
+      agreed:'"within 7 business days of the subject visit date"'
+    },
+    '4-1': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "IRB 일정 및 SIV 준비 기간 고려, 45일로 연장"',
+      reason:'선례 없었으나 IRB 심의 소요 기간 데이터 근거로 수용',
+      agreed:'"within 45 calendar days of final IRB approval"'
+    },
+    '5-2': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "간접비 10% 청구 권리"',
+      reason:'당사 예산 상한(10%)과 일치하여 협의 가능했으나, 기관 연구처 방침 변경으로 이번 계약에서 15% 요청 — 상한 초과',
+      agreed:'"indirect cost (overhead) of 8% of total direct costs" (당시 기관 요청 10% → 8%로 협의)'
+    },
+    '5-3': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "45일 → 60일로 연장"',
+      reason:'기관 내부 회계 처리 주기(월 1회 결재) 감안하여 수용',
+      agreed:'"within 60 days of receipt of a valid invoice"'
+    },
+    '6-2': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "60일 → 30일로 단축"',
+      reason:'당사 글로벌 SOP 기준 최소 45일 — 45일로 타협',
+      agreed:'"at least 45 days prior to submission for confidential information review"'
+    },
+    '7-1': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "10년 → 5년으로 단축"',
+      reason:'당사 SOP 최소 5년 충족 — 이 기관 법무팀 요청 수용',
+      agreed:'"five (5) years following expiration or termination"'
+    },
+    '8-3': {
+      contractId:'NND-2022-T2D-001',
+      request:'기관 요청: "200% 상한 조항 삭제"',
+      reason:'조항 삭제는 당사 필수 정책 위반 — 한도를 300%로 상향하는 조건으로 합의',
+      agreed:'"shall not exceed three hundred percent (300%) of total fees paid in the preceding 12 months"'
     }
   };
 
@@ -1603,6 +1695,7 @@
     feed.insertBefore(card, feed.firstChild);
 
     const list = card.querySelector('.cr-ai-refs');
+    const totalDelay = data.refs.length;
     data.refs.forEach((ref, i) => {
       setTimeout(() => {
         const li = document.createElement('li');
@@ -1611,12 +1704,62 @@
       }, 200 + i * 220);
     });
 
+    // Render history block after refs finish animating
+    const hist = crHistory[id];
+    if (hist && !isComment) {
+      const delay = 200 + totalDelay * 220 + 200;
+      setTimeout(() => {
+        const body = card.querySelector('.cr-ai-card-body');
+        const histDiv = document.createElement('div');
+        histDiv.className = 'cr-history';
+        histDiv.innerHTML = `
+          <div class="cr-history-title">📂 이전 계약 이력 · <span style="color:#999;font-weight:400">${hist.contractId}</span></div>
+          <div class="cr-history-row"><b>기관 요청:</b> ${hist.request.replace('기관 요청: ','')}</div>
+          <div class="cr-history-row"><b>협의 결과:</b> ${hist.reason}</div>
+          <div class="cr-history-agreed">"${hist.agreed.replace(/^"|"$/g,'')}"</div>
+          <button class="cr-ref-btn" onclick="openPrevContract('${hist.contractId}', '${id}')">📄 이전 계약서 열기 · ${hist.contractId}</button>`;
+        body.appendChild(histDiv);
+      }, delay);
+    }
+
     document.querySelector('.cr-right').scrollTop = 0;
 
     // update status
     if (data.verdict !== 'accept') crPendingCount++;
     document.getElementById('cr-status-txt').textContent =
       `변경사항 ${crChangeCount}건 · 미결 ${crPendingCount}건`;
+  }
+
+  function openPrevContract(contractId, clauseKey) {
+    const contract = prevContracts[contractId];
+    if (!contract) return;
+    document.getElementById('pcm-title').textContent = contract.title;
+    document.getElementById('pcm-meta').textContent = contract.meta;
+    const body = document.getElementById('pcm-body');
+    body.innerHTML = '';
+    contract.clauses.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'pcm-clause' + (c.hl ? ' hl' : '');
+      const normKey = clauseKey.replace('-','.');
+      if (c.num === normKey) div.classList.add('hl');
+      div.innerHTML = `<span class="pcm-clause-num">${c.num}</span> ${c.text}${c.hl ? `<span class="pcm-hl-badge">${c.hlNote}</span>` : ''}`;
+      body.appendChild(div);
+    });
+    const stamp = document.createElement('div');
+    stamp.className = 'pcm-stamp';
+    stamp.textContent = contract.stamp;
+    body.appendChild(stamp);
+    const modal = document.getElementById('prev-contract-modal');
+    modal.style.display = 'flex';
+    // scroll to highlighted clause
+    setTimeout(() => {
+      const hlEl = body.querySelector('.pcm-clause.hl');
+      if (hlEl) hlEl.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 100);
+  }
+
+  function closePrevContract() {
+    document.getElementById('prev-contract-modal').style.display = 'none';
   }
 
   function selectClause(el) {
@@ -2100,7 +2243,7 @@
 
       <!-- Art 1 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 1. Parties and General Provisions</div>
+
         <div class="cr-clause"><span class="cr-clause-num">1.1</span> This Agreement is entered into between Novo Nordisk Korea Co., Ltd. ("Sponsor") and Ajou University Hospital ("Institution").</div>
         <div class="cr-clause"><span class="cr-clause-num">1.2</span> This Agreement shall be governed by the Korean Pharmaceutical Affairs Act, KGCP, and ICH E6(R2) guidelines.</div>
         <div class="cr-clause"><span class="cr-clause-num">1.3</span> The term shall commence on execution date and continue until two (2) years after final Data Lock.</div>
@@ -2124,7 +2267,7 @@
 
       <!-- Art 2 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 2. Conduct of the Clinical Trial</div>
+
         <div class="cr-clause"><span class="cr-clause-num">2.1</span> The Institution shall conduct the clinical trial in strict accordance with Protocol No. NND-INSPIRE-T2D-KR-001 and all applicable regulations.</div>
         <div class="cr-clause clickable" id="clause-2-2">
           <span class="cr-clause-num">2.2</span> The Institution shall notify the Sponsor <span id="ctext-2-2">immediately (within 24 hours) by phone or email</span> upon occurrence of any SAE or SUSAR, and shall submit a written report within 72 hours.
@@ -2162,7 +2305,7 @@
 
       <!-- Art 3 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 3. Investigational Product</div>
+
         <div class="cr-clause"><span class="cr-clause-num">3.1</span> The Sponsor shall supply the Investigational Product within 14 business days of the Institution's written supply request.</div>
         <div class="cr-clause"><span class="cr-clause-num">3.2</span> The Institution shall store the Investigational Product in a designated locked facility and submit monthly temperature logs to the Sponsor.</div>
         <div class="cr-clause"><span class="cr-clause-num">3.3</span> Upon study completion or early termination, the Institution shall return all unused Investigational Product within 30 days. All return shipment costs shall be borne by the Sponsor.</div>
@@ -2170,7 +2313,7 @@
 
       <!-- Art 4 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 4. Subject Enrollment</div>
+
         <div class="cr-clause clickable" id="clause-4-1">
           <span class="cr-clause-num">4.1</span> The Institution shall enroll the first subject within <span id="ctext-4-1">30 calendar days</span> of final IRB approval and execution of this Agreement.
           <div class="cr-clause-actions">
@@ -2203,7 +2346,7 @@
 
       <!-- Art 5 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 5. Compensation and Payment</div>
+
         <div class="cr-clause"><span class="cr-clause-num">5.1</span> Start-up Fee: KRW 6,000,000 (payable within 30 days of Agreement execution). Per-visit fees per Exhibit A Schedule of Events.</div>
         <div class="cr-clause clickable" id="clause-5-2" style="border-style:dashed;color:#999;font-style:italic">
           <span class="cr-clause-num">5.2</span> [항목 없음] &nbsp;— 간접비(Overhead) 조항 추가 제안
@@ -2236,7 +2379,7 @@
 
       <!-- Art 6 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 6. Intellectual Property</div>
+
         <div class="cr-clause"><span class="cr-clause-num">6.1</span> All data, results, and inventions arising from this trial shall be owned by the Sponsor.</div>
         <div class="cr-clause clickable" id="clause-6-2">
           <span class="cr-clause-num">6.2</span> Investigators retain the right to publish results. A draft manuscript shall be provided to the Sponsor at least <span id="ctext-6-2">60 days</span> prior to submission for confidential information review.
@@ -2274,7 +2417,7 @@
 
       <!-- Art 7 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 7. Confidentiality</div>
+
         <div class="cr-clause clickable" id="clause-7-1">
           <span class="cr-clause-num">7.1</span> Each party shall maintain confidentiality of the other party's Confidential Information for <span id="ctext-7-1">ten (10) years</span> following expiration or termination of this Agreement.
           <div class="cr-clause-actions">
@@ -2296,7 +2439,7 @@
 
       <!-- Art 8 -->
       <div class="cr-article">
-        <div class="cr-art-heading">Article 8. Indemnification</div>
+
         <div class="cr-clause"><span class="cr-clause-num">8.1</span> The Sponsor shall indemnify the Institution for subject injuries arising from Sponsor's fault or Protocol compliance.</div>
         <div class="cr-clause"><span class="cr-clause-num">8.2</span> The Institution shall be responsible for claims arising from its negligence, willful misconduct, or Protocol non-compliance.</div>
         <div class="cr-clause clickable" id="clause-8-3">
@@ -2339,6 +2482,20 @@
   </div><!-- /cr-body -->
 </div>
 <!-- ═══ /CONTRACT REVIEW STAGE ═══ -->
+
+<!-- Previous Contract Modal -->
+<div id="prev-contract-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center">
+  <div class="pcm-box">
+    <div class="pcm-header">
+      <div>
+        <div class="pcm-title" id="pcm-title">이전 계약서</div>
+        <div class="pcm-meta" id="pcm-meta"></div>
+      </div>
+      <button class="pcm-close" onclick="closePrevContract()">✕</button>
+    </div>
+    <div class="pcm-body" id="pcm-body"></div>
+  </div>
+</div>
 
 <!-- Password Modal -->
 <div id="pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center">
