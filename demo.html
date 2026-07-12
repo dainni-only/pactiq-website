@@ -577,6 +577,77 @@
       .ai-panel { display: none; }
     }
   </style>
+  <style>
+  /* ── CONTRACT REVIEW STAGE ── */
+  #contract-review-stage {
+    position:fixed;inset:0;z-index:1000;background:#f5f6fa;
+    flex-direction:column;font-family:'Malgun Gothic','맑은 고딕',sans-serif;
+  }
+  .cr-topbar {
+    background:#fff;border-bottom:1px solid #e0e4ef;padding:0 24px;height:54px;
+    display:flex;align-items:center;gap:14px;flex-shrink:0;
+  }
+  .cr-topbar-logo{font-weight:800;font-size:17px;color:#4f6ef7;letter-spacing:-.5px}
+  .cr-topbar-sep{width:1px;height:18px;background:#e0e4ef}
+  .cr-topbar-title{font-size:13px;font-weight:700;color:#1a1a2e}
+  .cr-topbar-meta{font-size:11px;color:#999}
+  .cr-topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+  .cr-status{font-size:12px;color:#888}
+  .cr-finish-btn{padding:7px 18px;background:#4f6ef7;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer}
+  .cr-finish-btn:hover{background:#3a58d4}
+  .cr-body{display:flex;flex:1;overflow:hidden;height:calc(100vh - 54px)}
+  .cr-left{flex:1;overflow-y:auto;padding:32px 44px;background:#fff;border-right:1px solid #e8ebf5}
+  .cr-contract-header{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:2px solid #1a1a2e}
+  .cr-contract-title{font-size:20px;font-weight:800;color:#1a1a2e;letter-spacing:1px;margin-bottom:6px}
+  .cr-contract-sub{font-size:12px;color:#666;line-height:1.9}
+  .cr-article{margin-bottom:22px}
+  .cr-art-heading{font-size:12px;font-weight:700;color:#1a1a2e;background:#f0f4ff;padding:7px 12px;border-left:3px solid #4f6ef7;margin-bottom:6px;border-radius:0 4px 4px 0;text-transform:uppercase;letter-spacing:.3px}
+  .cr-clause{position:relative;padding:9px 12px;margin-bottom:2px;border-radius:6px;border:1.5px solid transparent;font-size:13px;line-height:1.75;color:#333;transition:background .15s,border-color .15s}
+  .cr-clause.clickable{cursor:pointer}
+  .cr-clause.clickable:hover{background:#f8f9ff;border-color:#c7d4fb}
+  .cr-clause.active{background:#f0f4ff;border-color:#4f6ef7}
+  .cr-clause.done{background:#f0fff4;border-color:#b7dfbf}
+  .cr-clause-num{font-weight:700;color:#4f6ef7;margin-right:2px}
+  .cr-clause-actions{display:none;position:absolute;top:7px;right:8px;gap:5px;align-items:center}
+  .cr-clause.clickable:hover .cr-clause-actions,.cr-clause.active .cr-clause-actions{display:flex}
+  .cr-action-btn{padding:3px 9px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid;line-height:1.4;background:#fff}
+  .cr-action-btn.edit{color:#4f6ef7;border-color:#4f6ef7}
+  .cr-action-btn.cmt{color:#888;border-color:#ccc}
+  .cr-panel{display:none;margin-top:10px;padding:12px 14px;border-radius:8px}
+  .cr-panel.edit-panel{background:#f8f9ff;border:1px solid #c7d4fb}
+  .cr-panel.cmt-panel{background:#fffbe6;border:1px solid #f0c000}
+  .cr-panel-label{font-size:11px;color:#999;margin-bottom:6px}
+  .cr-textarea{width:100%;box-sizing:border-box;padding:8px 12px;border:1.5px solid #c7d4fb;border-radius:6px;font-size:12.5px;line-height:1.6;resize:vertical;min-height:64px;font-family:inherit;color:#1a1a2e}
+  .cr-textarea:focus{outline:none;border-color:#4f6ef7}
+  .cmt-panel .cr-textarea{border-color:#f0c000;background:#fff}
+  .cr-panel-submit{margin-top:8px;padding:6px 16px;border:none;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .edit-panel .cr-panel-submit{background:#4f6ef7;color:#fff}
+  .cmt-panel .cr-panel-submit{background:#d4a000;color:#fff}
+  .tc-del{text-decoration:line-through;color:#c0392b;background:#fde8e8;padding:1px 2px;border-radius:2px}
+  .tc-ins{color:#1565c0;background:#e3f2fd;text-decoration:underline;padding:1px 2px;border-radius:2px}
+  .cr-cmt-badge{display:inline-block;margin-left:8px;padding:2px 8px;background:#fff3cd;border:1px solid #ffc107;border-radius:10px;font-size:11px;color:#856404;vertical-align:middle}
+  .cr-right{width:340px;flex-shrink:0;overflow-y:auto;background:#f5f6fa;display:flex;flex-direction:column}
+  .cr-ai-header{padding:13px 18px;background:#fff;border-bottom:1px solid #e8ebf5;font-size:13px;font-weight:700;color:#4f6ef7;display:flex;align-items:center;gap:6px;flex-shrink:0}
+  .cr-ai-dot{width:7px;height:7px;background:#4f6ef7;border-radius:50%;animation:crpulse 1.5s infinite}
+  @keyframes crpulse{0%,100%{opacity:1}50%{opacity:.3}}
+  .cr-ai-welcome{padding:48px 24px;text-align:center;color:#bbb}
+  .cr-ai-welcome-icon{font-size:34px;margin-bottom:14px}
+  .cr-ai-welcome-text{font-size:13px;line-height:1.8}
+  .cr-ai-feed{padding:14px;display:flex;flex-direction:column;gap:10px}
+  .cr-ai-card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);animation:crslide .3s ease}
+  @keyframes crslide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .cr-ai-card-top{display:flex;align-items:center;gap:8px;padding:9px 13px;border-bottom:1px solid #f0f0f0}
+  .cr-verdict{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+  .cr-verdict.accept{background:#e8f5e9;color:#2e7d32}
+  .cr-verdict.reject{background:#fce4ec;color:#c62828}
+  .cr-verdict.escalate{background:#fff3e0;color:#e65100}
+  .cr-ai-ref-label{font-size:11px;color:#aaa;margin-left:auto}
+  .cr-ai-card-body{padding:11px 13px;font-size:12.5px;line-height:1.7;color:#333}
+  .cr-ai-summary{font-weight:700;color:#1a1a2e;margin-bottom:8px;font-size:13px}
+  .cr-ai-refs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+  .cr-ai-refs li{padding:5px 9px;background:#f5f6fa;border-radius:5px;font-size:11.5px;color:#555;line-height:1.5}
+  .cr-ai-refs li::before{content:'📌 '}
+  </style>
 </head>
 <body>
 
@@ -1315,10 +1386,237 @@
 
   function startDemo() {
     document.getElementById('intro-overlay').style.display = 'none';
-    // auto-open first warn card
-    setTimeout(() => {
-      selectClauseById('2_3');
-    }, 400);
+    document.getElementById('contract-review-stage').style.display = 'flex';
+  }
+
+  function finishReview() {
+    document.getElementById('contract-review-stage').style.display = 'none';
+    setTimeout(() => selectClauseById('2_3'), 400);
+  }
+
+  /* ── CONTRACT REVIEW INTERACTIONS ── */
+  const crAiData = {
+    '2-2': {
+      verdict:'reject', label:'수용불가',
+      ref:'Art. 2.2 — SAE 보고 기한',
+      summary:'SAE 24시간 이내 통보 조항은 변경 불가합니다.',
+      refs:[
+        'ICH E6(R2) §4.11.1: "The investigator shall report serious adverse events immediately... (within 24 hours)"',
+        '식약처 임상시험 관리기준 제33조: "중대한 이상사례 발생 즉시 의뢰자에게 통보" — 법적 의무',
+        '당사 SOP CTM-SAE-003: 24시간 이내 통보 필수 규정 (글로벌 통일 기준)',
+        '→ 48시간 변경은 규제 위반입니다. 야간 on-call 연락처 제공으로 운영 개선 지원 가능합니다.'
+      ]
+    },
+    '2-3': {
+      verdict:'accept', label:'수용',
+      ref:'Art. 2.3 — EDC 입력 기한',
+      summary:'5 → 7 영업일 변경 수용합니다.',
+      refs:[
+        'ICH E6(R2): 특정 EDC 입력 기한 규정 없음 (합의에 따름)',
+        '기관 이력: 아주대병원 — 이전 계약(NND-2022-T2D-001)에서 7영업일 합의 이력 있음',
+        '유사 기관 비교: 동급 규모 기관 평균 5~7영업일 허용',
+        '→ 이전 합의 이력 및 규정 범위 내 — 수용 가능합니다.'
+      ]
+    },
+    '4-1': {
+      verdict:'accept', label:'수용',
+      ref:'Art. 4.1 — 첫 피험자 등록 기한',
+      summary:'30 → 45 calendar days 변경 수용합니다.',
+      refs:[
+        '기관 이력: 아주대병원 NND-2022-T2D-001 (2022.08) — 동일 기관과 45일 합의 이력 있음',
+        'ICH E6(R2): 특정 등록 기한 규정 없음 (프로토콜 및 계약에 따름)',
+        '식약처 고시: 별도 기한 제한 없음',
+        '→ 이 기관과의 선례 기준, 글로벌 표준 범위 내 — 수용 가능합니다.'
+      ]
+    },
+    '4-3': {
+      verdict:'escalate', label:'에스컬레이션',
+      ref:'Art. 4.3 — 조기종료 위약금 신설',
+      summary:'조기종료 위약금 조항은 법무팀 검토가 필요합니다.',
+      refs:[
+        '당사 표준 계약 SOP CTM-007: 위약금 조항 기본 포함 기준 없음',
+        '기관 이력: 이 기관과의 기존 계약 3건 모두 위약금 조항 없음',
+        '유사 사례: 타 기관 2건 — 위약금 조항 포함 후 협상 평균 +47일 지연',
+        '→ 개념 자체는 협의 가능하나 금액·범위는 법무팀 검토 필요합니다. 에스컬레이션 완료.'
+      ]
+    },
+    '5-2': {
+      verdict:'escalate', label:'에스컬레이션',
+      ref:'Art. 5.2 — 간접비 15% 신설',
+      summary:'15% 간접비는 당사 예산 상한(10%)을 초과합니다.',
+      refs:[
+        '당사 재무 정책 FIN-CTA-002: 간접비 최대 10% 허용',
+        '기관 이력: 아주대병원 NND-2022-T2D-001 — 간접비 8% 합의 이력',
+        '유사 기관 비교: 동급 기관 평균 간접비 7~10%',
+        '→ 15%는 수용 불가 — 재무팀 승인 필요. 10% 또는 항목별 분리 산정 역제안합니다.'
+      ]
+    },
+    '5-3': {
+      verdict:'accept', label:'수용 (조건부)',
+      ref:'Art. 5.3 — 지급 기간',
+      summary:'45 → 60일 변경은 조건부 수용합니다.',
+      refs:[
+        '기관 이력: 아주대병원 이전 계약에서 60일 합의 이력 있음 (2022)',
+        '당사 SOP FIN-PAY-001: 60일 이내 지급은 수용 범위',
+        '지연이자 조항(6% p.a.) 유지를 전제로 수용 가능합니다.',
+        '→ 지연이자 조항 존치 조건으로 60일 수용합니다.'
+      ]
+    },
+    '6-2': {
+      verdict:'escalate', label:'에스컬레이션',
+      ref:'Art. 6.2 — 논문 검토 기간',
+      summary:'60 → 30일 단축은 글로벌팀 승인이 필요합니다.',
+      refs:[
+        '당사 SOP PUB-001: 표준 60일 — 단축 시 Global Medical Affairs 사전 승인 필요',
+        '기관 이력: 이 기관과 이전 계약에서 45일 합의 이력 있음 (2022)',
+        'ICH E6(R2): 특정 검토 기간 규정 없음',
+        '→ 30일은 글로벌 기준 미달. 45일 역제안 및 Global CTA팀 에스컬레이션 진행합니다.'
+      ]
+    },
+    '6-3': {
+      verdict:'reject', label:'수용불가',
+      ref:'Art. 6.3 — 특허 우선협상권',
+      summary:'특허 우선협상권 조항 삭제는 불가합니다.',
+      refs:[
+        '당사 IP 정책 IP-STD-001: 스폰서 계약 필수 포함 항목 (전사 기준)',
+        '글로벌 계약 표준: 노보노디스크 전사 CTA 표준 필수항목 (변경 불가)',
+        '유사 사례: 타 기관 삭제 요청 → 법무팀 협의 후 우선협상 기간 단축(180→90일)으로 타협',
+        '→ 삭제 불가. 협상 기간 단축(90일) 또는 범위 완화를 역제안합니다.'
+      ]
+    },
+    '7-1': {
+      verdict:'accept', label:'수용',
+      ref:'Art. 7.1 — 비밀유지 기간',
+      summary:'10 → 5년 단축 수용합니다.',
+      refs:[
+        '기관 이력: 아주대병원 NND-2022-T2D-001 — 5년 합의 이력 있음',
+        '당사 SOP CONF-001: 5년 이상이면 수용 가능',
+        '식약처 고시: 임상시험 기록 보존 15년 (비밀유지 기간과 별도 적용)',
+        '→ 이 기관과의 선례 기준 5년 수용 가능합니다.'
+      ]
+    },
+    '8-3': {
+      verdict:'reject', label:'수용불가',
+      ref:'Art. 8.3 — 면책 한도 조항',
+      summary:'면책 한도 조항 삭제는 불가합니다.',
+      refs:[
+        '당사 법무 정책 LEG-CTM-005: 모든 CTA에 면책 한도 필수 포함 (삭제 불가)',
+        '당사 SOP CTM-007: 무제한 배상 조항은 수용 불가',
+        'GCP 원칙: 양 당사자 리스크 균형 보장 필요',
+        '→ 삭제 불가. 한도를 200% → 300%로 상향하는 타협안을 제안합니다.'
+      ]
+    },
+    // comment fallbacks (any clause)
+    '_comment': {
+      verdict:'escalate', label:'검토 요청',
+      ref:'코멘트 등록됨',
+      summary:'코멘트가 Pactiq에 기록되었습니다. 스폰서 담당자가 확인 후 회신합니다.',
+      refs:[
+        '코멘트는 조항별로 스폰서측 Pactiq 계정에 실시간 전달됩니다.',
+        '해당 조항 검토 이력 및 코멘트는 계약 완료 후 감사 로그에 보존됩니다.',
+        '→ 이메일 없이 플랫폼 내에서 직접 회신을 확인하실 수 있습니다.'
+      ]
+    }
+  };
+
+  let crCardCount = 0;
+  let crChangeCount = 0;
+  let crPendingCount = 0;
+
+  function crShowPanel(id, type) {
+    const ePanel = document.getElementById('epanel-' + id);
+    const cPanel = document.getElementById('cpanel-' + id);
+    const clause = document.getElementById('clause-' + id);
+    clause.classList.add('active');
+    if (type === 'edit') {
+      if (cPanel) cPanel.style.display = 'none';
+      ePanel.style.display = ePanel.style.display === 'block' ? 'none' : 'block';
+    } else {
+      if (ePanel) ePanel.style.display = 'none';
+      if (cPanel) cPanel.style.display = cPanel.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  function crSubmitEdit(id) {
+    const ePanel = document.getElementById('epanel-' + id);
+    const input = document.getElementById('einput-' + id);
+    const clause = document.getElementById('clause-' + id);
+    const textEl = document.getElementById('ctext-' + id);
+    if (ePanel) ePanel.style.display = 'none';
+
+    // Show tracked change inline
+    const newVal = input ? input.value.trim() : '';
+    const isDel = newVal.startsWith('[삭제');
+    if (textEl) {
+      const orig = textEl.textContent;
+      if (isDel) {
+        textEl.innerHTML = `<span class="tc-del">${orig}</span>`;
+      } else {
+        const short = newVal.length > 60 ? newVal.substring(0, 60) + '…' : newVal;
+        textEl.innerHTML = `<span class="tc-del">${orig}</span> <span class="tc-ins">${short}</span>`;
+      }
+    } else if (isDel) {
+      clause.style.opacity = '0.55';
+      clause.style.textDecoration = 'line-through';
+    } else {
+      // new clause addition — show as inserted
+      clause.style.cssText = 'border-style:solid;border-color:#4f6ef7;background:#e3f2fd;color:#1565c0;font-style:normal';
+      clause.querySelector('.cr-clause-num').style.color = '#1565c0';
+    }
+    clause.classList.remove('active');
+    clause.classList.add('done');
+    crChangeCount++;
+    crShowAI(id, false);
+  }
+
+  function crSubmitCmt(id) {
+    const cPanel = document.getElementById('cpanel-' + id);
+    const clause = document.getElementById('clause-' + id);
+    if (cPanel) cPanel.style.display = 'none';
+    clause.classList.remove('active');
+    // add comment badge
+    const badge = document.createElement('span');
+    badge.className = 'cr-cmt-badge';
+    badge.textContent = '💬 코멘트 등록됨';
+    clause.appendChild(badge);
+    crChangeCount++;
+    crShowAI(id, true);
+  }
+
+  function crShowAI(id, isComment) {
+    const data = isComment ? crAiData['_comment'] : (crAiData[id] || crAiData['_comment']);
+    document.getElementById('cr-ai-welcome').style.display = 'none';
+    const feed = document.getElementById('cr-ai-feed');
+    feed.style.display = 'flex';
+
+    const card = document.createElement('div');
+    card.className = 'cr-ai-card';
+    card.innerHTML = `
+      <div class="cr-ai-card-top">
+        <span class="cr-verdict ${data.verdict}">${data.label}</span>
+        <span class="cr-ai-ref-label">${isComment ? (crAiData[id] ? crAiData[id].ref : data.ref) : data.ref}</span>
+      </div>
+      <div class="cr-ai-card-body">
+        <div class="cr-ai-summary">${data.summary}</div>
+        <ul class="cr-ai-refs" id="crefs-${++crCardCount}"></ul>
+      </div>`;
+    feed.insertBefore(card, feed.firstChild);
+
+    const list = card.querySelector('.cr-ai-refs');
+    data.refs.forEach((ref, i) => {
+      setTimeout(() => {
+        const li = document.createElement('li');
+        li.textContent = ref;
+        list.appendChild(li);
+      }, 200 + i * 220);
+    });
+
+    document.querySelector('.cr-right').scrollTop = 0;
+
+    // update status
+    if (data.verdict !== 'accept') crPendingCount++;
+    document.getElementById('cr-status-txt').textContent =
+      `변경사항 ${crChangeCount}건 · 미결 ${crPendingCount}건`;
   }
 
   function selectClause(el) {
@@ -1772,6 +2070,275 @@
     }
   });
 </script>
+
+<!-- ═══ CONTRACT REVIEW STAGE ═══ -->
+<div id="contract-review-stage" style="display:none">
+  <div class="cr-topbar">
+    <div class="cr-topbar-logo">PACTIQ</div>
+    <div class="cr-topbar-sep"></div>
+    <div>
+      <div class="cr-topbar-title">INSPIRE-T2D Phase 2b CTA — 검토 중</div>
+      <div class="cr-topbar-meta">노보노디스크 코리아 × 아주대학교병원 · IRB#80241 · Draft v1</div>
+    </div>
+    <div class="cr-topbar-right">
+      <span class="cr-status" id="cr-status-txt">변경사항 0건 · 검토 대기 중</span>
+      <button class="cr-finish-btn" onclick="finishReview()">검토 완료 및 요약 보기 →</button>
+    </div>
+  </div>
+  <div class="cr-body">
+
+    <!-- LEFT: contract text -->
+    <div class="cr-left">
+      <div class="cr-contract-header">
+        <div class="cr-contract-title">CLINICAL TRIAL AGREEMENT</div>
+        <div class="cr-contract-sub">
+          Contract No. NND-2024-T2D-001 &nbsp;·&nbsp; IRB No. 80241 &nbsp;·&nbsp; Draft v1<br>
+          Study: INSPIRE-T2D Phase 2b — Type 2 Diabetes Mellitus<br>
+          Sponsor: Novo Nordisk Korea Co., Ltd. &nbsp;×&nbsp; Institution: Ajou University Hospital
+        </div>
+      </div>
+
+      <!-- Art 1 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 1. Parties and General Provisions</div>
+        <div class="cr-clause"><span class="cr-clause-num">1.1</span> This Agreement is entered into between Novo Nordisk Korea Co., Ltd. ("Sponsor") and Ajou University Hospital ("Institution").</div>
+        <div class="cr-clause"><span class="cr-clause-num">1.2</span> This Agreement shall be governed by the Korean Pharmaceutical Affairs Act, KGCP, and ICH E6(R2) guidelines.</div>
+        <div class="cr-clause"><span class="cr-clause-num">1.3</span> The term shall commence on execution date and continue until two (2) years after final Data Lock.</div>
+        <div class="cr-clause clickable" id="clause-1-4">
+          <span class="cr-clause-num">1.4</span> The anticipated study completion date shall be <span id="ctext-1-4">31 December 2026</span>, extendable by mutual written agreement.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('1-4','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('1-4','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-1-4">
+            <div class="cr-panel-label">원본: "31 December 2026" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-1-4">30 June 2027</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('1-4')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-1-4">
+            <textarea class="cr-textarea" id="cinput-1-4" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('1-4')">제출</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Art 2 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 2. Conduct of the Clinical Trial</div>
+        <div class="cr-clause"><span class="cr-clause-num">2.1</span> The Institution shall conduct the clinical trial in strict accordance with Protocol No. NND-INSPIRE-T2D-KR-001 and all applicable regulations.</div>
+        <div class="cr-clause clickable" id="clause-2-2">
+          <span class="cr-clause-num">2.2</span> The Institution shall notify the Sponsor <span id="ctext-2-2">immediately (within 24 hours) by phone or email</span> upon occurrence of any SAE or SUSAR, and shall submit a written report within 72 hours.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('2-2','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('2-2','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-2-2">
+            <div class="cr-panel-label">원본: "immediately (within 24 hours) by phone or email" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-2-2">within 48 hours by email</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('2-2')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-2-2">
+            <textarea class="cr-textarea" id="cinput-2-2" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('2-2')">제출</button>
+          </div>
+        </div>
+        <div class="cr-clause clickable" id="clause-2-3">
+          <span class="cr-clause-num">2.3</span> All clinical data shall be entered into the EDC system (Medidata Rave) within <span id="ctext-2-3">5 business days</span> of the subject visit date.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('2-3','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('2-3','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-2-3">
+            <div class="cr-panel-label">원본: "5 business days" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-2-3">7 business days</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('2-3')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-2-3">
+            <textarea class="cr-textarea" id="cinput-2-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('2-3')">제출</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Art 3 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 3. Investigational Product</div>
+        <div class="cr-clause"><span class="cr-clause-num">3.1</span> The Sponsor shall supply the Investigational Product within 14 business days of the Institution's written supply request.</div>
+        <div class="cr-clause"><span class="cr-clause-num">3.2</span> The Institution shall store the Investigational Product in a designated locked facility and submit monthly temperature logs to the Sponsor.</div>
+        <div class="cr-clause"><span class="cr-clause-num">3.3</span> Upon study completion or early termination, the Institution shall return all unused Investigational Product within 30 days. All return shipment costs shall be borne by the Sponsor.</div>
+      </div>
+
+      <!-- Art 4 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 4. Subject Enrollment</div>
+        <div class="cr-clause clickable" id="clause-4-1">
+          <span class="cr-clause-num">4.1</span> The Institution shall enroll the first subject within <span id="ctext-4-1">30 calendar days</span> of final IRB approval and execution of this Agreement.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('4-1','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('4-1','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-4-1">
+            <div class="cr-panel-label">원본: "30 calendar days" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-4-1">45 calendar days</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('4-1')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-4-1">
+            <textarea class="cr-textarea" id="cinput-4-1" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('4-1')">제출</button>
+          </div>
+        </div>
+        <div class="cr-clause"><span class="cr-clause-num">4.2</span> The Institution's enrollment target shall be 15 subjects, adjustable by mutual written agreement based on overall study progress.</div>
+        <div class="cr-clause clickable" id="clause-4-3" style="border-style:dashed;color:#999;font-style:italic">
+          <span class="cr-clause-num">4.3</span> [조항 없음] &nbsp;— 조기종료 위약금 조항 추가 제안
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('4-3','edit')">+ 조항 추가</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-4-3">
+            <div class="cr-panel-label">신규 조항 내용 입력</div>
+            <textarea class="cr-textarea" id="einput-4-3">4.3  In the event of early termination due to Sponsor's fault, the Sponsor shall pay the Institution all incurred costs plus a penalty fee of KRW 500,000 per enrolled subject.</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('4-3')">Pactiq AI 검토 요청</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Art 5 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 5. Compensation and Payment</div>
+        <div class="cr-clause"><span class="cr-clause-num">5.1</span> Start-up Fee: KRW 6,000,000 (payable within 30 days of Agreement execution). Per-visit fees per Exhibit A Schedule of Events.</div>
+        <div class="cr-clause clickable" id="clause-5-2" style="border-style:dashed;color:#999;font-style:italic">
+          <span class="cr-clause-num">5.2</span> [항목 없음] &nbsp;— 간접비(Overhead) 조항 추가 제안
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('5-2','edit')">+ 조항 추가</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-5-2">
+            <div class="cr-panel-label">신규 조항 내용 입력</div>
+            <textarea class="cr-textarea" id="einput-5-2">5.2  The Institution shall be entitled to charge an indirect cost (overhead) of 15% of total direct costs, itemized separately on each invoice.</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('5-2')">Pactiq AI 검토 요청</button>
+          </div>
+        </div>
+        <div class="cr-clause clickable" id="clause-5-3">
+          <span class="cr-clause-num">5.3</span> The Sponsor shall remit payment within <span id="ctext-5-3">45 days</span> of receipt of a valid invoice. Late payments shall accrue interest at 6% per annum.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('5-3','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('5-3','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-5-3">
+            <div class="cr-panel-label">원본: "45 days" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-5-3">60 days</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('5-3')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-5-3">
+            <textarea class="cr-textarea" id="cinput-5-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('5-3')">제출</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Art 6 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 6. Intellectual Property</div>
+        <div class="cr-clause"><span class="cr-clause-num">6.1</span> All data, results, and inventions arising from this trial shall be owned by the Sponsor.</div>
+        <div class="cr-clause clickable" id="clause-6-2">
+          <span class="cr-clause-num">6.2</span> Investigators retain the right to publish results. A draft manuscript shall be provided to the Sponsor at least <span id="ctext-6-2">60 days</span> prior to submission for confidential information review.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('6-2','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('6-2','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-6-2">
+            <div class="cr-panel-label">원본: "60 days" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-6-2">30 days</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('6-2')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-6-2">
+            <textarea class="cr-textarea" id="cinput-6-2" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('6-2')">제출</button>
+          </div>
+        </div>
+        <div class="cr-clause clickable" id="clause-6-3">
+          <span class="cr-clause-num">6.3</span> The Sponsor shall have the right of first negotiation for any patentable invention arising from this trial. The Institution shall not transfer or license such technology to any third party without the Sponsor's prior written consent.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('6-3','edit')">✎ 수정 / 삭제</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('6-3','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-6-3">
+            <div class="cr-panel-label">수정안 또는 삭제 이유 입력</div>
+            <textarea class="cr-textarea" id="einput-6-3">[삭제 요청] 당원 지식재산권 정책과 충돌하여 본 조항 전체 삭제를 요청합니다.</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('6-3')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-6-3">
+            <textarea class="cr-textarea" id="cinput-6-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('6-3')">제출</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Art 7 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 7. Confidentiality</div>
+        <div class="cr-clause clickable" id="clause-7-1">
+          <span class="cr-clause-num">7.1</span> Each party shall maintain confidentiality of the other party's Confidential Information for <span id="ctext-7-1">ten (10) years</span> following expiration or termination of this Agreement.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('7-1','edit')">✎ 수정</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('7-1','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-7-1">
+            <div class="cr-panel-label">원본: "ten (10) years" → 수정안 입력</div>
+            <textarea class="cr-textarea" id="einput-7-1">five (5) years</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('7-1')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-7-1">
+            <textarea class="cr-textarea" id="cinput-7-1" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('7-1')">제출</button>
+          </div>
+        </div>
+        <div class="cr-clause"><span class="cr-clause-num">7.2</span> Exceptions: publicly known information; independently developed information; legally required disclosures.</div>
+      </div>
+
+      <!-- Art 8 -->
+      <div class="cr-article">
+        <div class="cr-art-heading">Article 8. Indemnification</div>
+        <div class="cr-clause"><span class="cr-clause-num">8.1</span> The Sponsor shall indemnify the Institution for subject injuries arising from Sponsor's fault or Protocol compliance.</div>
+        <div class="cr-clause"><span class="cr-clause-num">8.2</span> The Institution shall be responsible for claims arising from its negligence, willful misconduct, or Protocol non-compliance.</div>
+        <div class="cr-clause clickable" id="clause-8-3">
+          <span class="cr-clause-num">8.3</span> The aggregate liability of either party shall not exceed <span id="ctext-8-3">two hundred percent (200%)</span> of total fees paid in the preceding 12 months. This limitation shall not apply to personal injury, death, fraud, or willful misconduct.
+          <div class="cr-clause-actions">
+            <button class="cr-action-btn edit" onclick="event.stopPropagation();crShowPanel('8-3','edit')">✎ 수정 / 삭제</button>
+            <button class="cr-action-btn cmt" onclick="event.stopPropagation();crShowPanel('8-3','cmt')">💬 코멘트</button>
+          </div>
+          <div class="cr-panel edit-panel" id="epanel-8-3">
+            <div class="cr-panel-label">수정안 또는 삭제 이유 입력</div>
+            <textarea class="cr-textarea" id="einput-8-3">[삭제 요청] 법인 정책상 손해배상 상한액 명시 조항을 포함할 수 없습니다. 본 조항 전체 삭제를 요청합니다.</textarea>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('8-3')">Pactiq AI 검토 요청</button>
+          </div>
+          <div class="cr-panel cmt-panel" id="cpanel-8-3">
+            <textarea class="cr-textarea" id="cinput-8-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
+            <button class="cr-panel-submit" onclick="crSubmitCmt('8-3')">제출</button>
+          </div>
+        </div>
+        <div class="cr-clause"><span class="cr-clause-num">8.4</span> The Sponsor shall defend the Institution against any third-party claims arising from the conduct of the clinical trial.</div>
+      </div>
+
+    </div><!-- /cr-left -->
+
+    <!-- RIGHT: AI panel -->
+    <div class="cr-right">
+      <div class="cr-ai-header">
+        <div class="cr-ai-dot"></div>
+        PACTIQ AI 실시간 분석
+      </div>
+      <div id="cr-ai-welcome" class="cr-ai-welcome">
+        <div class="cr-ai-welcome-icon">🤖</div>
+        <div class="cr-ai-welcome-text">
+          조항을 클릭하여<br>수정 또는 코멘트를 남겨 주세요.<br><br>
+          <span style="font-size:12px;color:#ccc">GCP · 식약처 규정 · 기관 이력 데이터를<br>기반으로 실시간 분석합니다.</span>
+        </div>
+      </div>
+      <div id="cr-ai-feed" class="cr-ai-feed" style="display:none"></div>
+    </div>
+
+  </div><!-- /cr-body -->
+</div>
+<!-- ═══ /CONTRACT REVIEW STAGE ═══ -->
 
 <!-- Password Modal -->
 <div id="pw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center">
