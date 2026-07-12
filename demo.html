@@ -1510,7 +1510,11 @@
       body: `<p>정 선생님, 안녕하세요.</p>
 <p style="margin-top:8px">지난번 말씀하신 §4.1 등록 기한 관련해서 내부 협의 완료했습니다.<br>수정본 v8 첨부드리니 확인 부탁드립니다.</p>
 <p style="margin-top:8px;color:#c42b1c;font-weight:600">※ v7과 v8의 차이는 §4.1 단 한 줄입니다. 나머지는 동일합니다.</p>`,
-      files: ['CTA_SB_Draft_v8_최종수정본.docx','CTA_SB_Draft_v8_최종수정본_검토요청.docx','변경이력_v7_vs_v8.xlsx'],
+      files: [
+        { name: 'CTA_SB_Draft_v8_최종수정본.docx', url: 'assets/docs/CTA_SB_Draft_v8_최종수정본.docx' },
+        { name: 'CTA_SB_Draft_v8_최종수정본_검토요청.docx', url: 'assets/docs/CTA_SB_Draft_v8_최종수정본.docx' },
+        { name: '변경이력_v7_vs_v8.xlsx' },
+      ],
       thread: '이 스레드에 메일 23통 · 첨부파일 31개',
       quote: '─── 이전 메일 (2024.06.12, 박연구) ───\n§4.1 수정본 v7 첨부드립니다. v6에서 "30일" → "45일"로만 수정…\n[이전 메일 더 보기 ▾ · 21통]'
     },
@@ -1614,7 +1618,13 @@
     const dot = row.querySelector('.ol-unread-dot');
     if (dot) dot.remove();
     const m = olEmails[idx];
-    const filesHtml = m.files.map(f => `<span class="ol-file"><span class="ol-file-icon">📄</span>${f}</span>`).join('');
+    const filesHtml = m.files.map(f => {
+      const name = typeof f === 'string' ? f : f.name;
+      const url  = typeof f === 'object' && f.url ? f.url : null;
+      return url
+        ? `<a class="ol-file" href="${url}" download style="text-decoration:none;cursor:pointer"><span class="ol-file-icon">📄</span>${name}</a>`
+        : `<span class="ol-file"><span class="ol-file-icon">📄</span>${name}</span>`;
+    }).join('');
     const quoteLines = m.quote.split('\n');
     const quoteHtml = quoteLines.map((l,i) => i===0
       ? `<p style="color:#0078d4;font-size:10.5px;margin-bottom:4px">${l}</p>`
