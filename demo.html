@@ -587,8 +587,7 @@
   <div class="intro-step1" id="intro-step1">
     <div class="intro-step1-header">
       <span class="intro-step1-badge">기존 방식</span>
-      <span class="intro-step1-title">병원 계약담당자의 오늘 받은 편지함</span>
-      <span class="intro-step1-sub">정담당 · 아주대학교병원 임상시험센터</span>
+      <span class="intro-step1-title">병원 담당자의 받은 메일함</span>
     </div>
 
     <div class="ol-window">
@@ -644,7 +643,7 @@
             <span class="ol-list-sort">날짜순 ▾</span>
           </div>
 
-          <div class="ol-row active unread flagged" onclick="">
+          <div class="ol-row active unread flagged" onclick="olSelect(this,0)">
             <div class="ol-row-top">
               <span class="ol-unread-dot"></span>
               <span class="ol-row-sender">삼성바이오로직스 CTM</span>
@@ -654,66 +653,66 @@
             <div class="ol-row-preview">CTA_Draft_v8_최종수정본.docx 첨부드립니다. §4.1...</div>
           </div>
 
-          <div class="ol-row unread">
+          <div class="ol-row unread" onclick="olSelect(this,1)">
             <div class="ol-row-top">
               <span class="ol-unread-dot"></span>
               <span class="ol-row-sender">한국MSD 임상팀</span>
-              <span class="ol-row-time">오늘 14:22</span>
+              <span class="ol-row-time">오늘 16:09</span>
             </div>
             <div class="ol-row-subject">RE:RE:RE:RE: [CTA] 아주대 당뇨병 2상 — Draft v5 수정</div>
             <div class="ol-row-preview">이전 버전(v4)에서 §3.2 보상 조항만 수정했습니다...</div>
           </div>
 
-          <div class="ol-row unread">
+          <div class="ol-row unread" onclick="olSelect(this,2)">
             <div class="ol-row-top">
               <span class="ol-unread-dot"></span>
-              <span class="ol-row-sender">Sangsang Med (Sangsang)</span>
-              <span class="ol-row-time">오늘 11:05</span>
+              <span class="ol-row-sender">Sangsang Med</span>
+              <span class="ol-row-time">오늘 14:38</span>
             </div>
             <div class="ol-row-subject">RE:RE:RE:RE:RE:RE: [CTA] IRB#410598 — §2.3 최종협의</div>
             <div class="ol-row-preview">v2_최종_진짜최종.docx 기준으로 한번 더 확인 부탁드...</div>
           </div>
 
-          <div class="ol-row">
+          <div class="ol-row" onclick="olSelect(this,3)">
             <div class="ol-row-top">
               <span class="ol-row-sender" style="padding-left:13px">화이자 코리아</span>
-              <span class="ol-row-time">어제 16:30</span>
+              <span class="ol-row-time">오늘 13:51</span>
             </div>
             <div class="ol-row-subject">*Reminder* RE:RE:RE:RE:RE: [긴급] CTA Order #PF-2024-88 최종확인</div>
             <div class="ol-row-preview">계약 완료 목표일이 이번 주 금요일인데, 아직 §5.1...</div>
           </div>
 
-          <div class="ol-row">
+          <div class="ol-row" onclick="olSelect(this,4)">
             <div class="ol-row-top">
               <span class="ol-row-sender" style="padding-left:13px">유한양행 임상개발팀</span>
-              <span class="ol-row-time">어제 10:14</span>
+              <span class="ol-row-time">오늘 11:20</span>
             </div>
             <div class="ol-row-subject">RE:RE:RE: [CTA] 소화기내과 1상 — §3.2 보상조항 재논의</div>
             <div class="ol-row-preview">담당자 변경으로 인해 처음부터 검토가 필요합니다...</div>
           </div>
 
-          <div class="ol-row">
+          <div class="ol-row" onclick="olSelect(this,5)">
             <div class="ol-row-top">
               <span class="ol-row-sender" style="padding-left:13px">노바티스 코리아</span>
-              <span class="ol-row-time">3일 전</span>
+              <span class="ol-row-time">오늘 10:44</span>
             </div>
             <div class="ol-row-subject">RE:RE:RE:RE:RE: [CTA] 심장내과 2상 — 수정본 v6</div>
             <div class="ol-row-preview">v5에서 §2.1만 변경했는데 전체 문서를 다시 보내드...</div>
           </div>
 
-          <div class="ol-row">
+          <div class="ol-row" onclick="olSelect(this,6)">
             <div class="ol-row-top">
               <span class="ol-row-sender" style="padding-left:13px">아스트라제네카</span>
-              <span class="ol-row-time">4일 전</span>
+              <span class="ol-row-time">오늘 09:17</span>
             </div>
             <div class="ol-row-subject">RE:RE: [CTA] 호흡기내과 3상 초안 — 첫 검토 의견</div>
             <div class="ol-row-preview">CTA_AZ_Draft_v1_아주대.docx 검토 의견 인라인으로...</div>
           </div>
 
-          <div class="ol-row">
+          <div class="ol-row" onclick="olSelect(this,7)">
             <div class="ol-row-top">
               <span class="ol-row-sender" style="padding-left:13px">암젠 코리아</span>
-              <span class="ol-row-time">1주 전</span>
+              <span class="ol-row-time">오늘 08:55</span>
             </div>
             <div class="ol-row-subject">RE:RE:RE:RE: [CTA] 혈액내과 1상 — 최종 서명 전 확인</div>
             <div class="ol-row-preview">최종본 CTA_Amgen_v4_FINAL_signed.docx 첨부합니다...</div>
@@ -721,38 +720,8 @@
         </div>
 
         <!-- Open email content -->
-        <div class="ol-content">
-          <div class="ol-content-header">
-            <div class="ol-content-subject">RE:RE:RE:RE:RE: [CTA] IRB#51039 폐암3상 계약서 검토 요청 — 삼성바이오로직스 × 아주대학교병원</div>
-            <div class="ol-content-meta">
-              <div class="ol-content-avatar">삼</div>
-              <div>
-                <div class="ol-content-from">박연구 (삼성바이오로직스 CTM) &lt;park.y@samsung-bio.com&gt;</div>
-                <div class="ol-content-to">받는 사람: 정담당 &lt;jung.d@ajoumc.or.kr&gt; | CC: 법무팀, QA팀, CRO담당</div>
-              </div>
-              <div class="ol-content-time">오늘 오후 5:43</div>
-            </div>
-          </div>
-          <div class="ol-content-body">
-            <p>정 선생님, 안녕하세요.</p>
-            <p style="margin-top:8px">지난번 말씀하신 §4.1 등록 기한 관련해서 내부 협의 완료했습니다.<br>
-            수정본 v8 첨부드리니 확인 부탁드립니다.</p>
-            <p style="margin-top:8px;color:#c42b1c;font-weight:600">⚠️ 참고: v7과 v8의 차이는 §4.1 단 한 줄입니다. 나머지는 동일합니다.</p>
-
-            <div class="ol-attach-row">
-              <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_SB_Draft_v8_최종수정본.docx</span>
-              <span class="ol-file"><span class="ol-file-icon">📄</span>CTA_SB_Draft_v8_최종수정본_검토요청.docx</span>
-              <span class="ol-file"><span class="ol-file-icon">📄</span>변경이력_v7_vs_v8.xlsx</span>
-            </div>
-
-            <div class="ol-thread-count">📧 이 스레드에 메일 23통 · 첨부파일 31개</div>
-
-            <div class="ol-quote" style="margin-top:14px">
-              <p style="color:#0078d4;font-size:10.5px;margin-bottom:4px">─── 이전 메일 (2024.06.12, 박연구) ───</p>
-              <p>§4.1 수정본 v7 첨부드립니다. v6에서 "30일" → "45일"로만 수정…</p>
-              <div style="color:#a0a0a0;margin-top:4px">[이전 메일 더 보기 ▾ · 21통]</div>
-            </div>
-          </div>
+        <div class="ol-content" id="ol-content-pane">
+          <!-- populated by olSelect() -->
         </div>
 
       </div><!-- /ol-body -->
@@ -1529,6 +1498,152 @@
     body.classList.toggle('open', !isOpen);
     toggle.classList.toggle('open', !isOpen);
   }
+
+  /* ── OUTLOOK INBOX INTERACTION ── */
+  const olEmails = [
+    {
+      avatar: '삼', avatarBg: '#d83b01',
+      subject: '*Reminder* RE:RE:RE:RE:RE: [CTA] IRB#51039 폐암3상 계약서 검토 요청 — 삼성바이오로직스 × 아주대학교병원',
+      from: '박연구 (삼성바이오로직스 CTM) <park.y@samsung-bio.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr> | CC: 법무팀, QA팀, CRO담당',
+      time: '오늘 오후 5:43',
+      body: `<p>정 선생님, 안녕하세요.</p>
+<p style="margin-top:8px">지난번 말씀하신 §4.1 등록 기한 관련해서 내부 협의 완료했습니다.<br>수정본 v8 첨부드리니 확인 부탁드립니다.</p>
+<p style="margin-top:8px;color:#c42b1c;font-weight:600">※ v7과 v8의 차이는 §4.1 단 한 줄입니다. 나머지는 동일합니다.</p>`,
+      files: ['CTA_SB_Draft_v8_최종수정본.docx','CTA_SB_Draft_v8_최종수정본_검토요청.docx','변경이력_v7_vs_v8.xlsx'],
+      thread: '이 스레드에 메일 23통 · 첨부파일 31개',
+      quote: '─── 이전 메일 (2024.06.12, 박연구) ───\n§4.1 수정본 v7 첨부드립니다. v6에서 "30일" → "45일"로만 수정…\n[이전 메일 더 보기 ▾ · 21통]'
+    },
+    {
+      avatar: 'M', avatarBg: '#107c41',
+      subject: 'RE:RE:RE:RE: [CTA] 아주대 당뇨병 2상 — Draft v5 수정',
+      from: '이임상 (한국MSD 임상팀) <lee.c@msd.co.kr>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr> | CC: QPPV팀',
+      time: '오늘 오후 4:09',
+      body: `<p>정 선생님, 안녕하세요. 한국MSD 이임상입니다.</p>
+<p style="margin-top:8px">v4에서 §3.2 보상 조항 금액만 수정한 v5를 첨부드립니다.<br>나머지 조항은 지난번 합의 내용 그대로입니다.</p>
+<p style="margin-top:8px">이번 주 내로 검토 의견 주실 수 있을까요?</p>`,
+      files: ['CTA_MSD_DM2ph_Draft_v5.docx','§3.2_보상금액_비교표.xlsx'],
+      thread: '이 스레드에 메일 11통 · 첨부파일 17개',
+      quote: '─── 이전 메일 (2024.07.01, 정담당) ───\n§3.2 금액 기준에 대해 기관 내부 검토 중입니다. 다음 주 회신 드리겠습니다…\n[이전 메일 더 보기 ▾ · 9통]'
+    },
+    {
+      avatar: 'S', avatarBg: '#1541c8',
+      subject: 'RE:RE:RE:RE:RE:RE: [CTA] IRB#410598 — §2.3 EDC 기한 최종협의',
+      from: '김민준 (Sangsang Med CTM) <kim.mj@sangsangmed.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr>',
+      time: '오늘 오후 2:38',
+      body: `<p>정 선생님, 안녕하세요.</p>
+<p style="margin-top:8px">§2.3 EDC 입력 기한 건으로 재차 연락드립니다.<br>내부적으로 최대 7 영업일까지는 수용 가능하다는 결론이 났습니다.</p>
+<p style="margin-top:8px">v2_최종_진짜최종.docx 기준으로 한번 더 확인 부탁드리며,<br>이번 버전으로 최종 서명 진행 가능한지 회신 주시면 감사하겠습니다.</p>`,
+      files: ['CTA_Order_410598_v2_최종.docx','CTA_Order_410598_v2_최종_진짜최종.docx','CTA_Order_410598_v2_최종_진짜최종_검토본.docx'],
+      thread: '이 스레드에 메일 18통 · 첨부파일 24개',
+      quote: '─── 이전 메일 (2024.04.08, 정담당) ───\n담당자 변경되었습니다. 계약서를 처음부터 검토하겠습니다…\n[이전 메일 더 보기 ▾ · 16통]'
+    },
+    {
+      avatar: '화', avatarBg: '#7030a0',
+      subject: '*Reminder* RE:RE:RE:RE:RE: [긴급] CTA Order #PF-2024-88 최종확인 요청',
+      from: '최규제 (화이자 코리아 RA팀) <choi.k@pfizer.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr> | CC: 본사 글로벌팀',
+      time: '오늘 오후 1:51',
+      body: `<p>정 선생님, 다시 한번 연락드립니다.</p>
+<p style="margin-top:8px">계약 완료 목표일이 <strong>이번 주 금요일</strong>인데, §5.1 지적재산권 조항 관련해서 아직 기관 의견을 받지 못했습니다.</p>
+<p style="margin-top:8px;color:#c42b1c">글로벌 타임라인 상 더 이상 지연이 어려운 상황입니다. 오늘 중으로 회신 부탁드립니다.</p>`,
+      files: ['CTA_PF2024-88_Draft_v6_URGENT.docx','§5.1_IP조항_글로벌기준.pdf'],
+      thread: '이 스레드에 메일 14통 · 첨부파일 19개',
+      quote: '─── 이전 메일 (2024.07.08, 최규제) ───\n§5.1 관련 글로벌 본사 기준 문서 첨부합니다. 기관 검토 후 의견 주세요…\n[이전 메일 더 보기 ▾ · 12통]'
+    },
+    {
+      avatar: '유', avatarBg: '#375623',
+      subject: 'RE:RE:RE: [CTA] 소화기내과 1상 — §3.2 보상조항 재논의',
+      from: '박CRA (유한양행 임상개발팀) <park.cra@yuhan.co.kr>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr>',
+      time: '오늘 오전 11:20',
+      body: `<p>정 선생님, 안녕하세요. 유한양행 박CRA입니다.</p>
+<p style="margin-top:8px">이전 담당자(이계장님)가 퇴직하셔서 제가 인수인계 받았습니다.<br>담당자 변경으로 인해 계약서를 처음부터 검토해야 할 것 같습니다.</p>
+<p style="margin-top:8px">특히 §3.2 보상조항과 관련하여 기관 입장을 다시 확인하고 싶습니다.<br>지난 협의 내용 정리해서 보내주실 수 있을까요?</p>`,
+      files: ['CTA_YH_소화기1상_Draft_v3.docx'],
+      thread: '이 스레드에 메일 9통 · 첨부파일 11개',
+      quote: '─── 이전 메일 (2024.06.20, 이계장) ───\n§3.2 보상 항목 중 연구간호사 비용은 별도 협의 필요합니다…\n[이전 메일 더 보기 ▾ · 7통]'
+    },
+    {
+      avatar: '노', avatarBg: '#c55a11',
+      subject: 'RE:RE:RE:RE:RE: [CTA] 심장내과 2상 — 수정본 v6 검토 요청',
+      from: '강메디 (노바티스 코리아 CTM) <kang.m@novartis.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr> | CC: 심장내과 연구간호사',
+      time: '오늘 오전 10:44',
+      body: `<p>정 선생님, 안녕하세요.</p>
+<p style="margin-top:8px">v5에서 §2.1 방문 스케줄 항목만 수정한 v6를 첨부드립니다.<br>이번에는 정말 이 부분만 바뀌었습니다.</p>
+<p style="margin-top:8px">지난 5번의 수정이 모두 각기 다른 조항이었던 만큼,<br>이번 v6로 최종 합의되길 바랍니다.</p>`,
+      files: ['CTA_NVS_심장2상_Draft_v6.docx','v5_vs_v6_변경사항.docx'],
+      thread: '이 스레드에 메일 16통 · 첨부파일 22개',
+      quote: '─── 이전 메일 (2024.07.05, 정담당) ───\nv5 검토했습니다. §2.1 방문 간격 조정은 PI 확인 후 회신드리겠습니다…\n[이전 메일 더 보기 ▾ · 14통]'
+    },
+    {
+      avatar: 'A', avatarBg: '#0070c0',
+      subject: 'RE:RE: [CTA] 호흡기내과 3상 초안 — 첫 검토 의견 전달',
+      from: '윤글로벌 (아스트라제네카 MA팀) <yoon.g@astrazeneca.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr>',
+      time: '오늘 오전 09:17',
+      body: `<p>정 선생님, 처음 연락드립니다. 아스트라제네카 윤글로벌입니다.</p>
+<p style="margin-top:8px">호흡기내과 3상 CTA 초안(v1)을 첨부드리며,<br>§2 전반에 걸쳐 기관 의견 부탁드립니다.</p>
+<p style="margin-top:8px">특히 §2.4 SAE 보고 기한(24시간 이내) 관련하여<br>기관 내부 프로세스 상 가능 여부 확인 부탁드립니다.</p>`,
+      files: ['CTA_AZ_호흡기3상_Draft_v1_아주대.docx','AZ_표준계약조항_참고.pdf'],
+      thread: '이 스레드에 메일 4통 · 첨부파일 5개',
+      quote: '─── 이전 메일 (2024.07.09, 정담당) ───\n초안 잘 받았습니다. 내부 검토 후 의견 드리겠습니다…\n[이전 메일 더 보기 ▾ · 2통]'
+    },
+    {
+      avatar: '암', avatarBg: '#4472c4',
+      subject: 'RE:RE:RE:RE: [CTA] 혈액내과 1상 — 최종 서명 전 확인 요청',
+      from: '정바이오 (암젠 코리아 CTM) <jung.bio@amgen.com>',
+      to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr> | CC: IRB담당, 혈액내과 PI',
+      time: '오늘 오전 08:55',
+      body: `<p>정 선생님, 안녕하세요. 암젠 코리아 정바이오입니다.</p>
+<p style="margin-top:8px">지난번 합의된 내용을 모두 반영한 최종본 v4를 첨부드립니다.<br>서명 전 마지막으로 한번 확인 부탁드립니다.</p>
+<p style="margin-top:8px">PI(혈액내과 박교수님) 서명 일정은 언제쯤 가능하실까요?</p>`,
+      files: ['CTA_Amgen_혈액1상_v4_FINAL.docx','CTA_Amgen_혈액1상_v4_FINAL_signed_sponsor.docx'],
+      thread: '이 스레드에 메일 8통 · 첨부파일 12개',
+      quote: '─── 이전 메일 (2024.07.07, 정담당) ───\nv3 검토 완료했습니다. §6.1 비밀유지 기간 10년→5년 수정 요청드립니다…\n[이전 메일 더 보기 ▾ · 6통]'
+    }
+  ];
+
+  function olSelect(row, idx) {
+    document.querySelectorAll('.ol-row').forEach(r => r.classList.remove('active'));
+    row.classList.add('active');
+    row.classList.remove('unread');
+    const dot = row.querySelector('.ol-unread-dot');
+    if (dot) dot.remove();
+    const m = olEmails[idx];
+    const filesHtml = m.files.map(f => `<span class="ol-file"><span class="ol-file-icon">📄</span>${f}</span>`).join('');
+    const quoteLines = m.quote.split('\n');
+    const quoteHtml = quoteLines.map((l,i) => i===0
+      ? `<p style="color:#0078d4;font-size:10.5px;margin-bottom:4px">${l}</p>`
+      : `<p>${l}</p>`).join('');
+    document.getElementById('ol-content-pane').innerHTML = `
+      <div class="ol-content-header">
+        <div class="ol-content-subject">${m.subject}</div>
+        <div class="ol-content-meta">
+          <div class="ol-content-avatar" style="background:${m.avatarBg}">${m.avatar}</div>
+          <div>
+            <div class="ol-content-from">${m.from}</div>
+            <div class="ol-content-to">${m.to}</div>
+          </div>
+          <div class="ol-content-time">${m.time}</div>
+        </div>
+      </div>
+      <div class="ol-content-body">
+        ${m.body}
+        <div class="ol-attach-row">${filesHtml}</div>
+        <div class="ol-thread-count">📧 ${m.thread}</div>
+        <div class="ol-quote" style="margin-top:14px">${quoteHtml}</div>
+      </div>`;
+  }
+
+  // init first email on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const firstRow = document.querySelector('.ol-row');
+    if (firstRow) olSelect(firstRow, 0);
+  });
 
   function showIntroStep2() {
     document.getElementById('intro-step1').style.display = 'none';
