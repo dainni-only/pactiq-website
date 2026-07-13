@@ -626,6 +626,16 @@
   .tc-del{text-decoration:line-through;color:#c0392b;background:#fde8e8;padding:1px 2px;border-radius:2px}
   .tc-ins{color:#1565c0;background:#e3f2fd;text-decoration:underline;padding:1px 2px;border-radius:2px}
   .cr-cmt-badge{display:inline-block;margin-left:8px;padding:2px 8px;background:#fff3cd;border:1px solid #ffc107;border-radius:10px;font-size:11px;color:#856404;vertical-align:middle}
+  .cr-add-btn{display:flex;align-items:center;gap:6px;margin-top:6px;padding:6px 12px;background:none;border:1.5px dashed #c7d4fb;border-radius:6px;font-size:12px;color:#4f6ef7;cursor:pointer;width:100%;transition:background .15s}
+  .cr-add-btn:hover{background:#f0f4ff}
+  .cr-add-form{display:none;margin-top:6px;padding:14px;background:#f0f4ff;border:1.5px solid #4f6ef7;border-radius:8px}
+  .cr-add-form-label{font-size:11px;color:#4f6ef7;font-weight:700;margin-bottom:6px}
+  .cr-add-form textarea{width:100%;box-sizing:border-box;padding:8px 12px;border:1.5px solid #c7d4fb;border-radius:6px;font-size:12.5px;line-height:1.6;resize:vertical;min-height:80px;font-family:inherit;color:#1a1a2e}
+  .cr-add-form textarea:focus{outline:none;border-color:#4f6ef7}
+  .cr-add-form-actions{display:flex;gap:8px;margin-top:8px}
+  .cr-add-submit{padding:6px 18px;background:#4f6ef7;color:#fff;border:none;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer}
+  .cr-add-cancel{padding:6px 14px;background:none;border:1px solid #ccc;border-radius:6px;font-size:12.5px;color:#888;cursor:pointer}
+  .cr-new-badge{display:inline-block;margin-left:8px;padding:2px 8px;background:#e3f2fd;border:1px solid #4f6ef7;border-radius:10px;font-size:11px;color:#1565c0;vertical-align:middle;font-weight:700}
   .cr-right{width:340px;flex-shrink:0;overflow-y:auto;background:#f5f6fa;display:flex;flex-direction:column}
   .cr-ai-header{padding:13px 18px;background:#fff;border-bottom:1px solid #e8ebf5;font-size:13px;font-weight:700;color:#4f6ef7;display:flex;align-items:center;gap:6px;flex-shrink:0}
   .cr-ai-dot{width:7px;height:7px;background:#4f6ef7;border-radius:50%;animation:crpulse 1.5s infinite}
@@ -641,6 +651,7 @@
   .cr-verdict.accept{background:#e8f5e9;color:#2e7d32}
   .cr-verdict.reject{background:#fce4ec;color:#c62828}
   .cr-verdict.escalate{background:#fff3e0;color:#e65100}
+  .cr-verdict.new{background:#e3f2fd;color:#1565c0}
   .cr-ai-ref-label{font-size:11px;color:#aaa;margin-left:auto}
   .cr-ai-card-body{padding:11px 13px;font-size:12.5px;line-height:1.7;color:#333}
   .cr-ai-summary{font-weight:700;color:#1a1a2e;margin-bottom:8px;font-size:13px}
@@ -1407,6 +1418,7 @@
   function startDemo() {
     document.getElementById('intro-overlay').style.display = 'none';
     document.getElementById('contract-review-stage').style.display = 'flex';
+    crInitAddButtons();
   }
 
   function finishReview() {
@@ -1772,6 +1784,97 @@
   let crCardCount = 0;
   let crChangeCount = 0;
   let crPendingCount = 0;
+
+  /* ── ADD NEW CLAUSE ── */
+  let crNewCount = 0;
+
+  function crInitAddButtons() {
+    document.querySelectorAll('#contract-review-stage .cr-article').forEach((article, i) => {
+      const artNum = i + 1;
+      const wrapper = document.createElement('div');
+      wrapper.style.width = '100%';
+      wrapper.innerHTML = `
+        <button class="cr-add-btn" onclick="crToggleAddForm(this)">＋ 조항 추가</button>
+        <div class="cr-add-form">
+          <div class="cr-add-form-label">새 조항 텍스트 입력 (Art. ${artNum})</div>
+          <textarea placeholder="추가할 조항 내용을 입력하세요..."></textarea>
+          <div class="cr-add-form-actions">
+            <button class="cr-add-submit" onclick="crSubmitNewClause(this, ${artNum})">Triez AI 검토 요청</button>
+            <button class="cr-add-cancel" onclick="crCancelAdd(this)">취소</button>
+          </div>
+        </div>`;
+      article.appendChild(wrapper);
+    });
+  }
+
+  function crToggleAddForm(btn) {
+    const form = btn.nextElementSibling;
+    const isOpen = form.style.display === 'block';
+    form.style.display = isOpen ? 'none' : 'block';
+    if (!isOpen) form.querySelector('textarea').focus();
+  }
+
+  function crCancelAdd(btn) {
+    const form = btn.closest('.cr-add-form');
+    form.querySelector('textarea').value = '';
+    form.style.display = 'none';
+  }
+
+  function crSubmitNewClause(btn, artNum) {
+    const form = btn.closest('.cr-add-form');
+    const text = form.querySelector('textarea').value.trim();
+    if (!text) { form.querySelector('textarea').focus(); return; }
+
+    crNewCount++;
+    const id = `new-${artNum}-${crNewCount}`;
+    const clauseNum = `${artNum}.NEW`;
+
+    // Build new clause element
+    const clause = document.createElement('div');
+    clause.className = 'cr-clause done';
+    clause.id = 'clause-' + id;
+    clause.style.cssText = 'border-color:#4f6ef7;background:#e8f0ff';
+    clause.innerHTML = `<span class="cr-clause-num" style="color:#1565c0">${clauseNum}</span> ${text}<span class="cr-new-badge">✦ 신규 추가</span>`;
+
+    // Insert before the add button wrapper
+    const wrapper = form.closest('div');
+    wrapper.parentElement.insertBefore(clause, wrapper);
+
+    // Reset & hide form
+    form.querySelector('textarea').value = '';
+    form.style.display = 'none';
+
+    // Trigger TRIEZ AI response
+    crChangeCount++;
+    document.getElementById('cr-ai-welcome').style.display = 'none';
+    const feed = document.getElementById('cr-ai-feed');
+    feed.style.display = 'flex';
+    const card = document.createElement('div');
+    card.className = 'cr-ai-card';
+    card.innerHTML = `
+      <div class="cr-ai-card-top">
+        <span class="cr-verdict new">신규 조항</span>
+        <span class="cr-ai-ref-label">Art. ${artNum} — 신규 조항 추가</span>
+      </div>
+      <div class="cr-ai-card-body">
+        <div class="cr-ai-summary">신규 조항이 Art. ${artNum}에 추가되었습니다. TRIEZ가 규정 적합성을 검토합니다.</div>
+        <ul class="cr-ai-refs" id="crefs-${++crCardCount}"></ul>
+      </div>`;
+    feed.insertBefore(card, feed.firstChild);
+
+    const refs = [
+      `추가된 조항은 Draft v1에 반영 대기 중입니다. 스폰서 담당자에게 실시간 알림이 전송됩니다.`,
+      `TRIEZ가 해당 조항을 GCP, 식약처 고시, 당사 SOP와 자동 대조합니다.`,
+      `→ 검토 완료 시 수용/수용불가/에스컬레이션 여부를 알림으로 안내합니다.`
+    ];
+    const list = card.querySelector('.cr-ai-refs');
+    refs.forEach((r, i) => setTimeout(() => {
+      const li = document.createElement('li'); li.textContent = r; list.appendChild(li);
+    }, 200 + i * 220));
+
+    document.querySelector('.cr-right').scrollTop = 0;
+    document.getElementById('cr-status-txt').textContent = `변경사항 ${crChangeCount}건 · 미결 ${crPendingCount}건`;
+  }
 
   function crToggleClause(el) {
     // deactivate all others
