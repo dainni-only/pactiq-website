@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PACTIQ — 라이브 데모</title>
+  <title>TRIEZ — 라이브 데모</title>
   <link rel="stylesheet" href="assets/css/main.css">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -375,7 +375,7 @@
     .intro-next-btn { padding: 13px 28px; background: #1541c8; border: none; color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; white-space: nowrap; flex-shrink: 0; letter-spacing: .01em; }
     .intro-next-btn:hover { background: #0d31a0; }
 
-    /* ── STEP 2: PACTIQ intro (light) ── */
+    /* ── STEP 2: TRIEZ intro (light) ── */
     .intro-step2 { display: none; }
     .intro-box {
       background: #ffffff; border: 1px solid #dde6f0;
@@ -513,7 +513,7 @@
     .view-original .contract-clause { border-left-color: transparent !important; background: none !important; }
     .view-original .contract-clause:hover { background: #eef3f8 !important; }
 
-    .av-pactiq { background: #1541c8; font-size: 7px; letter-spacing: .02em; }
+    .av-triez { background: #1541c8; font-size: 7px; letter-spacing: .02em; }
 
     .typing-dots { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
     .typing-dots span {
@@ -527,13 +527,13 @@
       30% { transform: translateY(-4px); opacity:1; }
     }
 
-    .av-pactiq-bg { background: linear-gradient(135deg,#1541c8,#4a7cff); }
+    .av-triez-bg { background: linear-gradient(135deg,#1541c8,#4a7cff); }
 
-    /* PACTIQ AI memo bubble — slightly distinguished */
-    .memo-item:has(.av-pactiq) .memo-bubble .memo-text {
+    /* TRIEZ AI memo bubble — slightly distinguished */
+    .memo-item:has(.av-triez) .memo-bubble .memo-text {
       color: #1541c8;
     }
-    .memo-item:has(.av-pactiq) .memo-bubble .memo-meta strong {
+    .memo-item:has(.av-triez) .memo-bubble .memo-meta strong {
       color: #4a7cff;
     }
 
@@ -734,14 +734,14 @@
             <span class="ol-list-sort">날짜순 ▾</span>
           </div>
 
-          <div class="ol-row unread pactiq-row" onclick="olSelect(this,0)" style="border-left:3px solid #4f6ef7;background:#f0f4ff">
+          <div class="ol-row unread triez-row" onclick="olSelect(this,0)" style="border-left:3px solid #4f6ef7;background:#f0f4ff">
             <div class="ol-row-top">
               <span class="ol-unread-dot"></span>
-              <span class="ol-row-sender" style="color:#4f6ef7;font-weight:700">노보노디스크 CTA팀 · Pactiq</span>
+              <span class="ol-row-sender" style="color:#4f6ef7;font-weight:700">노보노디스크 CTA팀 · Triez</span>
               <span class="ol-row-time">오늘 17:58</span>
             </div>
-            <div class="ol-row-subject">[Pactiq] CTA 온라인 검토 요청 — INSPIRE-T2D IRB#80241</div>
-            <div class="ol-row-preview">이번 계약서는 Pactiq 플랫폼을 통해 공유드립니다. 이메일 첨부 없이...</div>
+            <div class="ol-row-subject">[Triez] CTA 온라인 검토 요청 — INSPIRE-T2D IRB#80241</div>
+            <div class="ol-row-preview">이번 계약서는 Triez 플랫폼을 통해 공유드립니다. 이메일 첨부 없이...</div>
           </div>
 
           <div class="ol-row active unread flagged" onclick="olSelect(this,1)">
@@ -830,16 +830,16 @@
 
     <div class="intro-step1-cta">
       <p class="intro-step1-cta-desc">이게 오늘 <strong>한 명의 병원 계약담당자</strong>가 받은 편지함입니다. 스폰서마다 다른 Draft 버전, 쌓이는 RE:RE:RE로 업무가 지연됩니다.</p>
-      <button class="intro-next-btn" onclick="showIntroStep2()">PACTIQ에서는 어떻게 달라지나요? →</button>
+      <button class="intro-next-btn" onclick="showIntroStep2()">TRIEZ에서는 어떻게 달라지나요? →</button>
     </div>
   </div>
 
-  <!-- STEP 2: PACTIQ 소개 -->
+  <!-- STEP 2: TRIEZ 소개 -->
   <div class="intro-step2" id="intro-step2">
     <div class="intro-box">
-      <div class="intro-label">PACTIQ — Interactive Demo</div>
+      <div class="intro-label">TRIEZ — Interactive Demo</div>
       <h2 class="intro-title">CTA Order<br>AI 실시간 검토</h2>
-      <p class="intro-desc">동일한 계약서(IRB No. 410598)를 PACTIQ에서는 어떻게 다루는지 직접 체험하세요. 이메일 첨부 없이, Draft 중복 없이.</p>
+      <p class="intro-desc">동일한 계약서(IRB No. 410598)를 TRIEZ에서는 어떻게 다루는지 직접 체험하세요. 이메일 첨부 없이, Draft 중복 없이.</p>
       <div class="intro-steps">
         <div class="intro-step">
           <span class="intro-step-n">01</span>
@@ -1246,7 +1246,7 @@
               <span class="ref-status uploaded">업로드됨</span>
             </div>
             <div class="ref-name">Sangsang Med 내부 SOP</div>
-            <div class="ref-desc">스폰서가 PACTIQ에 업로드한 내부 표준 운영 절차. 동일 조항이라도 스폰서별 SOP에 따라 판정이 달라짐. 비공개 문서.</div>
+            <div class="ref-desc">스폰서가 TRIEZ에 업로드한 내부 표준 운영 절차. 동일 조항이라도 스폰서별 SOP에 따라 판정이 달라짐. 비공개 문서.</div>
             <span class="ref-link" style="cursor:default;opacity:.5;">내부 문서 · 비공개</span>
           </div>
 
@@ -1320,7 +1320,7 @@
             <span>이 기관은 §2.3을 <strong>2회 연속 7 영업일</strong>로 요청·합의한 이력이 있습니다. 이번 10 영업일 요청은 이례적이며, <strong>7 영업일로 반협상</strong>하는 것을 권장합니다.</span>
           </div>
 
-          <button class="hist-upload-btn" onclick="alert('과거 CTA Order(PDF/Word)를 업로드하면 PACTIQ가 합의 이력을 자동 추출해 저장합니다.')">
+          <button class="hist-upload-btn" onclick="alert('과거 CTA Order(PDF/Word)를 업로드하면 TRIEZ가 합의 이력을 자동 추출해 저장합니다.')">
             <svg viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 4.5L7 2l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
             과거 CTA Order 업로드하기
           </button>
@@ -1529,9 +1529,9 @@
     '_comment': {
       verdict:'escalate', label:'검토 요청',
       ref:'코멘트 등록됨',
-      summary:'코멘트가 Pactiq에 기록되었습니다. 스폰서 담당자가 확인 후 회신합니다.',
+      summary:'코멘트가 Triez에 기록되었습니다. 스폰서 담당자가 확인 후 회신합니다.',
       refs:[
-        '코멘트는 조항별로 스폰서측 Pactiq 계정에 실시간 전달됩니다.',
+        '코멘트는 조항별로 스폰서측 Triez 계정에 실시간 전달됩니다.',
         '해당 조항 검토 이력 및 코멘트는 계약 완료 후 감사 로그에 보존됩니다.',
         '→ 이메일 없이 플랫폼 내에서 직접 회신을 확인하실 수 있습니다.'
       ]
@@ -1543,7 +1543,7 @@
     'NND-2022-T2D-001': {
       title:'NND-2022-T2D-001',
       meta:'노보노디스크 코리아 × 아주대학교병원 · 2022.08.15 체결 · 기밀 보존 중',
-      stamp:'본 계약서는 Pactiq 기밀 저장소에 보관 중입니다. 열람은 계약 당사자에 한하며 접근 로그가 기록됩니다.',
+      stamp:'본 계약서는 Triez 기밀 저장소에 보관 중입니다. 열람은 계약 당사자에 한하며 접근 로그가 기록됩니다.',
       clauses:[
         {num:'1.4', text:'The anticipated study completion date shall be 30 June 2025, extendable by mutual written agreement.'},
         {num:'2.2', text:'The Institution shall notify the Sponsor within 48 hours by email upon occurrence of any SAE. Written report within 7 business days. For SUSARs, ICH E6(R2) timelines apply.', hl:true, hlNote:'이전 합의 조항'},
@@ -1853,17 +1853,17 @@
     if (!text) return;
     addMemoText(text, '임', 'av-green', '임계장 · 아주대병원');
     input.value = '';
-    // PACTIQ AI auto-responds after short delay
+    // TRIEZ AI auto-responds after short delay
     setTimeout(() => showTyping(), 800);
     setTimeout(() => {
       removeTyping();
-      const reply = getPactiqReply(text);
-      addMemoText(reply, 'P', 'av-pactiq', 'PACTIQ AI');
-      document.getElementById('activity-text').innerHTML = '<span>PACTIQ</span>가 메모에 대한 검토 결과를 제공했습니다';
+      const reply = getTriezReply(text);
+      addMemoText(reply, 'T', 'av-triez', 'TRIEZ AI');
+      document.getElementById('activity-text').innerHTML = '<span>TRIEZ</span>가 메모에 대한 검토 결과를 제공했습니다';
     }, 2400);
   }
 
-  function getPactiqReply(text) {
+  function getTriezReply(text) {
     const t = text.replace(/\s/g,'');
     // EDC 기한 관련 숫자 추출
     const dayMatch = text.match(/(\d+)\s*(?:영업)?일/);
@@ -1905,9 +1905,9 @@
     const el = document.createElement('div');
     el.className = 'memo-item typing-indicator';
     el.innerHTML = `
-      <div class="memo-avatar av-pactiq">P</div>
+      <div class="memo-avatar av-triez">T</div>
       <div class="memo-bubble">
-        <div class="memo-meta"><strong>PACTIQ AI</strong> &nbsp;·&nbsp; 검토 중</div>
+        <div class="memo-meta"><strong>TRIEZ AI</strong> &nbsp;·&nbsp; 검토 중</div>
         <div class="memo-text typing-dots"><span>·</span><span>·</span><span>·</span></div>
       </div>`;
     list.appendChild(el);
@@ -1954,20 +1954,20 @@
   const olEmails = [
     {
       avatar: 'P', avatarBg: '#4f6ef7',
-      subject: '[Pactiq] CTA 온라인 검토 요청 — INSPIRE-T2D Phase 2b (IRB#80241)',
+      subject: '[Triez] CTA 온라인 검토 요청 — INSPIRE-T2D Phase 2b (IRB#80241)',
       from: '김계약 (노보노디스크 코리아 CTA팀) <kim.k@novonordisk.com>',
       to: '받는 사람: 정담당 <jung.d@ajoumc.or.kr>',
       time: '오늘 오후 5:58',
       body: `<p>정 선생님, 안녕하세요. 노보노디스크 코리아 계약팀 김계약입니다.</p>
-<p style="margin-top:8px">이번 <b>INSPIRE-T2D Phase 2b</b> 임상시험 CTA 협의는 저희가 새롭게 도입한 <b style="color:#4f6ef7">Pactiq</b> 플랫폼을 통해 진행드리려 합니다.</p>
+<p style="margin-top:8px">이번 <b>INSPIRE-T2D Phase 2b</b> 임상시험 CTA 협의는 저희가 새롭게 도입한 <b style="color:#4f6ef7">Triez</b> 플랫폼을 통해 진행드리려 합니다.</p>
 <div style="margin:16px 0;padding:16px;background:#f0f4ff;border-radius:8px;border:1px solid #c7d4fb">
-  <p style="margin:0 0 10px;font-weight:700;color:#2d3eab">Pactiq란?</p>
+  <p style="margin:0 0 10px;font-weight:700;color:#2d3eab">Triez란?</p>
   <p style="margin:0 0 8px;color:#444">기존에는 CTA Draft를 이메일로 첨부해 주고받으면서 버전이 여러 개로 나뉘고, 어느 조항이 어느 시점에 바뀌었는지 추적하기 어려웠습니다.</p>
-  <p style="margin:0;color:#444">Pactiq는 계약서를 플랫폼 위에서 공동으로 검토하는 방식으로 — <b>조항별 코멘트, 수정 제안, 합의 이력</b>이 모두 한 곳에 기록됩니다. 이메일 첨부 파일 없이, Draft 버전 관리 없이 진행하실 수 있습니다.</p>
+  <p style="margin:0;color:#444">Triez는 계약서를 플랫폼 위에서 공동으로 검토하는 방식으로 — <b>조항별 코멘트, 수정 제안, 합의 이력</b>이 모두 한 곳에 기록됩니다. 이메일 첨부 파일 없이, Draft 버전 관리 없이 진행하실 수 있습니다.</p>
 </div>
 <p><b>진행 방법:</b></p>
 <ol style="margin:8px 0 0 20px;padding:0;color:#444;line-height:2">
-  <li>아래 링크를 클릭하시면 Pactiq 계약서 검토 화면으로 바로 연결됩니다.</li>
+  <li>아래 링크를 클릭하시면 Triez 계약서 검토 화면으로 바로 연결됩니다.</li>
   <li>각 조항을 클릭하시면 AI가 표준 조항과의 차이를 즉시 분석해 드립니다.</li>
   <li>수정 요청 또는 동의 의사를 조항 옆에 바로 남겨주시면 됩니다. 이메일 회신 불필요합니다.</li>
 </ol>
@@ -1977,7 +1977,7 @@
 </div>
 <div style="margin:20px 0;text-align:center">
   <button onclick="openPwModal()" style="display:inline-block;padding:12px 28px;background:#4f6ef7;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:-0.3px">
-    Pactiq에서 계약서 검토하기 →
+    Triez에서 계약서 검토하기 →
   </button>
 </div>
 <p style="color:#888;font-size:13px;margin-top:4px">* 접속 시 이메일에 안내된 비밀번호가 필요합니다.<br>* 문의 사항은 kim.k@novonordisk.com으로 연락 주십시오.</p>`,
@@ -2217,7 +2217,7 @@
 <!-- ═══ CONTRACT REVIEW STAGE ═══ -->
 <div id="contract-review-stage" style="display:none">
   <div class="cr-topbar">
-    <div class="cr-topbar-logo">PACTIQ</div>
+    <div class="cr-topbar-logo">TRIEZ</div>
     <div class="cr-topbar-sep"></div>
     <div>
       <div class="cr-topbar-title">INSPIRE-T2D Phase 2b CTA — 검토 중</div>
@@ -2256,7 +2256,7 @@
           <div class="cr-panel edit-panel" id="epanel-1-4">
             <div class="cr-panel-label">원본: "31 December 2026" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-1-4">30 June 2027</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('1-4')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('1-4')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-1-4">
             <textarea class="cr-textarea" id="cinput-1-4" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2278,7 +2278,7 @@
           <div class="cr-panel edit-panel" id="epanel-2-2">
             <div class="cr-panel-label">원본: "immediately (within 24 hours) by phone or email" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-2-2">within 48 hours by email</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('2-2')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('2-2')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-2-2">
             <textarea class="cr-textarea" id="cinput-2-2" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2294,7 +2294,7 @@
           <div class="cr-panel edit-panel" id="epanel-2-3">
             <div class="cr-panel-label">원본: "5 business days" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-2-3">7 business days</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('2-3')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('2-3')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-2-3">
             <textarea class="cr-textarea" id="cinput-2-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2323,7 +2323,7 @@
           <div class="cr-panel edit-panel" id="epanel-4-1">
             <div class="cr-panel-label">원본: "30 calendar days" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-4-1">45 calendar days</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('4-1')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('4-1')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-4-1">
             <textarea class="cr-textarea" id="cinput-4-1" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2339,7 +2339,7 @@
           <div class="cr-panel edit-panel" id="epanel-4-3">
             <div class="cr-panel-label">신규 조항 내용 입력</div>
             <textarea class="cr-textarea" id="einput-4-3">4.3  In the event of early termination due to Sponsor's fault, the Sponsor shall pay the Institution all incurred costs plus a penalty fee of KRW 500,000 per enrolled subject.</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('4-3')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('4-3')">Triez AI 검토 요청</button>
           </div>
         </div>
       </div>
@@ -2356,7 +2356,7 @@
           <div class="cr-panel edit-panel" id="epanel-5-2">
             <div class="cr-panel-label">신규 조항 내용 입력</div>
             <textarea class="cr-textarea" id="einput-5-2">5.2  The Institution shall be entitled to charge an indirect cost (overhead) of 15% of total direct costs, itemized separately on each invoice.</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('5-2')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('5-2')">Triez AI 검토 요청</button>
           </div>
         </div>
         <div class="cr-clause clickable" id="clause-5-3">
@@ -2368,7 +2368,7 @@
           <div class="cr-panel edit-panel" id="epanel-5-3">
             <div class="cr-panel-label">원본: "45 days" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-5-3">60 days</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('5-3')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('5-3')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-5-3">
             <textarea class="cr-textarea" id="cinput-5-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2390,7 +2390,7 @@
           <div class="cr-panel edit-panel" id="epanel-6-2">
             <div class="cr-panel-label">원본: "60 days" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-6-2">30 days</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('6-2')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('6-2')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-6-2">
             <textarea class="cr-textarea" id="cinput-6-2" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2406,7 +2406,7 @@
           <div class="cr-panel edit-panel" id="epanel-6-3">
             <div class="cr-panel-label">수정안 또는 삭제 이유 입력</div>
             <textarea class="cr-textarea" id="einput-6-3">[삭제 요청] 당원 지식재산권 정책과 충돌하여 본 조항 전체 삭제를 요청합니다.</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('6-3')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('6-3')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-6-3">
             <textarea class="cr-textarea" id="cinput-6-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2427,7 +2427,7 @@
           <div class="cr-panel edit-panel" id="epanel-7-1">
             <div class="cr-panel-label">원본: "ten (10) years" → 수정안 입력</div>
             <textarea class="cr-textarea" id="einput-7-1">five (5) years</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('7-1')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('7-1')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-7-1">
             <textarea class="cr-textarea" id="cinput-7-1" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2451,7 +2451,7 @@
           <div class="cr-panel edit-panel" id="epanel-8-3">
             <div class="cr-panel-label">수정안 또는 삭제 이유 입력</div>
             <textarea class="cr-textarea" id="einput-8-3">[삭제 요청] 법인 정책상 손해배상 상한액 명시 조항을 포함할 수 없습니다. 본 조항 전체 삭제를 요청합니다.</textarea>
-            <button class="cr-panel-submit" onclick="crSubmitEdit('8-3')">Pactiq AI 검토 요청</button>
+            <button class="cr-panel-submit" onclick="crSubmitEdit('8-3')">Triez AI 검토 요청</button>
           </div>
           <div class="cr-panel cmt-panel" id="cpanel-8-3">
             <textarea class="cr-textarea" id="cinput-8-3" placeholder="이 조항에 대한 의견을 남겨주세요..."></textarea>
@@ -2467,7 +2467,7 @@
     <div class="cr-right">
       <div class="cr-ai-header">
         <div class="cr-ai-dot"></div>
-        PACTIQ AI 실시간 분석
+        TRIEZ AI 실시간 분석
       </div>
       <div id="cr-ai-welcome" class="cr-ai-welcome">
         <div class="cr-ai-welcome-icon">🤖</div>
