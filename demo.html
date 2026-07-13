@@ -1526,10 +1526,21 @@
         '→ 삭제 불가. 한도를 200% → 300%로 상향하는 타협안을 제안합니다.'
       ]
     },
+    '1-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 1.1 — 마스터 계약 참조번호',
+      summary:'마스터 CTA 계약번호 NND-2024-T2D-001 확인 완료. 본 Order와 일치합니다.',
+      refs:[
+        'TRIEZ 내부 데이터: 마스터 CTA Contract No. NND-2024-T2D-001 — 노보노디스크 코리아 × 아주대학교병원 (2024.01.15 체결)',
+        '본 Order 상단 표기(Contract No. NND-2024-T2D-001)와 마스터 계약번호 일치 ✓',
+        '체결 당사자: 스폰서(노보노디스크 코리아), 기관(아주대학교병원), PI(정진아 교수) — 모두 등록된 계약 당사자와 일치 ✓',
+        '→ 별도 에스컬레이션 불필요. 마스터 계약서 원문은 TRIEZ 문서 저장소에서 열람 가능합니다.'
+      ]
+    },
     '_comment': {
-      verdict:'escalate', label:'검토 요청',
+      verdict:'accept', label:'코멘트 등록',
       ref:'코멘트 등록됨',
-      summary:'코멘트가 Triez에 기록되었습니다. 스폰서 담당자가 확인 후 회신합니다.',
+      summary:'코멘트가 Triez에 기록되었습니다. 스폰서 담당자가 확인 후 플랫폼 내에서 회신합니다.',
       refs:[
         '코멘트는 조항별로 스폰서측 Triez 계정에 실시간 전달됩니다.',
         '해당 조항 검토 이력 및 코멘트는 계약 완료 후 감사 로그에 보존됩니다.',
@@ -1687,7 +1698,7 @@
   }
 
   function crShowAI(id, isComment) {
-    const data = isComment ? crAiData['_comment'] : (crAiData[id] || crAiData['_comment']);
+    const data = crAiData[id] || crAiData['_comment'];
     document.getElementById('cr-ai-welcome').style.display = 'none';
     const feed = document.getElementById('cr-ai-feed');
     feed.style.display = 'flex';
@@ -1697,7 +1708,7 @@
     card.innerHTML = `
       <div class="cr-ai-card-top">
         <span class="cr-verdict ${data.verdict}">${data.label}</span>
-        <span class="cr-ai-ref-label">${isComment ? (crAiData[id] ? crAiData[id].ref : data.ref) : data.ref}</span>
+        <span class="cr-ai-ref-label">${data.ref}</span>
       </div>
       <div class="cr-ai-card-body">
         <div class="cr-ai-summary">${data.summary}</div>
