@@ -1416,6 +1416,153 @@
 
   /* ── CONTRACT REVIEW INTERACTIONS ── */
   const crAiData = {
+    '1-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 1.1 — 마스터 계약 참조번호',
+      summary:'마스터 CTA 계약번호 NND-2024-T2D-001 확인 완료. 본 Order와 일치합니다.',
+      refs:[
+        'TRIEZ 내부 데이터: 마스터 CTA Contract No. NND-2024-T2D-001 — 노보노디스크 코리아 × 아주대학교병원 (2024.01.15 체결)',
+        '본 Order 상단 표기(Contract No. NND-2024-T2D-001)와 마스터 계약번호 일치 ✓',
+        '체결 당사자: 스폰서(노보노디스크 코리아), 기관(아주대학교병원), PI(정진아 교수) — 모두 등록된 계약 당사자와 일치 ✓',
+        '→ 별도 에스컬레이션 불필요. 마스터 계약서 원문은 TRIEZ 문서 저장소에서 열람 가능합니다.'
+      ]
+    },
+    '2-1': {
+      verdict:'reject', label:'불일치 감지',
+      ref:'Art. 2.1 — 프로토콜 명칭',
+      summary:'IRB 제출 제목과 본 계약서 프로토콜 명칭 간 불일치 확인됨. 수정 필요합니다.',
+      refs:[
+        'TRIEZ 저장 파일 ① 프로토콜 (NND-INSPIRE-T2D-KR-001 v2.1): "A Randomized, Double-Blind, Placebo-Controlled, Phase 2b Study to Evaluate the Efficacy and Safety of Semaglutide 2.4 mg versus Standard of Care in Patients with Inadequately Controlled Type 2 Diabetes Mellitus"',
+        'TRIEZ 저장 파일 ② IRB Submission Letter (아주대병원 IRB, 2024.02.08): "A Phase 2b Randomized Study of Semaglutide 2.4 mg in Inadequately Controlled Type 2 Diabetes" — 약식 제목 사용',
+        '본 계약서 Art. 2.1 기재 제목: 프로토콜 원문과 동일 — IRB 제출 제목과 상이 ✓',
+        '→ 에스컬레이션 불필요. IRB는 약식 제목, 계약서는 프로토콜 정식 제목을 사용하는 것이 표준입니다. 단, IRB 승인서에 Protocol No.(NND-INSPIRE-T2D-KR-001)가 명시되어 있어 동일 프로토콜임이 확인되므로 계약서 수정은 불필요합니다.'
+      ]
+    },
+    '1-2': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 1.2 — 유효일 및 연구 기간',
+      summary:'유효일 및 종료일(2026.12.31) 확인됨. IRB 승인서 및 프로토콜과 일치합니다.',
+      refs:[
+        'IRB 승인서 (아주대병원 IRB No. 80241, 2024.02.20): 연구 기간 2024.03 ~ 2026.12 — 일치 ✓',
+        '프로토콜 NND-INSPIRE-T2D-KR-001 v2.1 §3.1: 예상 종료일 2026년 12월 — 일치 ✓',
+        '→ 내부 데이터로 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '1-3': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 1.3 — 규정 준수 기준',
+      summary:'KGCP, ICH E6(R2), 약사법 등 적용 규정 목록 확인됨. 현행 기준에 부합합니다.',
+      refs:[
+        '식약처 KGCP (2023년 개정): 현행 버전 적용 중 — 조항 기재와 일치 ✓',
+        'ICH E6(R2) 가이드라인: 2023년 현재 유효 (E6(R3) 미발효) ✓',
+        '"whichever affords the greater protection": ICH E6(R2) §2.1 원칙 반영 — 표준 문구 ✓',
+        '→ 규정 목록 및 우선순위 기준 모두 현행 기준에 적합합니다.'
+      ]
+    },
+    '3-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 3.1 — 임상시험약 공급',
+      summary:'공급 품목(Semaglutide 2.4 mg) 및 14 영업일 납기 기준 확인됨. 프로토콜과 일치합니다.',
+      refs:[
+        '프로토콜 NND-INSPIRE-T2D-KR-001 v2.1 §6.1: 임상시험약 Semaglutide 2.4 mg Injection — 일치 ✓',
+        '당사 공급 SOP SUP-001: 서면 요청 후 14영업일 이내 배송 기준 — 일치 ✓',
+        '→ 공급 조건 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '3-2': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 3.2 — 임상시험약 보관',
+      summary:'보관 조건 및 보고 기한 확인됨. 기관의 시설 기준과 부합합니다.',
+      refs:[
+        'TRIEZ 기관 데이터: 아주대병원 — 잠금장치 온도조절 보관실 보유 (시설 실사 2023.11.15 확인)',
+        '프로토콜 §6.3: 보관 온도 2~8°C — 기관 시설 조건 충족 ✓',
+        '월 5영업일 이내 보고: 이전 계약(NND-2022-T2D-001) 동일 조건 준수 이력 있음 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '3-3': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 3.3 — 임상시험약 반납/폐기',
+      summary:'30일 반납/폐기 기한 및 비용 부담 조건 확인됨. 당사 SOP 표준 기준에 부합합니다.',
+      refs:[
+        '당사 SOP SUP-003: 연구 종료/조기 종료 후 30일 이내 반납 또는 폐기 — 일치 ✓',
+        '기관 과실 시 비용 귀책 조항: 당사 표준 계약 포함 항목 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '4-2': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 4.2 — 등록 목표 피험자 수',
+      summary:'목표 피험자 15명 및 20% 조정 권한 조항 확인됨. 프로토콜 및 글로벌 계획과 일치합니다.',
+      refs:[
+        '프로토콜 §5.1: 아주대병원 배정 목표 피험자 수 15명 — 일치 ✓',
+        '글로벌 등록 계획서 (2024.01): 전체 목표 120명 중 한국 30명 (아주대병원 15명) — 일치 ✓',
+        '20% 초과/미달 시 30일 사전 통보 조정권: 당사 SOP CTM-ENR-001 표준 조항 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '5-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 5.1 — 보상 및 지급 조건',
+      summary:'Start-up fee ₩6,000,000 및 계좌 정보 확인됨. 예산 승인 금액 및 기관 등록 계좌와 일치합니다.',
+      refs:[
+        'TRIEZ 예산 데이터: 아주대병원 Start-up Fee ₩6,000,000 — 내부 승인 예산과 일치 ✓',
+        'TRIEZ 기관 데이터: 국민은행 287937-00-003703 (아주대학교의료원) — 등록 계좌와 일치 ✓',
+        '30일 이내 지급: 당사 SOP FIN-PAY-001 표준 기준 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '6-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 6.1 — 지식재산권 귀속',
+      summary:'연구 데이터 및 결과물 스폰서 귀속 조항 확인됨. 당사 표준 IP 정책에 부합합니다.',
+      refs:[
+        '당사 IP 정책 IP-STD-001: 스폰서 주도 임상에서 발생하는 연구 데이터 및 결과물은 스폰서 귀속 — 표준 조항 ✓',
+        '"pre-existing IP" 보호 조항 포함: ICH E6(R2) 및 기관 보호 관련 협상 표준 문구 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '7-2': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 7.2 — 비밀유지 예외 조항',
+      summary:'비밀유지 예외 4개 조건 확인됨. ICH E6(R2) 및 당사 표준 계약과 일치합니다.',
+      refs:[
+        'ICH E6(R2) §4.8: 비밀유지 예외 — 공개 정보, 기지 정보, 독립 개발, 법적 의무 공개 — 4개 조건 모두 포함 ✓',
+        '당사 SOP CONF-001: 동일 4개 예외 조건 표준 포함 — 일치 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '8-1': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 8.1 — 스폰서 면책',
+      summary:'스폰서 면책 범위 및 조건 확인됨. 당사 표준 면책 조항에 부합합니다.',
+      refs:[
+        '당사 법무 SOP LEG-CTM-005: 스폰서 면책 3개 조건(프로토콜 준수 상해, 임상시험약 결함, 스폰서 위반) — 표준 포함 ✓',
+        '"즉시 서면 통보 및 협조" 조건: 당사 표준 면책 활성화 조건 — 일치 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '8-2': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 8.2 — 기관 면책',
+      summary:'기관 귀책 면책 4개 조건 확인됨. 당사 표준 계약과 일치합니다.',
+      refs:[
+        '당사 법무 SOP LEG-CTM-005: 기관 귀책 사유(과실, 프로토콜 위반, 계약 위반, 의료과실) — 표준 4개 조건 ✓',
+        '의료 표준 기준 독립성("independent of the Study Protocol") 명시: 기관 법무팀 표준 요구사항 반영 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
+    '8-4': {
+      verdict:'accept', label:'확인됨',
+      ref:'Art. 8.4 — 스폰서 방어 의무 및 안전 통보',
+      summary:'감사 결과 통보 30일 기준 및 안전 정보 공유 의무 확인됨. GCP 및 당사 SOP에 부합합니다.',
+      refs:[
+        'ICH E6(R2) §5.6.3: 스폰서의 기관 방어 지원 의무 — 포함 ✓',
+        '30 calendar days 안전 통보: 당사 SOP CTM-SAF-002 기준과 일치 ✓',
+        '임상시험약 안전 정보 지속 공유 의무: ICH E6(R2) §5.6.2 반영 ✓',
+        '→ 확인 완료. 에스컬레이션 불필요합니다.'
+      ]
+    },
     '2-2': {
       verdict:'reject', label:'수용불가',
       ref:'Art. 2.2 — SAE 보고 기한',
