@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIEZ 베타 설문 — 병원 계약팀</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f4f6fb; color: #1a2d4a; min-height: 100vh; }
+
+  .topbar { background: #1a2d4a; padding: 0 24px; height: 52px; display: flex; align-items: center; gap: 10px; }
+  .logo { font-size: 15px; font-weight: 800; letter-spacing: .06em; color: #fff; }
+  .logo span { color: #4a7cff; }
+  .tag { font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #8ab0e0; text-transform: uppercase; border: 1px solid #2d4a6e; padding: 2px 8px; }
+
+  .wrap { max-width: 680px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  .hero { text-align: center; margin-bottom: 36px; }
+  .hero-badge { display: inline-block; background: #e8eeff; color: #1541c8; font-size: 11px; font-weight: 700; letter-spacing: .06em; padding: 4px 12px; margin-bottom: 16px; }
+  .hero h1 { font-size: 26px; font-weight: 800; color: #1a2d4a; line-height: 1.3; margin-bottom: 12px; }
+  .hero p { font-size: 14px; color: #566070; line-height: 1.7; }
+
+  .demo-box { background: #1a2d4a; color: #fff; padding: 20px 24px; margin-bottom: 32px; border-left: 4px solid #4a7cff; }
+  .demo-box-title { font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #8ab0e0; text-transform: uppercase; margin-bottom: 10px; }
+  .demo-link { display: flex; align-items: center; gap: 10px; text-decoration: none; background: #0f1e36; padding: 10px 14px; margin-bottom: 8px; transition: background .15s; }
+  .demo-link:hover { background: #162840; }
+  .demo-link-icon { font-size: 16px; }
+  .demo-link-text { font-size: 13px; font-weight: 600; color: #c8dcf4; }
+  .demo-link-sub { font-size: 10.5px; color: #5a7a9a; margin-top: 1px; }
+  .demo-note { font-size: 11.5px; color: #6a8aaa; margin-top: 10px; line-height: 1.6; }
+
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 11px; color: #8a9ab0; margin-bottom: 6px; }
+  .progress-bar { height: 4px; background: #dde6f0; border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: #4a7cff; border-radius: 2px; transition: width .4s ease; }
+
+  .step { display: none; }
+  .step.active { display: block; }
+
+  .step-title { font-size: 18px; font-weight: 800; color: #1a2d4a; margin-bottom: 4px; }
+  .step-sub { font-size: 13px; color: #6a7a8a; margin-bottom: 28px; line-height: 1.5; }
+
+  .q-block { margin-bottom: 24px; }
+  .q-label { font-size: 13.5px; font-weight: 700; color: #1a2d4a; margin-bottom: 8px; line-height: 1.4; }
+  .q-label .req { color: #e53e3e; margin-left: 2px; }
+  .q-sub { font-size: 11.5px; color: #8a9ab0; margin-bottom: 8px; }
+
+  .radio-group, .check-group { display: flex; flex-direction: column; gap: 8px; }
+  .radio-opt, .check-opt { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
+  .radio-opt input, .check-opt input { margin-top: 2px; accent-color: #4a7cff; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+  .radio-opt span, .check-opt span { font-size: 13px; color: #374151; line-height: 1.5; }
+
+  .text-input, .textarea-input { width: 100%; border: 1px solid #dde6f0; padding: 10px 12px; font-size: 13px; color: #1a2d4a; font-family: inherit; outline: none; transition: border-color .15s; background: #fff; border-radius: 0; }
+  .text-input:focus, .textarea-input:focus { border-color: #4a7cff; }
+  .textarea-input { resize: vertical; min-height: 90px; line-height: 1.6; }
+
+  .scale-wrap { display: flex; align-items: center; gap: 0; margin-top: 4px; }
+  .scale-label { font-size: 11px; color: #8a9ab0; white-space: nowrap; }
+  .scale-opts { display: flex; gap: 6px; margin: 0 10px; }
+  .scale-opt { text-align: center; }
+  .scale-opt input { display: none; }
+  .scale-opt label { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 1px solid #dde6f0; cursor: pointer; font-size: 13px; font-weight: 700; color: #8a9ab0; transition: all .15s; }
+  .scale-opt input:checked + label { background: #4a7cff; border-color: #4a7cff; color: #fff; }
+  .scale-opt label:hover { border-color: #4a7cff; color: #4a7cff; }
+
+  .grid-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .grid-table th { background: #f0f4fb; color: #566070; font-weight: 700; padding: 8px 6px; text-align: center; border: 1px solid #dde6f0; font-size: 11px; }
+  .grid-table th.row-h { text-align: left; min-width: 180px; }
+  .grid-table td { padding: 9px 6px; border: 1px solid #dde6f0; text-align: center; background: #fff; }
+  .grid-table td.row-label { text-align: left; color: #374151; font-size: 12.5px; padding-left: 10px; background: #fafbfd; }
+  .grid-table tr:hover td { background: #f8faff; }
+  .grid-table tr:hover td.row-label { background: #f0f4fb; }
+  .grid-table input[type="radio"] { accent-color: #4a7cff; width: 15px; height: 15px; cursor: pointer; }
+
+  .other-input { margin-top: 6px; margin-left: 26px; width: calc(100% - 26px); }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 36px; justify-content: flex-end; }
+  .btn-prev { background: none; border: 1px solid #dde6f0; color: #566070; padding: 11px 24px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: .15s; }
+  .btn-prev:hover { border-color: #8a9ab0; }
+  .btn-next { background: #4a7cff; border: none; color: #fff; padding: 11px 28px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; }
+  .btn-next:hover { background: #2a5ce8; }
+  .btn-submit { background: #1a2d4a; border: none; color: #fff; padding: 11px 28px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .15s; }
+  .btn-submit:hover { background: #0f1e36; }
+
+  .thank-you { text-align: center; padding: 60px 20px; display: none; }
+  .thank-icon { font-size: 48px; margin-bottom: 20px; }
+  .thank-title { font-size: 22px; font-weight: 800; color: #1a2d4a; margin-bottom: 12px; }
+  .thank-text { font-size: 14px; color: #566070; line-height: 1.8; }
+
+  .divider { border: none; border-top: 1px solid #dde6f0; margin: 28px 0; }
+
+  @media (max-width: 500px) {
+    .scale-wrap { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .scale-opts { margin: 0; }
+    .grid-table { font-size: 11px; }
+    .grid-table th.row-h { min-width: 120px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">TRI<span>EZ</span></div>
+  <div class="tag">Beta Survey</div>
+</div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge">병원 / 의료기관 계약팀 대상</div>
+    <h1>TRIEZ 베타 체험 설문</h1>
+    <p>임상시험 계약서 AI 검토 솔루션 TRIEZ의 첫 사용자 의견을 듣고 있습니다.<br>
+    아래 데모를 먼저 체험하신 후 응답해 주시면 큰 도움이 됩니다. <strong>약 10분</strong> 소요됩니다.</p>
+  </div>
+
+  <div class="demo-box">
+    <div class="demo-box-title">📋 데모 먼저 체험해보세요</div>
+    <a class="demo-link" href="https://pactiq-website.vercel.app/demo.html" target="_blank">
+      <span class="demo-link-icon">🔗</span>
+      <div>
+        <div class="demo-link-text">TRIEZ 데모 — 영문 CTA 계약서 검토</div>
+        <div class="demo-link-sub">삼성바이오로직스 × 아주대학교병원 · LUMINOS-3 폐암 3상 · Draft v7</div>
+      </div>
+    </a>
+    <p class="demo-note">💡 조항을 클릭하면 AI 판정 결과와 근거가 오른쪽 패널에 실시간으로 표시됩니다. 수용불가 조항의 '수용하기' 버튼도 눌러보세요.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="step-label">1 / 5단계</span>
+      <span id="step-pct">20%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:20%"></div></div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step active" id="step-1">
+    <div class="step-title">기본 정보</div>
+    <div class="step-sub">응답자의 업무 배경을 파악하기 위한 질문입니다.</div>
+
+    <div class="q-block">
+      <div class="q-label">Q1. 소속 기관 유형 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q1" value="상급종합병원"> <span>상급종합병원</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="종합병원"> <span>종합병원</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="대학병원"> <span>대학병원</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="기타 의료기관"> <span>기타 의료기관</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q2. 현재 담당 업무 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q2" value="계약서 검토 전담"> <span>계약서 검토 전담</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="임상시험 운영 + 계약 병행"> <span>임상시험 운영 + 계약 병행</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="법무/행정 지원"> <span>법무 / 행정 지원</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="기타"> <span>기타</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q3. CTA 계약서 검토 경력 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q3" value="1년 미만"> <span>1년 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q3" value="1~3년"> <span>1~3년</span></label>
+        <label class="radio-opt"><input type="radio" name="q3" value="3~5년"> <span>3~5년</span></label>
+        <label class="radio-opt"><input type="radio" name="q3" value="5~10년"> <span>5~10년</span></label>
+        <label class="radio-opt"><input type="radio" name="q3" value="10년 이상"> <span>10년 이상</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q4. 연간 평균 계약서 검토 건수 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q4" value="10건 미만"> <span>10건 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="10~30건"> <span>10~30건</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="30~60건"> <span>30~60건</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="60건 이상"> <span>60건 이상</span></label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-next" onclick="nextStep(1)">다음 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step-2">
+    <div class="step-title">현재 업무 현황</div>
+    <div class="step-sub">현재 계약서 검토 방식과 어려움을 알려주세요.</div>
+
+    <div class="q-block">
+      <div class="q-label">Q5. 계약서 검토 시 주로 겪는 어려움 <span class="req">*</span> <span class="q-sub">(복수 선택 가능)</span></div>
+      <div class="check-group">
+        <label class="check-opt"><input type="checkbox" name="q5" value="조항 수용 가능 여부 판단 기준 불명확"> <span>조항별 수용 가능 여부 판단 기준이 불명확</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="이전 계약서 이력 파악 어려움"> <span>이전 계약서 이력/선례를 찾아보기 어려움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="이메일·첨부파일 버전 관리 복잡"> <span>이메일·첨부파일 버전 관리가 복잡</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="SOP·ICH·KGCP 기준 매번 검색 필요"> <span>SOP, ICH, KGCP 기준을 매번 따로 검색해야 함</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="에스컬레이션 지연"> <span>법무팀·상위자 에스컬레이션 시 지연 발생</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="스폰서와 협상 시 근거 자료 부족"> <span>스폰서와 협상 시 근거 자료가 부족</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q6. 계약서 1건당 평균 검토 소요 시간 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q6" value="2시간 미만"> <span>2시간 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q6" value="2~4시간"> <span>2~4시간</span></label>
+        <label class="radio-opt"><input type="radio" name="q6" value="반나절(4~8시간)"> <span>반나절 (4~8시간)</span></label>
+        <label class="radio-opt"><input type="radio" name="q6" value="하루 이상"> <span>하루 이상</span></label>
+        <label class="radio-opt"><input type="radio" name="q6" value="2일 이상(수정 반복 포함)"> <span>2일 이상 (수정 반복 포함)</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q7. 가장 시간이 걸리는 단계 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q7" value="변경 조항 파악 및 버전 비교"> <span>변경 조항 파악 및 버전 비교</span></label>
+        <label class="radio-opt"><input type="radio" name="q7" value="수용 여부 판단"> <span>수용 여부 판단 (기준 확인)</span></label>
+        <label class="radio-opt"><input type="radio" name="q7" value="에스컬레이션 후 회신 대기"> <span>에스컬레이션 후 회신 대기</span></label>
+        <label class="radio-opt"><input type="radio" name="q7" value="최종 합의 문구 조율"> <span>최종 합의 문구 조율</span></label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-prev" onclick="prevStep(2)">← 이전</button>
+      <button class="btn-next" onclick="nextStep(2)">다음 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step-3">
+    <div class="step-title">데모 사용성 평가</div>
+    <div class="step-sub">위 데모를 체험해보신 후 응답해 주세요. 아직 안 보셨다면 <a href="https://pactiq-website.vercel.app/demo.html" target="_blank" style="color:#4a7cff">여기서 먼저 확인</a>해 주세요.</div>
+
+    <div class="q-block">
+      <div class="q-label">Q8. 전반적인 사용 편의성 <span class="req">*</span></div>
+      <div class="scale-wrap">
+        <span class="scale-label">불편</span>
+        <div class="scale-opts">
+          <div class="scale-opt"><input type="radio" name="q8" id="q8-1" value="1"><label for="q8-1">1</label></div>
+          <div class="scale-opt"><input type="radio" name="q8" id="q8-2" value="2"><label for="q8-2">2</label></div>
+          <div class="scale-opt"><input type="radio" name="q8" id="q8-3" value="3"><label for="q8-3">3</label></div>
+          <div class="scale-opt"><input type="radio" name="q8" id="q8-4" value="4"><label for="q8-4">4</label></div>
+          <div class="scale-opt"><input type="radio" name="q8" id="q8-5" value="5"><label for="q8-5">5</label></div>
+        </div>
+        <span class="scale-label">편리</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q9. 기능별 유용성 평가 <span class="req">*</span></div>
+      <div class="q-sub">1 = 불필요 / 5 = 매우 유용</div>
+      <table class="grid-table">
+        <thead>
+          <tr>
+            <th class="row-h">기능</th>
+            <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th>
+          </tr>
+        </thead>
+        <tbody id="grid-body">
+        </tbody>
+      </table>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q10. 가장 인상적이었던 기능은? <span class="req">*</span></div>
+      <input type="text" class="text-input" id="q10" placeholder="예: AI 판정 근거 실시간 표시">
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q11. 가장 아쉽거나 개선이 필요한 부분은?</div>
+      <textarea class="textarea-input" id="q11" placeholder="자유롭게 작성해 주세요"></textarea>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-prev" onclick="prevStep(3)">← 이전</button>
+      <button class="btn-next" onclick="nextStep(3)">다음 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step" id="step-4">
+    <div class="step-title">필요성 & 도입 의향</div>
+    <div class="step-sub">실제 도입을 가정하고 솔직하게 응답해 주세요.</div>
+
+    <div class="q-block">
+      <div class="q-label">Q12. 현재 업무에서 이런 툴이 필요하다고 느끼십니까? <span class="req">*</span></div>
+      <div class="scale-wrap">
+        <span class="scale-label">전혀 불필요</span>
+        <div class="scale-opts">
+          <div class="scale-opt"><input type="radio" name="q12" id="q12-1" value="1"><label for="q12-1">1</label></div>
+          <div class="scale-opt"><input type="radio" name="q12" id="q12-2" value="2"><label for="q12-2">2</label></div>
+          <div class="scale-opt"><input type="radio" name="q12" id="q12-3" value="3"><label for="q12-3">3</label></div>
+          <div class="scale-opt"><input type="radio" name="q12" id="q12-4" value="4"><label for="q12-4">4</label></div>
+          <div class="scale-opt"><input type="radio" name="q12" id="q12-5" value="5"><label for="q12-5">5</label></div>
+        </div>
+        <span class="scale-label">매우 필요</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q13. 이 툴이 있었다면 기존 업무에 도움이 됐을까요? <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q13" value="매우 그렇다 — 업무 방식 자체가 바뀌었을 것"> <span>매우 그렇다 — 업무 방식 자체가 바뀌었을 것</span></label>
+        <label class="radio-opt"><input type="radio" name="q13" value="그렇다 — 시간 단축에 확실히 도움이 됐을 것"> <span>그렇다 — 시간 단축에 확실히 도움이 됐을 것</span></label>
+        <label class="radio-opt"><input type="radio" name="q13" value="보통 — 있으면 좋지만 없어도 무방"> <span>보통 — 있으면 좋지만 없어도 무방</span></label>
+        <label class="radio-opt"><input type="radio" name="q13" value="아니다 — 현재 방식으로 충분"> <span>아니다 — 현재 방식으로 충분</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q14. 도입 시 가장 기대되는 효과 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q14" value="검토 속도 단축"> <span>검토 속도 단축</span></label>
+        <label class="radio-opt"><input type="radio" name="q14" value="에스컬레이션 건수 감소"> <span>에스컬레이션 건수 감소</span></label>
+        <label class="radio-opt"><input type="radio" name="q14" value="누락 조항·판단 오류 방지"> <span>누락 조항 / 판단 오류 방지</span></label>
+        <label class="radio-opt"><input type="radio" name="q14" value="이력 관리 및 감사 추적"> <span>이력 관리 및 감사 추적 편의</span></label>
+        <label class="radio-opt"><input type="radio" name="q14" value="신규 담당자 온보딩 단축"> <span>신규 담당자 온보딩 단축</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q15. 도입 시 가장 우려되는 점 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q15" value="AI 판정 정확성 신뢰 문제"> <span>AI 판정의 정확성 신뢰 문제</span></label>
+        <label class="radio-opt"><input type="radio" name="q15" value="병원 IT 보안 정책 충돌"> <span>병원 내 IT 보안 정책 충돌</span></label>
+        <label class="radio-opt"><input type="radio" name="q15" value="기존 시스템(CTMS 등) 연동"> <span>기존 시스템(CTMS 등)과의 연동</span></label>
+        <label class="radio-opt"><input type="radio" name="q15" value="비용 대비 효과 불확실"> <span>비용 대비 효과 불확실</span></label>
+        <label class="radio-opt"><input type="radio" name="q15" value="사용자 교육 및 적응 시간"> <span>사용자 교육 및 적응 시간</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q16. 유료 도입 시 기관 기준 월 구독료 수용 범위 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q16" value="월 10만원 미만"> <span>월 10만원 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 10~30만원"> <span>월 10~30만원</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 30~50만원"> <span>월 30~50만원</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 50만원 이상도 ROI 맞으면 가능"> <span>월 50만원 이상도 ROI가 맞으면 가능</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="유료 도입 어렵다(무료·공공지원 필요)"> <span>유료 도입은 어렵다 (무료 / 공공지원 필요)</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="현재 판단 어렵다"> <span>현재 판단하기 어렵다</span></label>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-prev" onclick="prevStep(4)">← 이전</button>
+      <button class="btn-next" onclick="nextStep(4)">다음 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step" id="step-5">
+    <div class="step-title">추가 의견 & 연락처</div>
+    <div class="step-sub">마지막 단계입니다. 솔직한 의견을 남겨주세요.</div>
+
+    <div class="q-block">
+      <div class="q-label">Q17. 추가됐으면 하는 기능이나 시나리오가 있다면?</div>
+      <textarea class="textarea-input" id="q17" placeholder="예: 국문 계약서 지원, 특정 조항 타입 추가 등"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q18. 데모 체험 전반에 대한 솔직한 의견</div>
+      <textarea class="textarea-input" id="q18" placeholder="자유롭게 작성해 주세요"></textarea>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q19. 추후 심층 인터뷰 또는 얼리액세스 참여 의향 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q19" value="네, 연락 주세요"> <span>네, 연락 주세요</span></label>
+        <label class="radio-opt"><input type="radio" name="q19" value="상황에 따라 가능"> <span>상황에 따라 가능</span></label>
+        <label class="radio-opt"><input type="radio" name="q19" value="아니오"> <span>아니오</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q20. 연락 가능한 이메일 <span class="q-sub">(선택 — 인터뷰·얼리액세스 초대 시 연락드립니다)</span></div>
+      <input type="email" class="text-input" id="q20" placeholder="example@hospital.kr">
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-prev" onclick="prevStep(5)">← 이전</button>
+      <button class="btn-submit" onclick="submitSurvey()">제출하기 ✓</button>
+    </div>
+  </div>
+
+  <!-- THANK YOU -->
+  <div class="thank-you" id="thank-you">
+    <div class="thank-icon">✅</div>
+    <div class="thank-title">응답해 주셔서 감사합니다!</div>
+    <div class="thank-text">
+      소중한 의견이 TRIEZ 개발에 큰 도움이 됩니다.<br>
+      심층 인터뷰 또는 얼리액세스 대상으로 선정되시면 별도로 연락드리겠습니다.<br><br>
+      문의사항: <a href="mailto:yangdain95@gmail.com" style="color:#4a7cff">yangdain95@gmail.com</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TOTAL = 5;
+const gridItems = [
+  'AI 조항 판정 (수용 / 수용불가 / 승인필요)',
+  '판정 근거 및 출처 규정 실시간 표시',
+  '기관 합의 이력 자동 참조',
+  '수용불가 시 대안 문구 자동 제안',
+  '대안 문구 수용하기 버튼 (트래킹 변경 자동 적용)',
+  '계약 검토 진행률 바',
+  '계약담당자 검토 요청 / 수정 / 코멘트 버튼',
+];
+
+// Build grid
+const tbody = document.getElementById('grid-body');
+gridItems.forEach((item, i) => {
+  const tr = document.createElement('tr');
+  let html = `<td class="row-label">${item}</td>`;
+  for (let v = 1; v <= 5; v++) {
+    html += `<td><input type="radio" name="grid_${i}" value="${v}"></td>`;
+  }
+  tr.innerHTML = html;
+  tbody.appendChild(tr);
+});
+
+function setProgress(step) {
+  const pct = Math.round((step / TOTAL) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('step-label').textContent = step + ' / ' + TOTAL + '단계';
+  document.getElementById('step-pct').textContent = pct + '%';
+}
+
+let cur = 1;
+
+function nextStep(from) {
+  document.getElementById('step-' + from).classList.remove('active');
+  cur = from + 1;
+  document.getElementById('step-' + cur).classList.add('active');
+  setProgress(cur);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function prevStep(from) {
+  document.getElementById('step-' + from).classList.remove('active');
+  cur = from - 1;
+  document.getElementById('step-' + cur).classList.add('active');
+  setProgress(cur);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function collectData() {
+  const data = { survey_type: '병원/의료기관 계약팀' };
+  // Radios
+  ['q1','q2','q3','q4','q6','q7','q8','q12','q13','q14','q15','q16','q19'].forEach(n => {
+    const el = document.querySelector(`input[name="${n}"]:checked`);
+    data[n] = el ? el.value : '';
+  });
+  // Checkboxes
+  const q5 = Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(e => e.value);
+  data['q5_어려움'] = q5.join(' | ');
+  // Grid
+  gridItems.forEach((item, i) => {
+    const el = document.querySelector(`input[name="grid_${i}"]:checked`);
+    data['기능_' + (i+1) + '_' + item.substring(0,10)] = el ? el.value : '';
+  });
+  // Text
+  data['q10_인상적기능'] = document.getElementById('q10').value;
+  data['q11_개선점'] = document.getElementById('q11').value;
+  data['q17_추가기능요청'] = document.getElementById('q17').value;
+  data['q18_전반의견'] = document.getElementById('q18').value;
+  data['q20_이메일'] = document.getElementById('q20').value;
+  return data;
+}
+
+async function submitSurvey() {
+  const data = collectData();
+  // FormSubmit — first submission triggers email verification
+  const formData = new FormData();
+  Object.entries(data).forEach(([k, v]) => formData.append(k, v));
+  formData.append('_subject', '[TRIEZ 설문] 병원 계약팀 응답');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'table');
+
+  try {
+    await fetch('https://formsubmit.co/yangdain95@gmail.com', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+  } catch(e) { /* ignore network errors — show thanks anyway */ }
+
+  document.querySelector('.step.active').style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('thank-you').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
