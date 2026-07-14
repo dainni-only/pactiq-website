@@ -461,6 +461,58 @@
     .hist-upload-btn:hover { border-color: #1541c8; color: #1541c8; }
     .hist-upload-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
+    /* ── EXPORT BUTTON & DROPDOWN ── */
+    .export-btn {
+      position: relative;
+      font-size: 11px; font-weight: 700;
+      background: none; border: 1px solid #c8d8ea;
+      color: #1a2d4a; padding: 6px 13px; cursor: pointer;
+      letter-spacing: .02em; display: flex; align-items: center; gap: 6px;
+      white-space: nowrap; transition: all .15s;
+    }
+    .export-btn:hover { background: #f4f7fb; border-color: #1541c8; color: #1541c8; }
+    .export-btn svg { flex-shrink: 0; }
+
+    .export-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #fff;
+      border: 1px solid #dde6f0;
+      box-shadow: 0 8px 24px rgba(0,0,0,.12);
+      z-index: 300;
+      min-width: 240px;
+    }
+    .export-dropdown.open { display: block; }
+    .export-dropdown-title {
+      font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      color: #8a9ab0; padding: 12px 16px 6px; border-bottom: 1px solid #f0f4f8;
+    }
+    .export-option {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 16px; cursor: pointer; transition: background .1s;
+      border-bottom: 1px solid #f4f7fb;
+    }
+    .export-option:last-child { border-bottom: none; }
+    .export-option:hover { background: #f4f7fb; }
+    .export-option-icon {
+      width: 32px; height: 32px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .export-option-icon.clean { background: #e8f0fe; }
+    .export-option-icon.track { background: #fff3e0; }
+    .export-option-info { flex: 1; }
+    .export-option-name { font-size: 12px; font-weight: 700; color: #1a2d4a; margin-bottom: 3px; }
+    .export-option-desc { font-size: 10.5px; color: #8a9ab0; line-height: 1.4; }
+    .export-option-ext {
+      font-size: 9px; font-weight: 700; letter-spacing: .06em;
+      background: #e8f0fe; color: #1541c8; padding: 2px 6px; border-radius: 2px;
+      align-self: center; flex-shrink: 0;
+    }
+    .export-option-ext.track { background: #fff3e0; color: #b45309; }
+
     /* ── ESCALATION MODAL ── */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(30,50,100,.6);
@@ -912,6 +964,31 @@
   </div>
   <div class="demo-topbar-right">
     <div class="demo-user">김민준 · CTM</div>
+    <div style="position:relative;">
+      <button class="export-btn" id="export-btn" onclick="toggleExportMenu(event)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v12m0 0-4-4m4 4 4-4M3 17v2a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-2"/></svg>
+        문서 내보내기
+      </button>
+      <div class="export-dropdown" id="export-dropdown">
+        <div class="export-dropdown-title">내보내기 형식 선택</div>
+        <div class="export-option" onclick="exportDoc('clean')">
+          <div class="export-option-icon clean">📄</div>
+          <div class="export-option-info">
+            <div class="export-option-name">클린본</div>
+            <div class="export-option-desc">수정사항이 최종 반영된 깨끗한 계약서</div>
+          </div>
+          <div class="export-option-ext">.docx</div>
+        </div>
+        <div class="export-option" onclick="exportDoc('track')">
+          <div class="export-option-icon track">📝</div>
+          <div class="export-option-info">
+            <div class="export-option-name">추적변경본</div>
+            <div class="export-option-desc">삭제·삽입 추적변경(Track Changes) 표시본</div>
+          </div>
+          <div class="export-option-ext track">.docx</div>
+        </div>
+      </div>
+    </div>
     <button class="demo-send-btn" onclick="alert('데모 환경에서는 실제 전송이 비활성화됩니다.')">기관에 전달 →</button>
   </div>
 </div>
@@ -3003,5 +3080,216 @@
     </button>
   </div>
 </div>
+<!-- docx.js CDN for Word generation -->
+<script>
+/* ─── EXPORT DROPDOWN ─── */
+function toggleExportMenu(e) {
+  e.stopPropagation();
+  document.getElementById('export-dropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('#export-btn') && !e.target.closest('#export-dropdown')) {
+    document.getElementById('export-dropdown').classList.remove('open');
+  }
+});
+
+/* ─── CONTRACT DATA ─── */
+const CONTRACT_META = {
+  title: 'CLINICAL TRIAL AGREEMENT ORDER',
+  irb: 'IRB No.: 410598  ·  Contract No.: 0101010  ·  Rev. 2',
+  sponsor: 'Sangsang Med, 142 Mangwon-dong, Mapo-gu, Seoul, 01116, Korea',
+  institution: 'Ajou University Hospital, 164 Worldcup-ro, Yeongtong-gu, Suwon-si',
+  pi: 'Eun Ah Lim, MD · Ajou University Hospital',
+  cro: 'FUTURE CRO, 142 Hyehwa-dong, Jongno-gu, Seoul 05510',
+  exportedBy: '김민준 (CTM, Sangsang Med)',
+};
+
+const CLAUSES = [
+  { id:'1.1', heading:'§ 1.1 — Governing Terms',
+    original: 'By executing this Order, the parties agree that this Order and the parties\' performance hereunder shall be governed by the terms and conditions of the Agreement (contract number 0101010), which are incorporated by this reference as if fully set forth herein.',
+    final: null, verdict: 'ok' },
+  { id:'1.2', heading:'§ 1.2 — Effective Date',
+    original: 'The anticipated study period is from effective date (After IRB approval) to 27 May 2030. This Agreement shall remain in full force and effect until completion of the Study or earlier termination.',
+    final: null, verdict: 'ok' },
+  { id:'1.3', heading:'§ 1.3 — Korean Law',
+    original: 'The Study will be conducted by the Site in accordance with Pharmaceutical Affairs Law, Korean Good Clinical Practice Guideline, Clinical Trial Administration Guidelines, and all applicable Korean regulatory requirements, whichever affords the greater protection to the Subject.',
+    final: null, verdict: 'ok' },
+  { id:'2.1', heading:'§ 2.1 — Protocol',
+    original: 'The Protocol for the Study is Company Protocol No. 203040 entitled "A Randomized, Double-Blind, Phase 3 Study of Palcancide Versus Standard of Care in Patients with Advanced Prostate Cancer", as may be amended. When Company offers meals and beverages during domestic Investigator Meetings, the total value shall not exceed KRW 50,000 per person.',
+    final: null, verdict: 'ok' },
+  { id:'2.3', heading:'§ 2.3 — Use of Electronic Data Capture',
+    original: 'Site agrees that it will enter such Study data into EDC within 5 business days of the Subject visit, and resolve all queries issued in the EDC system within 5 business days of the query being issued. In addition, Principal Investigator or sub-investigator shall apply electronic signature within 90 calendar days of Subject visit.',
+    final: 'Site agrees that it will enter such Study data into EDC within 10 business days of the Subject visit, and resolve all queries issued in the EDC system within 5 business days of the query being issued. In addition, Principal Investigator or sub-investigator shall apply electronic signature within 90 calendar days of Subject visit.',
+    verdict: 'warn', comment: '[기관 메모] 방사선 판독 의뢰 후 결과 수령까지 5 영업일 이상 소요되는 경우가 빈번합니다. 10 영업일로 조정 요청드립니다.' },
+  { id:'2.2', heading:'§ 2.2 — Data Protection',
+    original: 'Subject to applicable law, Company may collect and process information regarding investigators or other personnel involved in Studies. Company will notify such personnel as required by applicable law.',
+    final: null, verdict: 'ok' },
+  { id:'3.1', heading:'§ 3.1 — Study Drug',
+    original: 'Company shall provide Study Drug(s) PACD012 to Site as required by Protocol. The Site agrees and warrants that it will not seek payment or reimbursement from any Subject or third party for the cost of the Study Drug(s).',
+    final: null, verdict: 'ok' },
+  { id:'3.2', heading:'§ 3.2 — Required Materials',
+    original: 'If non-Company drugs, materials or reagents are required by the Protocol ("Required Materials"), Company will reimburse Site for the Required Materials. Such reimbursement costs shall not exceed the amount set forth in Schedule A.',
+    final: 'If non-Company drugs, materials or reagents are required by the Protocol ("Required Materials"), Company will provide Required Materials free of charge and additionally compensate Site at a rate of 15% above purchase cost. Such reimbursement costs shall not exceed the amount set forth in Schedule A.',
+    verdict: 'block', comment: '[TRIEZ AI] Master CTA §7.1 "비용 초과 보상 금지" 조항에 직접 위배됨. 수용 불가.' },
+  { id:'4.1', heading:'§ 4.1 — Study Commencement',
+    original: 'The Study will commence upon execution of this Agreement, approval of the IRB/IEC, and any required approvals of applicable governmental authorities. The Site shall enroll the first Subject within 30 days of Study commencement.',
+    final: 'The Study will commence upon execution of this Agreement, approval of the IRB/IEC, and any required approvals of applicable governmental authorities. The Site shall use commercially reasonable efforts to enroll the first Subject within 60 days of Study commencement.',
+    verdict: 'warn' },
+  { id:'5.1', heading:'§ 5.1 — Required Equipment',
+    original: 'The parties acknowledge that Site will require the following equipment for the performance of the Study ("Required Equipment"): TABLETS, THERMOMETERS. Such Required Equipment will be lent by Company or its representative to Site for use in the Study.',
+    final: null, verdict: 'ok' },
+  { id:'5.2', heading:'§ 5.2 — Delivery',
+    original: 'As necessary, Company or its representative shall arrange for the delivery of the Required Equipment, which such equipment shall be delivered to the Site at the address provided by Site during the Site evaluation visit.',
+    final: null, verdict: 'ok' },
+  { id:'5.3', heading:'§ 5.3 — Installation of Required Equipment',
+    original: 'Company or its representative shall provide for installation of the following equipment: TABLETS, THERMOMETERS.',
+    final: null, verdict: 'ok' },
+  { id:'5.4', heading:'§ 5.4 — Technical Support',
+    original: 'Company or its representative shall provide for technical support and maintenance of the following equipment: TABLETS, THERMOMETERS.',
+    final: null, verdict: 'ok' },
+  { id:'6.1', heading:'§ 6.1 — Compensation Terms',
+    original: 'Compensation and payment terms are as set forth in Schedule A, attached hereto and incorporated herein.',
+    final: null, verdict: 'ok' },
+  { id:'6.2', heading:'§ 6.2 — Payment Details',
+    original: 'Payments from Company to Site shall be made payable to: Ajou University Hospital (아주대학교의료원). Bank: Kookmin Bank, Account: 287937-00-003703. Site may request in writing a change in Payee information by providing Company with a signed letter from a duly authorized representative.',
+    final: null, verdict: 'ok' },
+  { id:'7.1', heading:'§ 7.1 — Disclosure to Affiliated Institutions',
+    original: 'The Site represents and warrants that Site has disclosed the existence and content of this Agreement to any institutions to which Site is affiliated or is a member and that require such disclosure.',
+    final: null, verdict: 'ok' },
+  { id:'7.2', heading:'§ 7.2 — Personal Data',
+    original: 'Principal Investigator understands and agrees that Personal Information including name, contact details, curriculum vitae, and areas of specialization will be Processed by Company, its affiliates and contractual partners for purposes of complying with this Agreement and applicable regulatory obligations. Transfers among Company entities follow applicable laws and Binding Corporate Rules (BCRs). Data Protection Officer: privacy@sangsangmed.com.',
+    final: null, verdict: 'ok' },
+  { id:'7.3', heading:'§ 7.3 — Public Disclosure',
+    original: 'Site acknowledges and agrees that Company shall have the right to disclose publicly the terms and conditions of the Agreement, including Site\'s name, description of services, and amount of payment.',
+    final: null, verdict: 'ok' },
+  { id:'7.4', heading:'§ 7.4 — Company\'s Reporting Obligations',
+    original: 'If during an audit/monitoring of Site, Company identifies findings that may affect Subject safety or Study conduct, Company will provide written notice within 30 calendar days. Company will, pursuant to 21 C.F.R. § 312.50, ensure the Site is promptly informed of significant new adverse effects or risks with respect to the Study Drug, including data and safety monitoring reports.',
+    final: null, verdict: 'ok' },
+  { id:'7.5', heading:'§ 7.5 — CRO Delegation',
+    original: 'Company has delegated the conduct of the study related activities at Institution to FUTURE CRO, as set forth in the Letter of Delegation attached hereto. However, ultimate responsibility for the quality and integrity of the Study data resides with Company. FUTURE CRO shall implement quality assurance and quality control and Company shall oversee FUTURE CRO\'s performance.',
+    final: null, verdict: 'ok' },
+  { id:'7.6', heading:'§ 7.6 — Institution Policy Compliance',
+    original: 'Company complies with Institution\'s policies and processes for monitoring and evaluating the quality, safety and ethics of the Study.',
+    final: null, verdict: 'ok' },
+];
+
+/* ─── SIMPLE WORD-LEVEL DIFF ─── */
+function simpleDiff(orig, fin) {
+  const tokenize = s => s.match(/\S+\s*/g) || [];
+  const a = tokenize(orig), b = tokenize(fin);
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, () => new Array(n+1).fill(0));
+  for (let i = m-1; i >= 0; i--)
+    for (let j = n-1; j >= 0; j--)
+      dp[i][j] = (a[i] === b[j]) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j], dp[i][j+1]);
+  const result = [];
+  let i = 0, j = 0;
+  while (i < m || j < n) {
+    if (i < m && j < n && a[i] === b[j]) { result.push({type:'same', text:a[i]}); i++; j++; }
+    else if (j < n && (i >= m || dp[i][j+1] >= dp[i+1][j])) { result.push({type:'ins', text:b[j]}); j++; }
+    else { result.push({type:'del', text:a[i]}); i++; }
+  }
+  const merged = [];
+  for (const seg of result) {
+    if (merged.length && merged[merged.length-1].type === seg.type) merged[merged.length-1].text += seg.text;
+    else merged.push({...seg});
+  }
+  return merged;
+}
+
+/* ─── EXPORT FUNCTION (Word HTML / .doc format — opens natively in Word/Hancom) ─── */
+function exportDoc(mode) {
+  document.getElementById('export-dropdown').classList.remove('open');
+  const isTrack = mode === 'track';
+  const filename = isTrack ? 'CTA_Order_410598_추적변경본.doc' : 'CTA_Order_410598_클린본.doc';
+  const verdictLabel = { ok: '✓ 수용 가능', warn: '⚠ 승인 필요', block: '✕ 수용 불가' };
+  const verdictColor = { ok: '#16a34a', warn: '#b45309', block: '#cc2200' };
+
+  let body = '';
+
+  /* Title */
+  body += `<h1 style="text-align:center;font-size:16pt;font-weight:bold;color:#1a2d4a;margin-bottom:4pt;">${CONTRACT_META.title}</h1>`;
+  body += `<p style="text-align:center;font-size:9pt;color:#666;margin-bottom:18pt;">${CONTRACT_META.irb}</p>`;
+
+  /* Parties table */
+  body += `<table style="width:100%;border-collapse:collapse;margin-bottom:18pt;font-size:10pt;">`;
+  [['Sponsor', CONTRACT_META.sponsor], ['Institution', CONTRACT_META.institution],
+   ['Principal Investigator', CONTRACT_META.pi], ['CRO', CONTRACT_META.cro]].forEach(([k,v]) => {
+    body += `<tr><td style="background:#f4f7fb;padding:5pt 8pt;font-weight:bold;color:#1a2d4a;width:25%;border:1px solid #dde6f0;">${k}</td><td style="padding:5pt 8pt;color:#374151;border:1px solid #dde6f0;">${v}</td></tr>`;
+  });
+  body += `</table>`;
+
+  /* Clauses */
+  let currentSection = '';
+  const sectionTitles = {
+    '1':' 1. Governing Terms &amp; Effective Date', '2':'2. Study Conduct',
+    '3':'3. Reagents &amp; Study Drug', '4':'4. Performance Period &amp; Enrollment',
+    '5':'5. Required Equipment', '6':'6. Compensation', '7':'7. Miscellaneous'
+  };
+
+  for (const clause of CLAUSES) {
+    const sec = clause.id.split('.')[0];
+    if (sec !== currentSection) {
+      currentSection = sec;
+      body += `<h2 style="font-size:11pt;font-weight:bold;color:#1a2d4a;border-bottom:1px solid #dde6f0;padding-bottom:4pt;margin-top:16pt;margin-bottom:8pt;">${sectionTitles[sec] || sec}</h2>`;
+    }
+
+    body += `<p style="font-size:10pt;font-weight:bold;color:#1a2d4a;margin-top:10pt;margin-bottom:3pt;">${clause.heading}</p>`;
+
+    if (!clause.final) {
+      /* Unchanged */
+      body += `<p style="font-size:10pt;color:#374151;line-height:1.7;margin-bottom:8pt;">${clause.original}</p>`;
+    } else if (isTrack) {
+      /* Track changes: diff with red strikethrough + blue underline */
+      const segs = simpleDiff(clause.original, clause.final);
+      let paraHtml = '';
+      for (const seg of segs) {
+        const t = seg.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        if (seg.type === 'same') paraHtml += `<span style="color:#374151;">${t}</span>`;
+        else if (seg.type === 'del') paraHtml += `<span style="color:#cc0000;text-decoration:line-through;">${t}</span>`;
+        else paraHtml += `<span style="color:#0070c0;text-decoration:underline;">${t}</span>`;
+      }
+      body += `<p style="font-size:10pt;line-height:1.7;margin-bottom:4pt;">${paraHtml}</p>`;
+      body += `<p style="font-size:9pt;color:${verdictColor[clause.verdict]};font-style:italic;margin-bottom:4pt;">[TRIEZ AI 판정] ${verdictLabel[clause.verdict]}</p>`;
+      if (clause.comment) body += `<p style="font-size:9pt;color:#666;font-style:italic;margin-bottom:8pt;">${clause.comment}</p>`;
+      else body += `<div style="margin-bottom:8pt;"></div>`;
+    } else {
+      /* Clean: final text only */
+      body += `<p style="font-size:10pt;color:#374151;line-height:1.7;margin-bottom:8pt;">${clause.final}</p>`;
+    }
+  }
+
+  /* Footer */
+  const now = new Date().toLocaleString('ko-KR');
+  body += `<hr style="border:none;border-top:1px solid #dde6f0;margin-top:24pt;"/>`;
+  body += `<p style="font-size:8pt;color:#8a9ab0;text-align:center;">${isTrack?'추적변경본':'클린본'} &nbsp;·&nbsp; 내보낸 사람: ${CONTRACT_META.exportedBy} &nbsp;·&nbsp; ${now} &nbsp;·&nbsp; TRIEZ AI 검토 완료</p>`;
+
+  /* Word HTML envelope */
+  const html = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8"/>
+<title>${isTrack ? '추적변경본' : '클린본'} — CTA_Order_410598</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->
+<style>
+  @page { size: A4; margin: 2.5cm 2.5cm 2.5cm 2.5cm; }
+  body { font-family: "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif; font-size: 10pt; color: #1a1a1a; }
+  h1, h2, p, table { page-break-inside: avoid; }
+</style>
+</head>
+<body>${body}</body>
+</html>`;
+
+  const blob = new Blob(['﻿' + html], {type: 'application/msword;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
 </body>
 </html>
