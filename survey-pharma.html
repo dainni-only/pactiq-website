@@ -141,17 +141,27 @@
         <label class="radio-opt"><input type="radio" name="q1" value="글로벌 제약사 한국법인"> <span>글로벌 제약사 한국법인</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="국내 CRO"> <span>국내 CRO</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="글로벌 CRO 한국지사"> <span>글로벌 CRO 한국지사</span></label>
-        <label class="radio-opt"><input type="radio" name="q1" value="기타"> <span>기타</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="기타" onclick="document.getElementById('q1-other-wrap').style.display='block'"> <span>기타</span></label>
+      </div>
+      <div id="q1-other-wrap" style="display:none;margin-top:8px;margin-left:26px;">
+        <input type="text" class="text-input" id="q1-other" placeholder="소속 유형을 입력해 주세요" style="max-width:320px;">
       </div>
     </div>
 
     <div class="q-block">
       <div class="q-label">Q2. 현재 역할 <span class="req">*</span></div>
       <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q2" value="PM (Project Manager)"> <span>PM (Project Manager)</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="CTM (Clinical Trial Manager)"> <span>CTM (Clinical Trial Manager)</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="CRA (Clinical Research Associate)"> <span>CRA (Clinical Research Associate)</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="SSU (Site Start-Up) 담당"> <span>SSU (Site Start-Up) 담당</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="계약/법무 담당"> <span>계약 / 법무 담당</span></label>
-        <label class="radio-opt"><input type="radio" name="q2" value="임상운영 (기타)"> <span>임상운영 (기타)</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="RA (Regulatory Affairs)"> <span>RA (Regulatory Affairs)</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="QA (Quality Assurance)"> <span>QA (Quality Assurance)</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="기타" onclick="document.getElementById('q2-other-wrap').style.display='block'"> <span>기타</span></label>
+      </div>
+      <div id="q2-other-wrap" style="display:none;margin-top:8px;margin-left:26px;">
+        <input type="text" class="text-input" id="q2-other" placeholder="역할을 입력해 주세요" style="max-width:320px;">
       </div>
     </div>
 
@@ -167,7 +177,7 @@
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q4. 담당 시험에서 연간 계약 협상/검토 건수 <span class="req">*</span></div>
+      <div class="q-label">Q4. 담당 시험에서 연간 계약 협상/검토 건수 <span class="req">*</span> <span class="q-sub">(초기 계약 + 변경계약 모두 포함)</span></div>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q4" value="10건 미만"> <span>10건 미만</span></label>
         <label class="radio-opt"><input type="radio" name="q4" value="10~30건"> <span>10~30건</span></label>
@@ -199,7 +209,7 @@
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q6. 계약서 협상 완료까지 평균 소요 기간 <span class="req">*</span></div>
+      <div class="q-label">Q6. 계약서 협상 완료까지 평균 소요 기간 <span class="req">*</span> <span class="q-sub">(서명 제외, 협상 기간만)</span></div>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q6" value="1주 이내"> <span>1주 이내</span></label>
         <label class="radio-opt"><input type="radio" name="q6" value="2~4주"> <span>2~4주</span></label>
@@ -448,6 +458,10 @@ function collectData() {
     const el = document.querySelector(`input[name="${n}"]:checked`);
     data[n] = el ? el.value : '';
   });
+  const q1other = document.getElementById('q1-other').value;
+  if (q1other) data['q1_기타'] = q1other;
+  const q2other = document.getElementById('q2-other').value;
+  if (q2other) data['q2_기타'] = q2other;
   const q5 = Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(e => e.value);
   data['q5_병목'] = q5.join(' | ');
   gridItems.forEach((item, i) => {
