@@ -203,6 +203,8 @@
     .vi-ok { background: #dcfce7; color: #15803d; }
     .vi-warn { background: #fef3c7; color: #b45309; }
     .vi-block { background: #fee2e2; color: #b91c1c; }
+    .vi-ok { background: #dcfce7; color: #15803d; }
+    .vs-ok { color: #15803d; }
     .verdict-card-clause { font-size: 10px; font-weight: 700; letter-spacing: .06em; color: #566070; }
     .verdict-card-status { font-size: 10.5px; font-weight: 800; margin-left: auto; }
     .vs-ok { color: #15803d; }
@@ -562,6 +564,8 @@
     .view-original .del-text { text-decoration: none; color: inherit; background: none; }
     .view-original .comment-mark { display: none; }
     .view-original .clause-verdict-chip { display: none; }
+    /* 기관이 수정하지 않은 ok 조항은 chip 숨김 */
+    .contract-clause.ok:not([data-changed]) .clause-verdict-chip { display: none; }
     .view-original .contract-clause { border-left-color: transparent !important; background: none !important; }
     .view-original .contract-clause:hover { background: #eef3f8 !important; }
 
@@ -666,6 +670,26 @@
     }
     .suggestion-copy-btn:hover { background: #0284c7; }
     .suggestion-copy-btn.copied { background: #16a34a; }
+    .suggestion-accept-btn {
+      flex: 1; font-size: 10px; font-weight: 800; letter-spacing: .04em;
+      background: #15803d; color: #fff; border: none; padding: 5px 12px;
+      cursor: pointer; font-family: inherit; transition: background .15s;
+    }
+    .suggestion-accept-btn:hover { background: #166534; }
+    .suggestion-accept-btn:disabled { background: #4ade80; cursor: default; }
+
+    /* ── 인라인 합의 이력 ── */
+    .inline-hist {
+      margin: 11px 0 8px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 12px;
+    }
+    .inline-hist-title { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8a9ab0; margin-bottom: 8px; }
+    .inline-hist-item { margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+    .inline-hist-item:last-of-type { border-bottom: none; margin-bottom: 4px; }
+    .inline-hist-meta { font-size: 9.5px; color: #8a9ab0; margin-bottom: 2px; font-family: "SF Mono", monospace; }
+    .inline-hist-result { font-size: 10.5px; color: #374151; line-height: 1.5; }
+    .inline-hist-result strong { color: #1541c8; }
+    .inline-hist-insight { font-size: 10.5px; color: #374151; line-height: 1.6; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #c8d8ea; word-break: keep-all; }
+    .inline-hist-insight strong { color: #1541c8; }
 
     /* ── Q&A CHAT PANEL ── */
     .qa-trigger-btn {
@@ -1354,6 +1378,19 @@
           <div class="verdict-ref">SOP §4.2 · EDC Data Entry Timeline<br>ICH E6(R3) 5.5.3 · Timely Data Entry<br>KGCP 제23조 · 기록 및 보고</div>
           <div style="font-size:10px;color:#2a2a28;margin-bottom:4px;">기관 담당자 메모 (임계장, 아주대병원):</div>
           <div style="font-size:11px;color:#505050;background:#0a0a09;padding:8px 10px;border-left:2px solid #505050;line-height:1.6;">"방사선 판독 의뢰 후 결과 수령까지 5 영업일 이상 소요되는 경우가 빈번합니다. 10 영업일로 조정 요청드립니다."</div>
+          <!-- 기관 합의 이력 인라인 -->
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · 아주대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#AJU-2023-089 · 2023.09.12 · 폐암 1상 PROlume-101</div>
+              <div class="inline-hist-result">원안 5일 → <strong>7 영업일</strong>로 합의 (방사선 판독 대기 사유)</div>
+            </div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#AJU-2022-041 · 2022.04.20 · 당뇨병 2상 DM-CARE-202</div>
+              <div class="inline-hist-result">원안 5일 → <strong>7 영업일</strong>로 합의 (동일 사유)</div>
+            </div>
+            <div class="inline-hist-insight">💡 이 기관은 §2.3을 <strong>2회 연속 7 영업일</strong>로 합의한 이력이 있습니다. 이번 10일 요청은 이례적 — <strong>7 영업일 반협상</strong>을 권장합니다.</div>
+          </div>
           <div class="verdict-action-row">
             <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
@@ -1373,6 +1410,15 @@
         <div class="verdict-card-body" id="body-3_2">
           <div class="verdict-card-reason">기관이 Required Materials 비용 외 <strong style="color:#e8e7e3;">구매가 15% 추가 보상</strong>을 요구했습니다. 이는 Master CTA §7.1의 "비용 초과 보상 금지" 조항에 직접 위배됩니다. 어떤 경우에도 허용되지 않는 변경입니다.</div>
           <div class="verdict-ref">Master CTA §7.1 · Cost Cap Clause<br>SOP §12.3 · No Additional Compensation<br>KGCP 제18조 · 부당한 이익 제공 금지</div>
+          <!-- 기관 합의 이력 인라인 -->
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · 아주대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#AJU-2023-089 · 2023.09.12 · 폐암 1상 PROlume-101</div>
+              <div class="inline-hist-result">기관 추가 보상 요청 거절 — <strong>원안 유지</strong></div>
+            </div>
+            <div class="inline-hist-insight">💡 이 기관은 §3.2 추가 보상을 <strong>과거에도 요청했으나 거절</strong>된 이력이 있습니다. 실비 정산 방식의 대안 제안이 효과적일 수 있습니다.</div>
+          </div>
 
           <!-- AI 대안 제안 -->
           <div class="suggestion-box">
@@ -1389,7 +1435,10 @@
                 <li>기관의 실질적 우려(공급 지연 리스크)를 해소하면서 SOP 위반 없이 협상 마무리 가능</li>
               </ul>
             </div>
-            <button class="suggestion-copy-btn" id="copy-btn-3_2" onclick="copySuggestion('3_2')">이 문구 복사하기</button>
+            <div style="display:flex;gap:8px;margin-top:9px;">
+              <button class="suggestion-copy-btn" id="copy-btn-3_2" onclick="copySuggestion('3_2')" style="flex:1;">문구 복사하기</button>
+              <button class="suggestion-accept-btn" id="accept-alt-3_2" onclick="acceptAltSuggestion('3_2')">✓ 수용하기</button>
+            </div>
           </div>
 
           <div class="verdict-action-row">
@@ -1411,6 +1460,19 @@
         <div class="verdict-card-body" id="body-4_1">
           <div class="verdict-card-reason">기관이 "30일 이내" 등록을 <strong style="color:#e8e7e3;">"commercially reasonable efforts within 60일"</strong>로 완화 요청했습니다. SOP는 첫 환자 등록 기한을 30일로 규정하나, 기관별 예외 적용 시 CTM 승인이 필요합니다.</div>
           <div class="verdict-ref">SOP §8.1 · First Patient In Timeline<br>ICH E6(R3) 4.2.1 · Site Initiation</div>
+          <!-- 기관 합의 이력 인라인 -->
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · 아주대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#AJU-2023-089 · 2023.09.12 · 폐암 1상 PROlume-101</div>
+              <div class="inline-hist-result">원안 30일 유지 (변경 없음)</div>
+            </div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#AJU-2022-041 · 2022.04.20 · 당뇨병 2상 DM-CARE-202</div>
+              <div class="inline-hist-result">원안 30일 → <strong>45일</strong>로 합의 (IRB 일정 고려)</div>
+            </div>
+            <div class="inline-hist-insight">💡 이 기관과의 선례(45일)를 고려하면, 이번 60일 요청은 초과분입니다. <strong>45일 반협상</strong>을 권장합니다.</div>
+          </div>
           <div class="verdict-action-row">
             <button class="verdict-action-btn btn-accept" onclick="acceptClause()">CTM 승인으로 수용</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
@@ -1496,78 +1558,12 @@
         </div>
       </div>
 
-      <!-- 기관 합의 이력 -->
-      <div class="hist-panel" id="hist-panel">
-        <div class="hist-panel-header" onclick="toggleHist()">
-          <span class="hist-panel-icon">🏥</span>
-          <span class="hist-panel-title">기관 합의 이력</span>
-          <span class="hist-panel-tag">아주대학교병원</span>
-          <span class="hist-toggle" id="hist-toggle">▾</span>
-        </div>
-        <div class="hist-panel-body open" id="hist-panel-body">
-          <div class="hist-desc">이 기관과 Sangsang Med가 체결한 과거 CTA Order에서 합의한 조항 이력입니다. AI 판정 시 자동 참조됩니다.</div>
-
-          <div class="hist-order">
-            <div class="hist-order-header">
-              <span class="hist-order-id">#AJU-2023-089</span>
-              <span class="hist-order-date">2023.09.12 체결</span>
-            </div>
-            <div class="hist-order-title">폐암 1상 임상시험 · PROlume-101</div>
-            <div class="hist-clause-item">
-              <div class="hist-clause-num">§2.3</div>
-              <div>
-                <div class="hist-clause-label">EDC 입력 기한</div>
-                <div class="hist-clause-result">원안 5일 → <strong>7 영업일</strong>로 합의 (방사선 판독 대기 사유)</div>
-              </div>
-            </div>
-            <div class="hist-clause-item">
-              <div class="hist-clause-num">§4.1</div>
-              <div>
-                <div class="hist-clause-label">첫 피험자 등록 기한</div>
-                <div class="hist-clause-result">원안 30일 유지 (변경 없음)</div>
-              </div>
-            </div>
-            <div class="hist-clause-item">
-              <div class="hist-clause-num">§3.2</div>
-              <div>
-                <div class="hist-clause-label">Required Materials 보상</div>
-                <div class="hist-clause-result">기관 추가 보상 요청 거절 — 원안 유지</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hist-order">
-            <div class="hist-order-header">
-              <span class="hist-order-id">#AJU-2022-041</span>
-              <span class="hist-order-date">2022.04.20 체결</span>
-            </div>
-            <div class="hist-order-title">당뇨병 2상 임상시험 · DM-CARE-202</div>
-            <div class="hist-clause-item">
-              <div class="hist-clause-num">§2.3</div>
-              <div>
-                <div class="hist-clause-label">EDC 입력 기한</div>
-                <div class="hist-clause-result">원안 5일 → <strong>7 영업일</strong>로 합의 (동일 사유)</div>
-              </div>
-            </div>
-            <div class="hist-clause-item">
-              <div class="hist-clause-num">§4.1</div>
-              <div>
-                <div class="hist-clause-label">첫 피험자 등록 기한</div>
-                <div class="hist-clause-result">원안 30일 유지 (변경 없음)</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="hist-insight">
-            <span class="hist-insight-icon">💡</span>
-            <span>이 기관은 §2.3을 <strong>2회 연속 7 영업일</strong>로 요청·합의한 이력이 있습니다. 이번 10 영업일 요청은 이례적이며, <strong>7 영업일로 반협상</strong>하는 것을 권장합니다.</span>
-          </div>
-
-          <button class="hist-upload-btn" onclick="alert('과거 CTA Order(PDF/Word)를 업로드하면 TRIEZ가 합의 이력을 자동 추출해 저장합니다.')">
-            <svg viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 4.5L7 2l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-            과거 CTA Order 업로드하기
-          </button>
-        </div>
+      <!-- 과거 CTA 업로드 버튼 (하단 유지) -->
+      <div style="padding:0 0 4px;">
+        <button class="hist-upload-btn" onclick="alert('과거 CTA Order(PDF/Word)를 업로드하면 TRIEZ가 합의 이력을 자동 추출해 저장합니다.')">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 4.5L7 2l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 11h10" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          과거 CTA Order 업로드하기
+        </button>
       </div>
 
     </div><!-- /ai-panel-scroll -->
@@ -2511,6 +2507,46 @@
     document.getElementById('rp-warn').textContent = warn;
     document.getElementById('rp-block').textContent = block;
     document.getElementById('rp-pend').textContent = pend;
+  }
+
+  /* ── SUGGESTION ACCEPT (대안 수용 → 트래킹 적용) ── */
+  function acceptAltSuggestion(id) {
+    if (id === '3_2') {
+      // 1. 계약서 조항 텍스트를 대안 문구로 트래킹 업데이트
+      const clauseEl = document.querySelector('[data-id="3_2"] .clause-text');
+      if (clauseEl) {
+        clauseEl.innerHTML =
+          'If non-Company drugs, materials or reagents are required by the Protocol ("Required Materials"), Company will ' +
+          '<span class="del-text">reimburse Site for the Required Materials</span>' +
+          '<span class="del-text"> provide Required Materials free of charge and additionally compensate Site at a rate of 15% above purchase cost</span>' +
+          '<span class="ins-text"> provide Required Materials free of charge. In the event the Institution must independently procure Required Materials due to Sponsor supply delay exceeding 14 business days, the Sponsor shall reimburse the Institution for actual, documented procurement costs upon submission of original receipts, with no additional markup or overhead</span>' +
+          '. Such reimbursement costs shall not exceed the amount set forth in Schedule A.';
+      }
+      // 2. 조항 chip → 대안 수용
+      const chip = document.querySelector('[data-id="3_2"] .clause-verdict-chip');
+      if (chip) { chip.className = 'clause-verdict-chip chip-ok'; chip.textContent = '✓ 대안 수용'; }
+      // 3. 조항 클래스 변경
+      const clauseDiv = document.querySelector('[data-id="3_2"]');
+      if (clauseDiv) { clauseDiv.classList.remove('block'); clauseDiv.classList.add('ok'); }
+      // 4. AI 카드 업데이트
+      const card = document.getElementById('card-3_2');
+      if (card) {
+        card.querySelector('.verdict-card-status').textContent = '대안 수용';
+        card.querySelector('.verdict-card-status').className = 'verdict-card-status vs-ok';
+        card.querySelector('.verdict-icon-sm').textContent = '✓';
+        card.querySelector('.verdict-icon-sm').className = 'verdict-icon-sm vi-ok';
+        card.style.borderColor = '#22c55e';
+      }
+      // 5. 버튼 비활성화
+      const btn = document.getElementById('accept-alt-3_2');
+      if (btn) { btn.disabled = true; btn.textContent = '✓ 수용 완료'; }
+      // 6. 진행률 업데이트 (block 1 → ok, block 0)
+      updateProgress(14, 2, 0, 5);
+      // 7. 메모 자동 추가
+      addMemoText('§3.2 — AI 대안 문구(실비 정산 방식)를 수용하여 계약서에 반영했습니다. 트래킹 변경사항에 기록되었습니다.', 'T', 'av-triez', 'TRIEZ AI');
+      // 8. 활동 표시
+      document.getElementById('activity-text').innerHTML = '<span>AI 대안</span>이 §3.2에 트래킹 변경으로 자동 적용되었습니다';
+    }
   }
 
   /* ── SUGGESTION COPY ── */
