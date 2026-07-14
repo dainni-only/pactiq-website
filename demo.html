@@ -623,6 +623,111 @@
     .ref-link { font-size: 9.5px; font-family: "SF Mono", monospace; color: #1541c8; text-decoration: none; letter-spacing: .02em; }
     .ref-link:hover { text-decoration: underline; }
 
+    /* ── PROGRESS BAR ── */
+    .review-progress {
+      background: #fff; border: 1px solid #dde6f0; padding: 12px 14px; margin-bottom: 14px;
+    }
+    .rp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .rp-title { font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #8a9ab0; }
+    .rp-pct { font-size: 12px; font-weight: 800; color: #1a2d4a; }
+    .rp-bar-bg { height: 5px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+    .rp-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #1541c8 0%, #4a7cff 100%); transition: width .6s ease; }
+    .rp-stats { display: flex; gap: 0; }
+    .rp-stat { flex: 1; text-align: center; padding: 4px 0; border-right: 1px solid #e2e8f0; }
+    .rp-stat:last-child { border-right: none; }
+    .rp-stat-num { font-size: 13px; font-weight: 800; line-height: 1.2; }
+    .rp-stat-lbl { font-size: 8.5px; color: #8a9ab0; letter-spacing: .04em; margin-top: 1px; }
+    .rp-stat.ok .rp-stat-num { color: #16a34a; }
+    .rp-stat.warn .rp-stat-num { color: #d97706; }
+    .rp-stat.block .rp-stat-num { color: #dc2626; }
+    .rp-stat.pend .rp-stat-num { color: #8a9ab0; }
+
+    /* ── SUGGESTION BOX (수용불가 대안) ── */
+    .suggestion-box {
+      margin-top: 12px; background: #f0f9ff; border: 1px solid #bae6fd;
+      padding: 11px 13px;
+    }
+    .suggestion-header { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .suggestion-label { font-size: 9.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #0369a1; }
+    .suggestion-clause-text {
+      font-size: 10.5px; color: #1e3a5f; line-height: 1.75;
+      background: #e0f2fe; border-left: 3px solid #0ea5e9;
+      padding: 8px 10px; margin-bottom: 9px;
+      font-family: "SF Mono", "Menlo", monospace; word-break: break-word;
+    }
+    .suggestion-rationale-title { font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #475569; margin-bottom: 5px; }
+    .suggestion-rationale ul { margin: 0; padding-left: 14px; }
+    .suggestion-rationale li { font-size: 10.5px; color: #475569; line-height: 1.7; margin-bottom: 2px; }
+    .suggestion-rationale li strong { color: #1a2d4a; }
+    .suggestion-copy-btn {
+      margin-top: 9px; font-size: 10px; font-weight: 700; letter-spacing: .04em;
+      background: #0ea5e9; color: #fff; border: none; padding: 5px 12px; cursor: pointer;
+      width: 100%; font-family: inherit;
+    }
+    .suggestion-copy-btn:hover { background: #0284c7; }
+    .suggestion-copy-btn.copied { background: #16a34a; }
+
+    /* ── Q&A CHAT PANEL ── */
+    .qa-trigger-btn {
+      display: flex; align-items: center; gap: 5px; margin-left: auto;
+      font-size: 10px; font-weight: 700; background: #1541c8; color: #fff;
+      border: none; padding: 4px 11px; cursor: pointer; letter-spacing: .03em;
+      flex-shrink: 0; transition: background .15s;
+    }
+    .qa-trigger-btn:hover { background: #0d31a0; }
+    .qa-trigger-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+    .qa-panel {
+      display: none; flex-direction: column;
+      background: #fff; border-top: 2px solid #1541c8;
+      height: 340px; flex-shrink: 0;
+    }
+    .qa-panel.open { display: flex; }
+    .qa-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 8px 14px; background: #1541c8; color: #fff;
+    }
+    .qa-panel-title { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .qa-panel-subtitle { font-size: 9px; color: rgba(255,255,255,.7); margin-top: 1px; }
+    .qa-close-btn { background: none; border: none; color: rgba(255,255,255,.8); font-size: 16px; cursor: pointer; line-height: 1; padding: 0 2px; }
+    .qa-close-btn:hover { color: #fff; }
+    .qa-messages { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .qa-messages::-webkit-scrollbar { width: 3px; }
+    .qa-messages::-webkit-scrollbar-thumb { background: #c8d8ea; }
+    .qa-msg { max-width: 88%; }
+    .qa-msg.user { align-self: flex-end; }
+    .qa-msg.ai { align-self: flex-start; }
+    .qa-bubble {
+      padding: 7px 11px; font-size: 11px; line-height: 1.65; word-break: keep-all;
+    }
+    .qa-msg.user .qa-bubble { background: #1541c8; color: #fff; border-radius: 12px 12px 2px 12px; }
+    .qa-msg.ai .qa-bubble { background: #f0f4f8; color: #1a2d4a; border-radius: 12px 12px 12px 2px; border: 1px solid #dde6f0; }
+    .qa-msg-meta { font-size: 9px; color: #8a9ab0; margin-top: 3px; }
+    .qa-msg.user .qa-msg-meta { text-align: right; }
+    .qa-typing { display: none; align-self: flex-start; }
+    .qa-typing.visible { display: flex; }
+    .qa-typing .qa-bubble { background: #f0f4f8; border: 1px solid #dde6f0; border-radius: 12px 12px 12px 2px; }
+    .qa-typing-dots span { display: inline-block; width: 4px; height: 4px; background: #8a9ab0; border-radius: 50%; margin: 0 2px; animation: qtbounce .9s infinite; }
+    .qa-typing-dots span:nth-child(2) { animation-delay: .15s; }
+    .qa-typing-dots span:nth-child(3) { animation-delay: .3s; }
+    @keyframes qtbounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
+    .qa-input-row { display: flex; border-top: 1px solid #dde6f0; padding: 8px 12px; gap: 8px; align-items: center; }
+    .qa-input {
+      flex: 1; border: 1px solid #dde6f0; background: #f8fafc; padding: 6px 10px;
+      font-size: 11px; font-family: inherit; color: #1a2d4a; outline: none;
+    }
+    .qa-input:focus { border-color: #1541c8; }
+    .qa-send-btn {
+      padding: 6px 13px; background: #1541c8; border: none; color: #fff;
+      font-size: 10px; font-weight: 700; cursor: pointer; font-family: inherit; flex-shrink: 0;
+    }
+    .qa-send-btn:hover { background: #0d31a0; }
+    .qa-chips { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 14px 8px; }
+    .qa-chip {
+      font-size: 9.5px; background: #f0f4f8; border: 1px solid #dde6f0; color: #566070;
+      padding: 3px 9px; cursor: pointer; border-radius: 10px; transition: all .12s;
+    }
+    .qa-chip:hover { border-color: #1541c8; color: #1541c8; background: #e8eeff; }
+
     /* responsive */
     @media (max-width: 768px) {
       .demo-body { grid-template-columns: 1fr; }
@@ -1196,12 +1301,43 @@
         <span class="scan-dot"></span>
         실시간 검토 중
       </div>
+      <button class="qa-trigger-btn" id="qa-trigger-btn" onclick="toggleQaPanel()">
+        <svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 4.8C4.5 4 5.2 3.5 6 3.5s1.5.5 1.5 1.3c0 .7-.5 1.1-1 1.4C6 6.5 6 7 6 7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="8.8" r=".5" fill="currentColor"/></svg>
+        AI 질문하기
+      </button>
     </div>
 
     <div class="ai-panel-scroll" id="ai-panel-scroll">
 
+      <!-- 진행률 바 -->
+      <div class="review-progress" id="review-progress">
+        <div class="rp-header">
+          <span class="rp-title">검토 진행률</span>
+          <span class="rp-pct" id="rp-pct">76%</span>
+        </div>
+        <div class="rp-bar-bg"><div class="rp-bar-fill" id="rp-bar-fill" style="width:76%"></div></div>
+        <div class="rp-stats">
+          <div class="rp-stat ok">
+            <div class="rp-stat-num" id="rp-ok">13</div>
+            <div class="rp-stat-lbl">수용</div>
+          </div>
+          <div class="rp-stat warn">
+            <div class="rp-stat-num" id="rp-warn">2</div>
+            <div class="rp-stat-lbl">검토필요</div>
+          </div>
+          <div class="rp-stat block">
+            <div class="rp-stat-num" id="rp-block">1</div>
+            <div class="rp-stat-lbl">수용불가</div>
+          </div>
+          <div class="rp-stat pend">
+            <div class="rp-stat-num" id="rp-pend">5</div>
+            <div class="rp-stat-lbl">미검토</div>
+          </div>
+        </div>
+      </div>
+
       <div style="font-size:10.5px;color:#686864;padding:4px 0 16px;line-height:1.7;">
-        조항을 클릭하면 판정 근거가 표시됩니다. 현재 <span style="color:#fb923c;font-weight:700;">2개 승인 필요</span>, <span style="color:#f87171;font-weight:700;">1개 수용 불가</span> 감지.
+        조항을 클릭하면 판정 근거가 표시됩니다. 현재 <span style="color:#fb923c;font-weight:700;">2개 검토 필요</span>, <span style="color:#f87171;font-weight:700;">1개 수용 불가</span> 감지.
       </div>
 
       <!-- 2_3 WARN -->
@@ -1237,6 +1373,25 @@
         <div class="verdict-card-body" id="body-3_2">
           <div class="verdict-card-reason">기관이 Required Materials 비용 외 <strong style="color:#e8e7e3;">구매가 15% 추가 보상</strong>을 요구했습니다. 이는 Master CTA §7.1의 "비용 초과 보상 금지" 조항에 직접 위배됩니다. 어떤 경우에도 허용되지 않는 변경입니다.</div>
           <div class="verdict-ref">Master CTA §7.1 · Cost Cap Clause<br>SOP §12.3 · No Additional Compensation<br>KGCP 제18조 · 부당한 이익 제공 금지</div>
+
+          <!-- AI 대안 제안 -->
+          <div class="suggestion-box">
+            <div class="suggestion-header">
+              <span class="suggestion-label">💡 AI 대안 제안</span>
+            </div>
+            <div class="suggestion-clause-text" id="suggestion-text-3_2">"The Sponsor shall provide Required Materials to the Institution free of charge. In the event the Institution must independently procure Required Materials due to Sponsor supply delay exceeding 14 business days, the Sponsor shall reimburse the Institution for actual, documented procurement costs upon submission of original receipts, with no additional markup or overhead."</div>
+            <div class="suggestion-rationale">
+              <div class="suggestion-rationale-title">제안 근거</div>
+              <ul>
+                <li>Master CTA §7.1이 금지하는 것은 <strong>"비용 초과 일괄 보상(% markup)"</strong> — 스폰서 귀책 사유로 발생한 실비 정산(actual cost reimbursement)은 금지 범위 외</li>
+                <li>스폰서 공급 지연 시에만 발동되는 조건부 조항으로, KGCP 제18조의 "부당한 이익 제공" 범위에 해당하지 않음</li>
+                <li>유사 선례: 동일 기관 타스폰서 CTA(AJU-2021-067)에서 스폰서 귀책 실비 정산 방식으로 합의 완료</li>
+                <li>기관의 실질적 우려(공급 지연 리스크)를 해소하면서 SOP 위반 없이 협상 마무리 가능</li>
+              </ul>
+            </div>
+            <button class="suggestion-copy-btn" id="copy-btn-3_2" onclick="copySuggestion('3_2')">이 문구 복사하기</button>
+          </div>
+
           <div class="verdict-action-row">
             <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
@@ -1416,6 +1571,36 @@
       </div>
 
     </div><!-- /ai-panel-scroll -->
+
+    <!-- Q&A CHAT PANEL -->
+    <div class="qa-panel" id="qa-panel">
+      <div class="qa-panel-header">
+        <div>
+          <div class="qa-panel-title">AI에게 질문하기</div>
+          <div class="qa-panel-subtitle">계약서 내용, 규정, 조항 해석 등 자유롭게 물어보세요</div>
+        </div>
+        <button class="qa-close-btn" onclick="toggleQaPanel()">×</button>
+      </div>
+      <div class="qa-chips" id="qa-chips">
+        <span class="qa-chip" onclick="sendQaChip(this)">§3.2 왜 수용불가인가요?</span>
+        <span class="qa-chip" onclick="sendQaChip(this)">KGCP 제18조가 뭔가요?</span>
+        <span class="qa-chip" onclick="sendQaChip(this)">대안 문구 사용해도 되나요?</span>
+        <span class="qa-chip" onclick="sendQaChip(this)">검토필요 조항 2개는 뭔가요?</span>
+      </div>
+      <div class="qa-messages" id="qa-messages">
+        <div class="qa-msg ai">
+          <div class="qa-bubble">안녕하세요. 현재 검토 중인 CTA Order에 대해 궁금하신 점을 질문해 주세요. 조항 해석, 규정 근거, 협상 전략 등 무엇이든 도움드릴 수 있습니다.</div>
+          <div class="qa-msg-meta">TRIEZ AI</div>
+        </div>
+      </div>
+      <div class="qa-typing" id="qa-typing">
+        <div class="qa-bubble"><div class="qa-typing-dots"><span></span><span></span><span></span></div></div>
+      </div>
+      <div class="qa-input-row">
+        <input class="qa-input" id="qa-input" type="text" placeholder="질문을 입력하세요..." />
+        <button class="qa-send-btn" onclick="sendQaMessage()">전송</button>
+      </div>
+    </div>
 
     <!-- MEMO PANEL -->
     <div class="memo-panel">
@@ -2289,6 +2474,110 @@
   // memo enter key
   document.getElementById('memo-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') addMemo();
+  });
+
+  /* ── PROGRESS BAR ── */
+  function updateProgress(ok, warn, block, pend) {
+    const total = ok + warn + block + pend;
+    const reviewed = ok + warn + block;
+    const pct = Math.round(reviewed / total * 100);
+    document.getElementById('rp-pct').textContent = pct + '%';
+    document.getElementById('rp-bar-fill').style.width = pct + '%';
+    document.getElementById('rp-ok').textContent = ok;
+    document.getElementById('rp-warn').textContent = warn;
+    document.getElementById('rp-block').textContent = block;
+    document.getElementById('rp-pend').textContent = pend;
+  }
+
+  /* ── SUGGESTION COPY ── */
+  function copySuggestion(id) {
+    const text = document.getElementById('suggestion-text-' + id).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copy-btn-' + id);
+      btn.textContent = '✓ 복사 완료';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '이 문구 복사하기'; btn.classList.remove('copied'); }, 2000);
+    }).catch(() => {
+      const btn = document.getElementById('copy-btn-' + id);
+      btn.textContent = '✓ 복사 완료';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '이 문구 복사하기'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+
+  /* ── Q&A CHAT ── */
+  let qaOpen = false;
+
+  function toggleQaPanel() {
+    qaOpen = !qaOpen;
+    document.getElementById('qa-panel').classList.toggle('open', qaOpen);
+    const btn = document.getElementById('qa-trigger-btn');
+    btn.style.background = qaOpen ? '#0d31a0' : '';
+    if (qaOpen) document.getElementById('qa-input').focus();
+  }
+
+  const qaKnowledge = [
+    { pat: /3\.2|required material|추가\s*보상|15%|markup/, ans: '§3.2는 기관이 Required Materials 비용에 <b>구매가 15% 추가 보상</b>을 요구한 조항입니다. Master CTA §7.1이 "비용 초과 보상 금지"를 명시하고 있고, KGCP 제18조도 임상시험 관련 부당한 이익 제공을 금지합니다. 따라서 수용 불가 판정이 내려졌습니다. 다만 스폰서 귀책 사유 발생 시 실비 정산 방식의 대안 문구는 협상 가능합니다.' },
+    { pat: /kgcp|제18조|부당한\s*이익/, ans: 'KGCP(의약품 임상시험 관리기준) 제18조는 <b>임상시험과 관련한 부당한 이익 제공 및 수수를 금지</b>합니다. 이는 기관이 임상시험 참여를 조건으로 연구비 외 추가 보상을 요구하거나 스폰서가 제공하는 것을 모두 포함합니다. 구매가 % markup 방식의 보상이 이에 해당합니다.' },
+    { pat: /대안|수용\s*불가.*사용|alternative|제안\s*문구/, ans: '네, AI 대안 제안 문구는 협상에 바로 활용하실 수 있습니다. <b>핵심 조건</b>은 ① 스폰서 공급 지연(14영업일 초과) 시에만 발동, ② 실비(영수증 기반) 정산, ③ 추가 markup 없음 — 이 세 가지가 포함되어야 Master CTA §7.1 위반을 피할 수 있습니다. 메모 패널에서 스폰서에게 제안 문구를 공유하시거나 "메모 남기기" 버튼을 활용해 기록해 두세요.' },
+    { pat: /검토\s*필요|승인\s*필요|2개|두\s*개/, ans: '현재 <b>검토 필요 2개 조항</b>은 다음과 같습니다:\n\n• <b>§2.3 EDC 데이터 입력 기한</b> — 기관이 5→10 영업일 변경을 요청했으나, 과거 합의 이력(7 영업일)과 차이가 있어 스폰서 계약담당자 확인이 필요합니다.\n\n• <b>§4.1 첫 피험자 등록 기한</b> — 30→60일 완화 요청으로, CTM 승인 권한 내에서 처리 가능하나 확인이 필요합니다.\n\n두 조항 모두 SOP 또는 과거 선례 범위 내에서 조율 가능한 수준입니다.' },
+    { pat: /2\.3|edc|입력\s*기한|영업일/, ans: '§2.3은 기관이 EDC 데이터 입력 기한을 <b>5 → 10 영업일</b>로 변경 요청한 조항입니다. 스폰서 SOP §4.2는 5 영업일을 규정하고 있으며, 기관의 과거 합의 이력(2022, 2023 모두 7 영업일)을 보면 이번 10 영업일 요청은 이례적입니다. TRIEZ는 <b>7 영업일로 반협상</b>할 것을 권장합니다.' },
+    { pat: /4\.1|피험자\s*등록|등록\s*기한|첫\s*환자/, ans: '§4.1은 기관이 첫 피험자 등록 기한을 <b>30 → 60일</b>로 완화 요청한 조항입니다. ICH E6(R3)에는 특정 기한 규정이 없으며, 이 기관과의 과거 계약(2022)에서 45일로 합의한 이력이 있습니다. CTM 승인을 통해 45~60일 범위 내에서 조율 가능합니다.' },
+    { pat: /미검토|5개|남은/, ans: '현재 미검토 조항은 <b>5개</b>입니다. TRIEZ가 자동 분류하지 못한 신규 문구이거나 기관 측에서 아직 검토 의견을 제출하지 않은 조항들입니다. 계약서 전체를 보시려면 좌측 계약서 뷰에서 직접 조항을 클릭해 확인하실 수 있습니다.' },
+    { pat: /얼마나|시간|단축|빠르/, ans: 'TRIEZ 도입 기관 평균 기준, 계약서 초기 검토(AI 자동 판정)에 소요되는 시간이 <b>기존 3~5일 → 수 시간</b>으로 단축됩니다. 에스컬레이션이 필요한 조항만 사람이 검토하면 되기 때문에, 계약담당자의 실제 업무 시간을 약 70% 줄일 수 있습니다.' },
+  ];
+
+  function getQaReply(q) {
+    const t = q.replace(/\s/g, '');
+    for (const entry of qaKnowledge) {
+      if (entry.pat.test(t) || entry.pat.test(q)) return entry.ans;
+    }
+    return '현재 검토 중인 CTA Order 기준으로 말씀드리면, 해당 내용은 TRIEZ 데이터베이스에서 즉시 확인이 어렵습니다. <b>특정 조항 번호나 키워드(예: §2.3, KGCP, 실비정산)</b>를 포함해 다시 질문해 주시면 더 정확한 답변을 드릴 수 있습니다.';
+  }
+
+  function sendQaMessage(text) {
+    const input = document.getElementById('qa-input');
+    const q = text || input.value.trim();
+    if (!q) return;
+    if (!text) input.value = '';
+
+    // Remove chips after first use
+    const chips = document.getElementById('qa-chips');
+    if (chips) chips.style.display = 'none';
+
+    const msgs = document.getElementById('qa-messages');
+
+    // User message
+    const userMsg = document.createElement('div');
+    userMsg.className = 'qa-msg user';
+    userMsg.innerHTML = `<div class="qa-bubble">${q}</div><div class="qa-msg-meta">나</div>`;
+    msgs.appendChild(userMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+
+    // Typing indicator
+    const typing = document.getElementById('qa-typing');
+    typing.classList.add('visible');
+    msgs.scrollTop = msgs.scrollHeight;
+
+    setTimeout(() => {
+      typing.classList.remove('visible');
+      const reply = getQaReply(q);
+      const aiMsg = document.createElement('div');
+      aiMsg.className = 'qa-msg ai';
+      aiMsg.innerHTML = `<div class="qa-bubble">${reply.replace(/\n/g,'<br>')}</div><div class="qa-msg-meta">TRIEZ AI</div>`;
+      msgs.appendChild(aiMsg);
+      msgs.scrollTop = msgs.scrollHeight;
+    }, 1200);
+  }
+
+  function sendQaChip(el) {
+    sendQaMessage(el.textContent);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('qa-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendQaMessage();
+    });
   });
 
   function toggleRef() {
