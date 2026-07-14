@@ -231,6 +231,8 @@
     .btn-accept:hover { background: #dcfce7; }
     .btn-comment { border-color: #c8d8ea; color: #566070; }
     .btn-comment:hover { background: #f0f4f8; }
+    .btn-edit { border-color: #3b82f6; color: #1d4ed8; }
+    .btn-edit:hover { background: #eff6ff; }
 
     /* ── MEMO PANEL ── */
     .memo-panel {
@@ -1393,7 +1395,8 @@
           </div>
           <div class="verdict-action-row">
             <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
-            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
+            <button class="verdict-action-btn btn-edit" onclick="editClause('2_3')">수정</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
           </div>
         </div>
       </div>
@@ -1458,7 +1461,7 @@
           <div class="verdict-card-status vs-warn">승인 필요</div>
         </div>
         <div class="verdict-card-body" id="body-4_1">
-          <div class="verdict-card-reason">기관이 "30일 이내" 등록을 <strong style="color:#e8e7e3;">"commercially reasonable efforts within 60일"</strong>로 완화 요청했습니다. SOP는 첫 환자 등록 기한을 30일로 규정하나, 기관별 예외 적용 시 CTM 승인이 필요합니다.</div>
+          <div class="verdict-card-reason">기관이 "30일 이내" 등록을 <strong style="color:#e8e7e3;">"commercially reasonable efforts within 60일"</strong>로 완화 요청했습니다. SOP는 첫 환자 등록 기한을 30일로 규정하나, 기관별 예외 적용 시 계약담당자 검토가 필요합니다.</div>
           <div class="verdict-ref">SOP §8.1 · First Patient In Timeline<br>ICH E6(R3) 4.2.1 · Site Initiation</div>
           <!-- 기관 합의 이력 인라인 -->
           <div class="inline-hist">
@@ -1474,15 +1477,16 @@
             <div class="inline-hist-insight">💡 이 기관과의 선례(45일)를 고려하면, 이번 60일 요청은 초과분입니다. <strong>45일 반협상</strong>을 권장합니다.</div>
           </div>
           <div class="verdict-action-row">
-            <button class="verdict-action-btn btn-accept" onclick="acceptClause()">CTM 승인으로 수용</button>
-            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">메모 남기기</button>
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
+            <button class="verdict-action-btn btn-edit" onclick="editClause('4_1')">수정</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
           </div>
         </div>
       </div>
 
       <!-- OK cards summary -->
       <div style="border:1px solid #1a1a18;padding:12px 14px;margin-top:4px;">
-        <div style="font-size:9.5px;font-weight:700;color:#4ade80;letter-spacing:.06em;margin-bottom:8px;">✓ 수용 가능 — 13개 조항</div>
+        <div style="font-size:9.5px;font-weight:700;color:#4ade80;letter-spacing:.06em;margin-bottom:8px;">✓ 검토 완료 — 기관 수정 없음</div>
         <div style="font-size:10.5px;color:#686864;line-height:2;">§1.1 · §1.2 · §1.3 · §2.1 · §2.2 · §3.1 · §5.1 · §5.2 · §5.3 · §5.4 · §6.1 · §6.2 · §7.1 · §7.3 · §7.4 · §7.5 · §7.6</div>
       </div>
 
@@ -2336,12 +2340,12 @@
       '2_3': '<span>AI</span>가 §2.3 기한 변경을 감지했습니다 — 승인 필요',
       '3_2': '<span>AI</span>가 §3.2 비용 초과 조항을 수용 불가 처리했습니다',
       '4_1': '<span>AI</span>가 §4.1 등록 기한 변경을 감지했습니다 — 승인 필요',
-      '1_1': '<span>AI</span>가 §1.1을 검토했습니다 — 수용 가능',
-      '1_2': '<span>AI</span>가 §1.2를 검토했습니다 — 수용 가능',
-      '1_3': '<span>AI</span>가 §1.3 KGCP 준수를 확인했습니다 — 수용 가능',
-      '2_1': '<span>AI</span>가 §2.1 KRW 50,000 한도를 확인했습니다 — 수용 가능',
-      '2_2': '<span>AI</span>가 §2.2를 검토했습니다 — 수용 가능',
-      '3_1': '<span>AI</span>가 §3.1을 검토했습니다 — 수용 가능',
+      '1_1': '<span>§1.1</span> — 기관 수정 없음, 원안 유지',
+      '1_2': '<span>§1.2</span> — 기관 수정 없음, 원안 유지',
+      '1_3': '<span>§1.3</span> — 기관 수정 없음, KGCP 준수 확인',
+      '2_1': '<span>§2.1</span> — 기관 수정 없음, KRW 50,000 한도 확인',
+      '2_2': '<span>§2.2</span> — 기관 수정 없음, 원안 유지',
+      '3_1': '<span>§3.1</span> — 기관 수정 없음, 원안 유지',
     };
     if (activities[id]) {
       document.getElementById('activity-text').innerHTML = activities[id];
@@ -2395,6 +2399,26 @@
     if (card) card.style.display = 'none';
     document.getElementById('activity-text').innerHTML = '<span>김민준 CTM</span>이 §4.1 변경을 승인했습니다';
     addMemoText('§4.1 — CTM 권한으로 60일 등록 기한 수용 승인. 감사 로그에 기록되었습니다.', '김', 'av-blue', '김민준 · CTM');
+  }
+
+  function editClause(id) {
+    const clauseEl = document.querySelector('[data-id="' + id + '"]');
+    if (!clauseEl) return;
+    clauseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectClauseById(id);
+    const textEl = clauseEl.querySelector('.clause-text');
+    if (!textEl) return;
+    if (textEl.contentEditable === 'true') return;
+    textEl.contentEditable = 'true';
+    textEl.style.outline = '2px solid #3b82f6';
+    textEl.style.borderRadius = '2px';
+    textEl.focus();
+    document.getElementById('activity-text').innerHTML = '<span>수정 모드</span> 활성 — 조항 텍스트를 직접 편집 후 저장하세요';
+    textEl.addEventListener('blur', () => {
+      textEl.contentEditable = 'false';
+      textEl.style.outline = '';
+      document.getElementById('activity-text').innerHTML = '<span>§' + id.replace('_', '.') + '</span> 수정 내용이 임시 저장되었습니다';
+    }, { once: true });
   }
 
   function focusMemo() {
