@@ -139,6 +139,7 @@
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q1" value="국내 제약사 (스폰서)"> <span>국내 제약사 (스폰서)</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="글로벌 제약사 한국법인"> <span>글로벌 제약사 한국법인</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="바이오벤처"> <span>바이오벤처</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="국내 CRO"> <span>국내 CRO</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="글로벌 CRO 한국지사"> <span>글로벌 CRO 한국지사</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="기타" onclick="document.getElementById('q1-other-wrap').style.display='block'"> <span>기타</span></label>
@@ -177,12 +178,12 @@
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q4. 담당 시험에서 연간 계약 협상/검토 건수 <span class="req">*</span> <span class="q-sub">(초기 계약 + 변경계약 모두 포함)</span></div>
+      <div class="q-label">Q4. 본인이 연간 검토하는 계약서 건수 <span class="req">*</span> <span class="q-sub">(초기계약 + 변경계약 포함)</span></div>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q4" value="10건 미만"> <span>10건 미만</span></label>
         <label class="radio-opt"><input type="radio" name="q4" value="10~30건"> <span>10~30건</span></label>
         <label class="radio-opt"><input type="radio" name="q4" value="30~60건"> <span>30~60건</span></label>
-        <label class="radio-opt"><input type="radio" name="q4" value="60건 이상"> <span>60건 이상 (멀티사이트 포함)</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="60건 이상"> <span>60건 이상</span></label>
       </div>
     </div>
 
@@ -197,36 +198,72 @@
     <div class="step-sub">기관과 계약서를 협상하는 과정에서 겪는 어려움을 알려주세요.</div>
 
     <div class="q-block">
-      <div class="q-label">Q5. 기관 측 계약서 검토/협상 시 가장 큰 병목은? <span class="req">*</span> <span class="q-sub">(복수 선택 가능)</span></div>
+      <div class="q-label">Q5. 계약서 검토 지연이 임상시험 개시(SIV/FPI)의 병목이 된다고 느끼십니까? <span class="req">*</span></div>
+      <div class="scale-wrap">
+        <span class="scale-label">전혀 아님</span>
+        <div class="scale-opts">
+          <div class="scale-opt"><input type="radio" name="q5_bottleneck" id="q5b-1" value="1"><label for="q5b-1">1</label></div>
+          <div class="scale-opt"><input type="radio" name="q5_bottleneck" id="q5b-2" value="2"><label for="q5b-2">2</label></div>
+          <div class="scale-opt"><input type="radio" name="q5_bottleneck" id="q5b-3" value="3"><label for="q5b-3">3</label></div>
+          <div class="scale-opt"><input type="radio" name="q5_bottleneck" id="q5b-4" value="4"><label for="q5b-4">4</label></div>
+          <div class="scale-opt"><input type="radio" name="q5_bottleneck" id="q5b-5" value="5"><label for="q5b-5">5</label></div>
+        </div>
+        <span class="scale-label">매우 그렇다</span>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q6. 계약서 검토/협상 시 가장 큰 병목은? <span class="req">*</span> <span class="q-sub">(복수 선택 가능)</span></div>
       <div class="check-group">
-        <label class="check-opt"><input type="checkbox" name="q5" value="기관의 회신이 느림 (이메일 지연)"> <span>기관의 회신이 느림 (이메일 지연)</span></label>
-        <label class="check-opt"><input type="checkbox" name="q5" value="기관별로 요구하는 수정 조항이 달라 관리 어려움"> <span>기관별로 요구하는 수정 조항이 달라 관리 어려움</span></label>
-        <label class="check-opt"><input type="checkbox" name="q5" value="Draft 버전 관리 및 변경 이력 추적 복잡"> <span>Draft 버전 관리 및 변경 이력 추적 복잡</span></label>
-        <label class="check-opt"><input type="checkbox" name="q5" value="기관 요청 조항의 수용 가능 여부를 내부에서 다시 검토해야 함"> <span>기관 요청 조항의 수용 가능 여부를 내부에서 다시 검토해야 함</span></label>
-        <label class="check-opt"><input type="checkbox" name="q5" value="법무/Global 에스컬레이션 시 수 주 지연"> <span>법무 / Global 에스컬레이션 시 수 주 지연</span></label>
-        <label class="check-opt"><input type="checkbox" name="q5" value="기관 과거 합의 이력을 찾아보기 어려움"> <span>동일 기관의 과거 합의 이력을 찾아보기 어려움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="기관의 회신이 느림 (이메일 지연)"> <span>기관의 회신이 느림 (이메일 지연)</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="기관별로 요구하는 수정 조항이 달라 관리 어려움"> <span>기관별로 요구하는 수정 조항이 달라 관리 어려움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="Draft 버전 관리 및 변경 이력 추적 복잡"> <span>Draft 버전 관리 및 변경 이력 추적 복잡</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="기관 요청 조항의 수용 여부를 내부에서 재검토해야 함"> <span>기관 요청 조항의 수용 여부를 내부에서 재검토해야 함</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="법무/Global 에스컬레이션 시 수 주 지연"> <span>법무 / Global 에스컬레이션 시 수 주 지연</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="동일 기관의 과거 합의 이력 파악 어려움"> <span>동일 기관의 과거 합의 이력 파악 어려움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="원문 계약서와 수정본 대조 작업 번거로움"> <span>원문 계약서와 수정본 대조 작업 번거로움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="멀티사이트 계약 조항 일관성 유지 어려움"> <span>멀티사이트 계약 조항 일관성 유지 어려움</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="IRB 승인 일정과 계약 협상 일정 미스매치"> <span>IRB 승인 일정과 계약 협상 일정 미스매치</span></label>
+        <label class="check-opt"><input type="checkbox" name="q6" value="기타" onclick="document.getElementById('q6-other-wrap').style.display='block'"> <span>기타</span></label>
+      </div>
+      <div id="q6-other-wrap" style="display:none;margin-top:8px;margin-left:26px;">
+        <input type="text" class="text-input" id="q6-other" placeholder="직접 입력해 주세요" style="max-width:400px;">
       </div>
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q6. 계약서 협상 완료까지 평균 소요 기간 <span class="req">*</span> <span class="q-sub">(서명 제외, 협상 기간만)</span></div>
+      <div class="q-label">Q7. 초기계약 협상 완료까지 평균 소요 기간 <span class="req">*</span> <span class="q-sub">(서명 제외, 협상 기간만)</span></div>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="q6" value="1주 이내"> <span>1주 이내</span></label>
-        <label class="radio-opt"><input type="radio" name="q6" value="2~4주"> <span>2~4주</span></label>
-        <label class="radio-opt"><input type="radio" name="q6" value="1~2개월"> <span>1~2개월</span></label>
-        <label class="radio-opt"><input type="radio" name="q6" value="2~3개월"> <span>2~3개월</span></label>
-        <label class="radio-opt"><input type="radio" name="q6" value="3개월 이상"> <span>3개월 이상</span></label>
+        <label class="radio-opt"><input type="radio" name="q7a" value="1주 이내"> <span>1주 이내</span></label>
+        <label class="radio-opt"><input type="radio" name="q7a" value="2~4주"> <span>2~4주</span></label>
+        <label class="radio-opt"><input type="radio" name="q7a" value="1~2개월"> <span>1~2개월</span></label>
+        <label class="radio-opt"><input type="radio" name="q7a" value="2~3개월"> <span>2~3개월</span></label>
+        <label class="radio-opt"><input type="radio" name="q7a" value="3개월 이상"> <span>3개월 이상</span></label>
       </div>
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q7. 가장 자주 협상이 지연되는 조항 유형 <span class="req">*</span></div>
+      <div class="q-label">Q8. 변경계약(Amendment) 협상 완료까지 평균 소요 기간 <span class="req">*</span> <span class="q-sub">(서명 제외, 협상 기간만)</span></div>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="q7" value="보상/간접비율 조항"> <span>보상 / 간접비율 조항</span></label>
-        <label class="radio-opt"><input type="radio" name="q7" value="책임 한도 (Liability cap) 조항"> <span>책임 한도 (Liability cap) 조항</span></label>
-        <label class="radio-opt"><input type="radio" name="q7" value="타임라인 조항 (등록 기한, 보고 기한 등)"> <span>타임라인 조항 (등록 기한, 보고 기한 등)</span></label>
-        <label class="radio-opt"><input type="radio" name="q7" value="IP/출판 권리 조항"> <span>IP / 출판 권리 조항</span></label>
-        <label class="radio-opt"><input type="radio" name="q7" value="해지 조항"> <span>해지 조항</span></label>
+        <label class="radio-opt"><input type="radio" name="q7b" value="1주 이내"> <span>1주 이내</span></label>
+        <label class="radio-opt"><input type="radio" name="q7b" value="2~4주"> <span>2~4주</span></label>
+        <label class="radio-opt"><input type="radio" name="q7b" value="1~2개월"> <span>1~2개월</span></label>
+        <label class="radio-opt"><input type="radio" name="q7b" value="2~3개월"> <span>2~3개월</span></label>
+        <label class="radio-opt"><input type="radio" name="q7b" value="3개월 이상"> <span>3개월 이상</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
+      <div class="q-label">Q9. 가장 자주 협상이 지연되는 조항 유형 <span class="req">*</span> <span class="q-sub">(복수 선택 가능)</span></div>
+      <div class="check-group">
+        <label class="check-opt"><input type="checkbox" name="q8c" value="책임 한도 (Liability cap) 조항"> <span>책임 한도 (Liability cap) 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="타임라인 조항 (등록 기한, 보고 기한 등)"> <span>타임라인 조항 (등록 기한, 보고 기한 등)</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="연구기간 조항"> <span>연구기간 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="대상자(피험자) 보호 관련 조항"> <span>대상자(피험자) 보호 관련 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="데이터 관리 및 접근권 조항"> <span>데이터 관리 및 접근권 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="연구비 계좌 및 지급 조건 조항"> <span>연구비 계좌 및 지급 조건 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="IP / 출판 권리 조항"> <span>IP / 출판 권리 조항</span></label>
+        <label class="check-opt"><input type="checkbox" name="q8c" value="해지 조항"> <span>해지 조항</span></label>
       </div>
     </div>
 
@@ -258,7 +295,7 @@
 
     <div class="q-block">
       <div class="q-label">Q9. 기능별 유용성 평가 <span class="req">*</span></div>
-      <div class="q-sub">1 = 불필요 / 5 = 매우 유용 — <em>스폰서/CRO 업무 관점에서 평가해 주세요</em></div>
+      <div class="q-sub">1 = 불필요 / 5 = 매우 유용</div>
       <table class="grid-table">
         <thead>
           <tr>
@@ -339,13 +376,14 @@
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q16. 유료 도입 시 수용 가능한 월 구독료 (시험 단위 또는 사이트 단위) <span class="req">*</span></div>
+      <div class="q-label">Q16. 유료 도입 시 수용 가능한 월 구독료 <span class="req">*</span></div>
+      <div class="q-sub">스폰서/제약사에서 진행하는 총 계약건수 기준</div>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="q16" value="시험당 월 10만원 미만"> <span>시험당 월 10만원 미만</span></label>
-        <label class="radio-opt"><input type="radio" name="q16" value="시험당 월 10~30만원"> <span>시험당 월 10~30만원</span></label>
-        <label class="radio-opt"><input type="radio" name="q16" value="시험당 월 30~50만원"> <span>시험당 월 30~50만원</span></label>
-        <label class="radio-opt"><input type="radio" name="q16" value="ROI 맞으면 월 50만원 이상도 가능"> <span>ROI가 맞으면 월 50만원 이상도 가능</span></label>
-        <label class="radio-opt"><input type="radio" name="q16" value="엔터프라이즈 계약 방식 선호 (연간 일괄)"> <span>엔터프라이즈 계약 방식 선호 (연간 일괄)</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 10건 미만 — 월 200만원"> <span>월 10건 미만 → <strong>월 200만원</strong></span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 30건 미만 — 월 300만원"> <span>월 30건 미만 → <strong>월 300만원</strong></span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="월 50건 이상 — 월 600만원"> <span>월 50건 이상 → <strong>월 600만원</strong></span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="어느 구간이든 비용 대비 효과가 있으면 수용 가능"> <span>어느 구간이든 효과가 있으면 수용 가능</span></label>
+        <label class="radio-opt"><input type="radio" name="q16" value="유료 도입 어렵다"> <span>유료 도입은 어렵다</span></label>
         <label class="radio-opt"><input type="radio" name="q16" value="현재 판단 어렵다"> <span>현재 판단하기 어렵다</span></label>
       </div>
     </div>
@@ -411,7 +449,6 @@ const gridItems = [
   '판정 근거 및 출처 규정 실시간 표시',
   '기관 합의 이력 자동 참조',
   '수용불가 시 대안 문구 자동 제안',
-  '대안 문구 수용하기 버튼 (트래킹 변경 자동 적용)',
   '계약 검토 진행률 바',
   '계약담당자 검토 요청 / 수정 / 코멘트 버튼',
 ];
@@ -454,7 +491,7 @@ function prevStep(from) {
 
 function collectData() {
   const data = { survey_type: '제약사/CRO 임상운영팀' };
-  ['q1','q2','q3','q4','q6','q7','q8','q12','q13','q14','q15','q16','q19'].forEach(n => {
+  ['q1','q2','q3','q4','q8','q12','q13','q14','q15','q16','q19'].forEach(n => {
     const el = document.querySelector(`input[name="${n}"]:checked`);
     data[n] = el ? el.value : '';
   });
@@ -462,8 +499,22 @@ function collectData() {
   if (q1other) data['q1_기타'] = q1other;
   const q2other = document.getElementById('q2-other').value;
   if (q2other) data['q2_기타'] = q2other;
-  const q5 = Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(e => e.value);
-  data['q5_병목'] = q5.join(' | ');
+  // 병목 체감도
+  const q5b = document.querySelector('input[name="q5_bottleneck"]:checked');
+  data['q5_병목체감도'] = q5b ? q5b.value : '';
+  // 체크박스: 병목 유형
+  const q6checks = Array.from(document.querySelectorAll('input[name="q6"]:checked')).map(e => e.value);
+  data['q6_병목유형'] = q6checks.join(' | ');
+  const q6other = document.getElementById('q6-other').value;
+  if (q6other) data['q6_기타'] = q6other;
+  // 소요기간
+  const q7a = document.querySelector('input[name="q7a"]:checked');
+  data['q7a_초기계약기간'] = q7a ? q7a.value : '';
+  const q7b = document.querySelector('input[name="q7b"]:checked');
+  data['q7b_변경계약기간'] = q7b ? q7b.value : '';
+  // 지연 조항 유형
+  const q8c = Array.from(document.querySelectorAll('input[name="q8c"]:checked')).map(e => e.value);
+  data['q9_지연조항유형'] = q8c.join(' | ');
   gridItems.forEach((item, i) => {
     const el = document.querySelector(`input[name="grid_${i}"]:checked`);
     data['기능_' + (i+1) + '_' + item.substring(0,10)] = el ? el.value : '';
