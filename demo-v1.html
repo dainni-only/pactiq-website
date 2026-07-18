@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIEZ — 국문 CTA 데모</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Apple SD Gothic Neo", -apple-system, BlinkMacSystemFont, "Noto Sans KR", sans-serif;
+    background: #f0f4f8; color: #0c0c0b;
+    height: 100vh; overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── TOPBAR ── */
+  .demo-topbar {
+    height: 52px; background: #ffffff;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; flex-shrink: 0; border-bottom: 1px solid #dde6f0;
+  }
+  .demo-topbar-left { display: flex; align-items: center; gap: 20px; }
+  .demo-logo { font-size: 13px; font-weight: 800; letter-spacing: .06em; color: #1a2d4a; }
+  .demo-logo span { color: #4a7cff; }
+  .demo-breadcrumb { display: flex; align-items: center; gap: 8px; }
+  .demo-breadcrumb span { font-size: 11px; color: #8a9ab0; }
+  .demo-badge { font-size: 9px; font-weight: 800; letter-spacing: .1em; background: #dcfce7; color: #15803d; padding: 3px 9px; }
+  .demo-topbar-right { display: flex; align-items: center; gap: 12px; }
+  .demo-user { font-size: 11px; color: #566070; }
+  .export-btn { font-size: 11px; font-weight: 700; color: #1a2d4a; background: none; border: 1px solid #dde6f0; padding: 6px 14px; cursor: pointer; }
+  .handoff-btn { font-size: 11px; font-weight: 800; color: #fff; background: #1541c8; border: none; padding: 7px 18px; cursor: pointer; letter-spacing: .02em; }
+
+  /* ── DOC TAB BAR ── */
+  .doc-tabbar {
+    display: flex; align-items: center; background: #fff;
+    border-bottom: 1px solid #dde6f0; padding: 0 16px; flex-shrink: 0; gap: 8px;
+  }
+  .doc-tab-name { font-size: 11px; font-weight: 700; color: #1a2d4a; padding: 10px 0; border-bottom: 2px solid #1541c8; margin-right: 6px; }
+  .view-btn-group { display: flex; margin-left: 10px; }
+  .view-btn { font-size: 10px; font-weight: 700; padding: 4px 10px; border: 1px solid #dde6f0; background: none; cursor: pointer; color: #8a9ab0; }
+  .view-btn.active { background: #1a2d4a; color: #fff; border-color: #1a2d4a; }
+  .ai-live-badge { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #15803d; font-weight: 700; margin-left: auto; }
+  .ai-dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── MAIN LAYOUT ── */
+  .demo-main { display: flex; flex: 1; min-height: 0; }
+
+  /* ── CONTRACT PANEL ── */
+  .contract-panel { flex: 1; overflow-y: auto; background: #f4f6fb; }
+  .contract-inner { max-width: 820px; margin: 0 auto; padding: 32px 40px 60px; }
+
+  .contract-title { text-align: center; margin-bottom: 28px; }
+  .contract-title h1 { font-size: 18px; font-weight: 800; letter-spacing: .04em; color: #1a2d4a; margin-bottom: 6px; }
+  .contract-title .contract-sub { font-size: 11px; color: #8a9ab0; letter-spacing: .03em; }
+  .contract-title .contract-parties { font-size: 12px; color: #374151; margin-top: 10px; line-height: 1.8; }
+
+  .contract-divider { border: none; border-top: 2px solid #1a2d4a; margin: 20px 0 24px; }
+  .contract-divider-thin { border: none; border-top: 1px solid #dde6f0; margin: 20px 0; }
+
+  .contract-section-title {
+    font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+    color: #8a9ab0; padding: 8px 0 6px; border-bottom: 1px solid #e8edf5; margin-bottom: 14px;
+  }
+
+  .contract-clause {
+    padding: 12px 14px; margin-bottom: 6px; cursor: pointer;
+    border-left: 3px solid transparent; transition: background .12s;
+    background: #fff; border-radius: 0;
+  }
+  .contract-clause:hover { background: #f0f4f8; }
+  .contract-clause.active { border-left-color: #4a7cff; background: #f0f5ff; }
+  .contract-clause.warn { border-left-color: #f59e0b; background: #fffbeb; }
+  .contract-clause.warn.active { background: #fef3c7; }
+  .contract-clause.block { border-left-color: #ef4444; background: #fff5f5; }
+  .contract-clause.block.active { background: #fee2e2; }
+  .contract-clause.ok.active { border-left-color: #22c55e; background: #f0fdf4; }
+
+  .clause-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+  .clause-num { font-size: 10.5px; font-weight: 800; color: #1541c8; font-family: "SF Mono", monospace; letter-spacing: .04em; }
+  .clause-verdict-chip {
+    font-size: 9px; font-weight: 800; letter-spacing: .06em; padding: 2px 8px;
+    flex-shrink: 0; margin-left: 8px;
+  }
+  .chip-ok { background: #dcfce7; color: #15803d; }
+  .chip-warn { background: #fef3c7; color: #b45309; }
+  .chip-block { background: #fee2e2; color: #b91c1c; }
+
+  .clause-text { font-size: 12.5px; color: #374151; line-height: 1.75; word-break: keep-all; }
+  .clause-warn-label { font-size: 10px; font-weight: 700; color: #d97706; margin-top: 6px; }
+  .clause-block-label { font-size: 10px; font-weight: 700; color: #dc2626; margin-top: 6px; }
+
+  .del-text { text-decoration: line-through; color: #dc2626; background: #fff0f0; }
+  .ins-text { text-decoration: underline; color: #1541c8; background: #f0f4ff; }
+
+  /* ── AI PANEL ── */
+  .ai-panel {
+    width: 360px; flex-shrink: 0; border-left: 1px solid #dde6f0;
+    display: flex; flex-direction: column; background: #fff; overflow: hidden;
+  }
+  .ai-panel-header {
+    padding: 12px 16px; border-bottom: 1px solid #dde6f0;
+    display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
+  }
+  .ai-panel-title { font-size: 11px; font-weight: 800; color: #1a2d4a; letter-spacing: .04em; }
+  .ai-live-text { font-size: 10px; color: #15803d; font-weight: 700; display: flex; align-items: center; gap: 4px; }
+
+  /* Progress bar */
+  .progress-section { padding: 12px 16px; border-bottom: 1px solid #dde6f0; flex-shrink: 0; }
+  .progress-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .progress-label { font-size: 10px; font-weight: 700; color: #566070; letter-spacing: .04em; }
+  .progress-pct { font-size: 13px; font-weight: 800; color: #1a2d4a; }
+  .progress-bar { height: 5px; background: #e8edf5; border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg,#1541c8,#4a7cff); transition: width .6s ease; border-radius: 2px; }
+  .progress-counts { display: flex; gap: 14px; }
+  .progress-count { text-align: center; }
+  .progress-count-num { font-size: 16px; font-weight: 800; color: #1a2d4a; display: block; }
+  .progress-count-num.ok { color: #15803d; }
+  .progress-count-num.warn { color: #d97706; }
+  .progress-count-num.block { color: #dc2626; }
+  .progress-count-num.pend { color: #8a9ab0; }
+  .progress-count-label { font-size: 9px; color: #8a9ab0; font-weight: 600; letter-spacing: .04em; }
+  .progress-desc { font-size: 10px; color: #566070; margin-top: 8px; line-height: 1.5; }
+  .progress-desc .hl { color: #d97706; font-weight: 700; }
+  .progress-desc .hl-r { color: #dc2626; font-weight: 700; }
+
+  /* Verdict cards */
+  .verdicts-scroll { flex: 1; overflow-y: auto; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+
+  .verdict-card { border: 1px solid #dde6f0; background: #fff; }
+  .verdict-card.highlighted { border-color: #4a7cff; box-shadow: 0 0 0 2px rgba(74,124,255,.12); }
+  .verdict-card-header {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    cursor: pointer; background: #fafbfd;
+  }
+  .verdict-icon-sm {
+    width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800; flex-shrink: 0;
+  }
+  .vi-ok { background: #dcfce7; color: #15803d; }
+  .vi-warn { background: #fef3c7; color: #b45309; }
+  .vi-block { background: #fee2e2; color: #b91c1c; }
+  .verdict-card-clause { font-size: 11px; font-weight: 700; color: #1a2d4a; flex: 1; }
+  .verdict-card-status { font-size: 9.5px; font-weight: 800; letter-spacing: .04em; }
+  .vs-ok { color: #15803d; }
+  .vs-warn { color: #d97706; }
+  .vs-block { color: #dc2626; }
+
+  .verdict-card-body { padding: 12px 14px; display: none; }
+  .verdict-card-body.open { display: block; }
+  .verdict-card-reason { font-size: 11.5px; color: #374151; line-height: 1.65; margin-bottom: 10px; word-break: keep-all; }
+  .verdict-ref { font-size: 10px; color: #8a9ab0; font-family: "SF Mono", monospace; margin-bottom: 10px; line-height: 1.7; background: #f4f6fb; padding: 7px 9px; }
+
+  /* Inline history */
+  .inline-hist { margin: 10px 0 8px; background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 12px; }
+  .inline-hist-title { font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8a9ab0; margin-bottom: 8px; }
+  .inline-hist-item { margin-bottom: 6px; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+  .inline-hist-item:last-of-type { border-bottom: none; margin-bottom: 4px; }
+  .inline-hist-meta { font-size: 9.5px; color: #8a9ab0; margin-bottom: 2px; font-family: "SF Mono", monospace; }
+  .inline-hist-result { font-size: 10.5px; color: #374151; line-height: 1.5; }
+  .inline-hist-result strong { color: #1541c8; }
+  .inline-hist-insight { font-size: 10.5px; color: #374151; line-height: 1.6; margin-top: 6px; padding-top: 6px; border-top: 1px dashed #c8d8ea; word-break: keep-all; }
+  .inline-hist-insight strong { color: #1541c8; }
+
+  /* Suggestion box */
+  .suggestion-box { background: #0a0a09; border-left: 3px solid #4a7cff; padding: 10px 12px; margin-bottom: 10px; }
+  .suggestion-label { font-size: 9px; font-weight: 800; letter-spacing: .1em; color: #4a7cff; margin-bottom: 6px; }
+  .suggestion-text { font-size: 11px; color: #c8d8f0; line-height: 1.65; word-break: keep-all; }
+  .suggestion-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .suggestion-copy-btn {
+    flex: 1; font-size: 10px; font-weight: 700; background: none; border: 1px solid #3a4a6a;
+    color: #8ab0e0; padding: 5px 10px; cursor: pointer; font-family: inherit;
+  }
+  .suggestion-accept-btn {
+    flex: 1; font-size: 10px; font-weight: 800; letter-spacing: .04em;
+    background: #15803d; color: #fff; border: none; padding: 5px 12px;
+    cursor: pointer; font-family: inherit; transition: background .15s;
+  }
+  .suggestion-accept-btn:hover { background: #166534; }
+  .suggestion-accept-btn:disabled { background: #4ade80; cursor: default; }
+
+  /* Action buttons */
+  .verdict-action-row { display: flex; gap: 6px; margin-top: 10px; }
+  .verdict-action-btn {
+    font-size: 10px; font-weight: 700; padding: 5px 10px; border: 1px solid;
+    cursor: pointer; letter-spacing: .02em; transition: .1s; background: none; font-family: inherit;
+  }
+  .btn-escalate { border-color: #d97706; color: #b45309; }
+  .btn-escalate:hover { background: #fef3c7; }
+  .btn-edit { border-color: #3b82f6; color: #1d4ed8; }
+  .btn-edit:hover { background: #eff6ff; }
+  .btn-comment { border-color: #c8d8ea; color: #566070; }
+  .btn-comment:hover { background: #f0f4f8; }
+
+  /* OK summary */
+  .ok-summary { border: 1px solid #dde6f0; padding: 12px 14px; margin-top: 4px; }
+  .ok-summary-label { font-size: 9.5px; font-weight: 700; color: #4ade80; letter-spacing: .06em; margin-bottom: 8px; }
+  .ok-summary-list { font-size: 10.5px; color: #686864; line-height: 2.1; }
+
+  /* Memo panel */
+  .memo-panel { border-top: 1px solid #e2e8f0; background: #f8fafc; flex-shrink: 0; max-height: 200px; display: flex; flex-direction: column; }
+  .memo-header { display: flex; align-items: center; gap: 8px; padding: 8px 14px 6px; flex-shrink: 0; }
+  .memo-title { font-size: 10px; font-weight: 700; color: #566070; letter-spacing: .04em; }
+  .memo-count { font-size: 10px; font-weight: 800; background: #e2e8f0; color: #566070; padding: 1px 7px; border-radius: 10px; }
+  .memo-list { flex: 1; overflow-y: auto; padding: 0 14px 6px; }
+  .memo-item { padding: 7px 0; border-bottom: 1px solid #e2e8f0; }
+  .memo-item:last-of-type { border-bottom: none; }
+  .memo-meta { font-size: 9.5px; color: #8a9ab0; margin-bottom: 3px; display: flex; align-items: center; gap: 6px; }
+  .memo-av { width: 16px; height: 16px; border-radius: 50%; font-size: 7px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; color: #fff; }
+  .av-user { background: #566070; }
+  .av-triez { background: #1541c8; font-size: 6.5px; letter-spacing: .02em; }
+  .memo-text { font-size: 11px; color: #374151; line-height: 1.6; }
+  .memo-input-row { display: flex; gap: 0; padding: 6px 10px; border-top: 1px solid #e2e8f0; flex-shrink: 0; }
+  .memo-input { flex: 1; border: 1px solid #dde6f0; padding: 7px 10px; font-size: 11px; font-family: inherit; outline: none; }
+  .memo-input:focus { border-color: #4a7cff; }
+  .memo-send { background: #1a2d4a; color: #fff; border: none; padding: 7px 14px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: inherit; }
+
+  /* Activity bar */
+  .activity-bar {
+    background: #1a2d4a; color: #c8d8f0; font-size: 10.5px; padding: 6px 16px;
+    flex-shrink: 0; border-top: 1px solid #162030; white-space: nowrap; overflow: hidden;
+  }
+  .activity-bar span { color: #4a7cff; font-weight: 700; }
+
+  @media (max-width: 768px) { .ai-panel { display: none; } }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="demo-topbar">
+  <div class="demo-topbar-left">
+    <div class="demo-logo">TRI<span>EZ</span></div>
+    <div class="demo-breadcrumb">
+      <span>㈜케이바이오파마</span>
+      <span style="color:#2a2a28">›</span>
+      <strong>KBP-2024-HCC-KR-301</strong>
+      <span style="color:#2a2a28">›</span>
+      <strong>○○대학교병원</strong>
+    </div>
+    <div class="demo-badge">AI 검토 활성</div>
+  </div>
+  <div class="demo-topbar-right">
+    <div class="demo-user">정담당 · 계약팀</div>
+    <button class="export-btn">↓ 문서 내보내기</button>
+    <button class="handoff-btn">기관에 전달 →</button>
+  </div>
+</div>
+
+<!-- DOC TAB BAR -->
+<div class="doc-tabbar">
+  <div class="doc-tab-name">임상시험계약서_KBP301_○○대_Draft3.hwp</div>
+  <div class="view-btn-group">
+    <button class="view-btn active" id="btn-changes" onclick="setView('changes')">변경</button>
+    <button class="view-btn" id="btn-original" onclick="setView('original')">원본</button>
+  </div>
+  <div class="ai-live-badge" style="margin-left:auto;">
+    <div class="ai-dot"></div>
+    AI 실시간 검토 중
+  </div>
+  <span style="font-size:10px;color:#8a9ab0;margin-left:16px;">AI 판정 결과</span>
+  <div class="ai-dot" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;margin-left:4px;"></div>
+  <span style="font-size:10px;color:#8a9ab0;margin-left:2px;">실시간 검토 중</span>
+</div>
+
+<!-- MAIN -->
+<div class="demo-main">
+
+  <!-- CONTRACT PANEL -->
+  <div class="contract-panel" id="contract-panel">
+    <div class="contract-inner">
+
+      <div class="contract-title">
+        <h1>임 상 시 험 계 약 서</h1>
+        <div class="contract-sub">IRB No. OOUMC-2024-HCC-301 &nbsp;·&nbsp; 과제번호 KBP-2024-HCC-KR-301 &nbsp;·&nbsp; Draft 3</div>
+        <div class="contract-parties">
+          <strong>의뢰자:</strong> ㈜케이바이오파마 (대표이사 김한국, 서울특별시 마포구 월드컵북로 400)<br>
+          <strong>기관:</strong> ○○대학교 의과대학부속병원 (병원장 이병원, 서울특별시 종로구 대학로 101)<br>
+          <strong>연구자(PI):</strong> 이민준 교수 (종양내과, ○○대학교 의과대학부속병원)
+        </div>
+      </div>
+
+      <hr class="contract-divider">
+
+      <!-- 전문 -->
+      <div class="contract-section-title">전문</div>
+      <div class="contract-clause ok" data-id="pre" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">전문</span>
+        </div>
+        <div class="clause-text">의뢰자인 ㈜케이바이오파마(이하 "의뢰자")와 연구기관인 ○○대학교 의과대학부속병원(이하 "기관") 및 연구자 이민준(이하 "연구자")은 "진행성 간세포암(HCC) 환자를 대상으로 KBP-301의 유효성 및 안전성을 평가하기 위한 다기관, 무작위배정, 이중눈가림, 위약 대조 제3상 임상시험"(이하 "본 임상시험")의 수행에 관하여 「의약품 임상시험 관리기준(KGCP)」, 「생명윤리 및 안전에 관한 법률」, 기타 관계 법령 및 ICH 가이드라인을 준수하여 아래와 같이 계약을 체결한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제1조 ~ 제2조 -->
+      <div class="contract-section-title">제1장 &nbsp; 총칙</div>
+
+      <div class="contract-clause ok" data-id="1_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제1조 (목적)</span>
+        </div>
+        <div class="clause-text">본 계약은 의뢰자와 기관 및 연구자 간의 권리·의무를 명확히 하고, 본 임상시험이 관계 법령 및 윤리적 기준에 따라 적절하게 수행될 수 있도록 하는 것을 목적으로 한다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="1_2" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제2조 (정의)</span>
+        </div>
+        <div class="clause-text">① "임상시험의약품(IP)"이란 KBP-301 및 대조약을 말한다. ② "이상반응(AE)"이란 임상시험 중 발생한 모든 바람직하지 않은 의학적 사건을 말한다. ③ "중대한 이상반응(SAE)"이란 사망, 생명을 위협하는 상황, 입원 또는 입원 기간 연장, 영구적 손상 등을 초래하는 이상반응을 말한다. ④ "시험담당자"란 기관에서 연구자의 감독하에 임상시험을 수행하는 자를 말한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제3조 계약기간 WARN -->
+      <div class="contract-section-title">제2장 &nbsp; 계약 기간 및 임상시험 수행</div>
+
+      <div class="contract-clause warn" data-id="3_1" data-changed onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제3조 (계약 기간)</span>
+          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
+        </div>
+        <div class="clause-text">본 계약의 유효 기간은 IRB 최초 승인일로부터 <span class="del-text">24개월</span><span class="ins-text">36개월</span>로 하되, 양 당사자의 서면 합의에 의하여 연장할 수 있다. 단, 피험자 등록 종료 후에도 최종 피험자의 추적 관찰 완료 시까지 계약의 효력은 유지된다.</div>
+        <div class="clause-warn-label">⚠ 승인 필요</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="4_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제4조 (임상시험 수행)</span>
+        </div>
+        <div class="clause-text">① 연구자는 KGCP, 본 계약 및 IRB가 승인한 프로토콜에 따라 임상시험을 수행한다. ② 연구자는 모든 피험자로부터 IRB가 승인한 동의서 양식으로 서면 동의를 취득한다. ③ 연구자는 프로토콜 또는 본 계약을 변경하고자 하는 경우 의뢰자 및 IRB의 사전 서면 승인을 받아야 한다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="5_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제5조 (의뢰자의 의무)</span>
+        </div>
+        <div class="clause-text">① 의뢰자는 임상시험 프로토콜, 브로슈어 및 관련 문서를 연구자에게 제공한다. ② 의뢰자는 임상시험 수행에 필요한 임상시험의약품을 연구자에게 무상으로 공급하며, 필요한 교육·훈련을 실시한다. ③ 의뢰자는 본 임상시험과 관련하여 발생하는 피험자 피해 보상에 관한 임상시험 배상 보험을 유지한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제6조 ~ 제7조 -->
+      <div class="contract-section-title">제3장 &nbsp; 시험약 관리 및 안전성 보고</div>
+
+      <div class="contract-clause ok" data-id="6_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제6조 (임상시험의약품 관리)</span>
+        </div>
+        <div class="clause-text">① 연구자는 의뢰자가 제공한 임상시험의약품을 KGCP 및 관련 법령에 따라 적절히 보관·관리한다. ② 임상시험의약품은 임상시험의 목적 외에 사용하지 아니한다. ③ 잔여 임상시험의약품은 임상시험 종료 후 의뢰자에게 반환하거나 의뢰자의 서면 지시에 따라 폐기하며, 폐기 기록을 유지한다.</div>
+      </div>
+
+      <!-- 제7조 SAE BLOCK -->
+      <div class="contract-clause block" data-id="7_1" data-changed onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제7조 (이상반응 보고)</span>
+          <span class="clause-verdict-chip chip-block">✕ 수용 불가</span>
+        </div>
+        <div class="clause-text">① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">즉시(24시간 이내)</span><span class="ins-text">영업일 기준 2일(48시간) 이내</span> 의뢰자에게 초기 보고하여야 한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 보고서를, 15일 이내에 상세 보고서를 의뢰자에게 제출한다.</div>
+        <div class="clause-block-label">✕ 수용 불가 — KGCP 제18조 위반</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제8조 ~ 제9조 -->
+      <div class="contract-section-title">제4장 &nbsp; 기록, 보고 및 연구비</div>
+
+      <div class="contract-clause ok" data-id="8_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제8조 (기록 및 자료 보관)</span>
+        </div>
+        <div class="clause-text">① 연구자는 임상시험 관련 원자료(source data) 및 기록을 임상시험 종료 후 3년간 보관한다. ② 의뢰자의 모니터 요원 또는 감사 담당자, 식약처 조사관은 임상시험 관련 자료를 열람할 수 있다. ③ 연구자는 기록의 소재와 접근 가능 여부를 의뢰자에게 즉시 알려야 한다.</div>
+      </div>
+
+      <!-- 제9조 연구비 WARN -->
+      <div class="contract-clause warn" data-id="9_1" data-changed onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제9조 (연구비 지급)</span>
+          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
+        </div>
+        <div class="clause-text">① 의뢰자는 별첨 예산서에 따라 연구비를 지급한다. ② 연구비 지급은 <span class="del-text">분기별(3개월마다)</span><span class="ins-text">월별(매월)</span>로 하며, 지급일은 각 지급 기간 종료 후 <span class="del-text">30일 이내</span><span class="ins-text">15일 이내</span>로 한다. ③ 연구비는 기관이 지정한 아래의 계좌로 입금한다.</div>
+        <div class="clause-warn-label">⚠ 승인 필요</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제10조 ~ 제14조 -->
+      <div class="contract-section-title">제5장 &nbsp; 비밀유지, 지식재산권 및 손해배상</div>
+
+      <div class="contract-clause ok" data-id="10_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제10조 (비밀유지)</span>
+        </div>
+        <div class="clause-text">① 각 당사자는 상대방으로부터 제공받은 기밀 정보를 본 계약의 목적을 위해서만 사용하며, 제3자에게 공개하여서는 아니 된다. ② 본 조의 비밀유지 의무는 계약 종료 후 5년간 존속한다. ③ 법령에 의한 공개, 공지사실 또는 독립적으로 개발된 정보는 비밀 정보에서 제외된다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="11_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제11조 (지식재산권 및 연구결과 발표)</span>
+        </div>
+        <div class="clause-text">① 본 임상시험 결과로 발생하는 지식재산권은 의뢰자에게 귀속된다. ② 연구자는 임상시험 결과를 발표하고자 하는 경우 의뢰자에게 사전에 원고를 제출하며, 의뢰자는 수령 후 60일 이내에 검토 의견을 제시한다. ③ 의뢰자는 중요한 영업 비밀 보호 등 합리적인 사유가 없는 한 발표를 금지할 수 없다.</div>
+      </div>
+
+      <!-- 제12조 손해배상 OK (data-changed, 수용 가능) -->
+      <div class="contract-clause ok" data-id="12_1" data-changed onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제12조 (손해배상 및 책임 한도)</span>
+          <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
+        </div>
+        <div class="clause-text">① 의뢰자는 임상시험과 관련하여 피험자에게 발생한 손해 중 연구자 또는 기관의 과실이 없는 경우 이를 배상한다. ② 기관의 의뢰자에 대한 손해배상책임은 본 계약에 따라 지급된 연구비 총액을 초과하지 않는다. 단, <span class="ins-text">의뢰자의 프로토콜 위반 또는 임상시험의약품 결함에 의한 손해의 경우에는 동 한도를 적용하지 아니한다.</span></div>
+      </div>
+
+      <hr class="contract-divider-thin">
+      <div class="contract-section-title">제6장 &nbsp; 계약의 해지 및 분쟁 해결</div>
+
+      <div class="contract-clause ok" data-id="13_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제13조 (계약의 해지)</span>
+        </div>
+        <div class="clause-text">① 각 당사자는 30일 전에 상대방에게 서면 통보함으로써 본 계약을 해지할 수 있다. ② 피험자 안전에 중대한 위험이 발생한 경우 즉시 계약을 종료할 수 있다. ③ 계약 해지 시 연구자는 의뢰자의 지시에 따라 임상시험의약품을 반환하고 관련 자료를 이관한다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="14_1" onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제14조 (분쟁 해결 및 준거법)</span>
+        </div>
+        <div class="clause-text">① 본 계약으로부터 발생하는 분쟁은 먼저 당사자 간 협의로 해결한다. ② 협의가 이루어지지 않는 경우 대한민국 법원에 전속관할권을 인정한다. ③ 본 계약의 해석 및 이행은 대한민국 법률에 따른다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <div style="text-align:center;font-size:11.5px;color:#374151;line-height:2.2;margin-top:16px;">
+        이상의 내용을 확인하고 계약을 체결함.<br>
+        <strong>의뢰자:</strong> ㈜케이바이오파마 &nbsp; 대표이사 &nbsp; 김한국 &nbsp; (인)&nbsp;&nbsp;&nbsp;
+        <strong>기관:</strong> ○○대학교 의과대학부속병원 &nbsp; 병원장 &nbsp; 이병원 &nbsp; (인)
+      </div>
+
+    </div>
+  </div>
+
+  <!-- AI PANEL -->
+  <div class="ai-panel">
+    <div class="ai-panel-header">
+      <span class="ai-panel-title">AI 판정 결과</span>
+      <span class="ai-live-text"><div class="ai-dot"></div>실시간 검토 중</span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-section">
+      <div class="progress-row">
+        <span class="progress-label">검토 진행률</span>
+        <span class="progress-pct" id="prog-pct">78%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:78%"></div></div>
+      <div class="progress-counts">
+        <div class="progress-count"><span class="progress-count-num ok" id="cnt-ok">11</span><span class="progress-count-label">수용</span></div>
+        <div class="progress-count"><span class="progress-count-num warn" id="cnt-warn">2</span><span class="progress-count-label">검토필요</span></div>
+        <div class="progress-count"><span class="progress-count-num block" id="cnt-block">1</span><span class="progress-count-label">수용불가</span></div>
+        <div class="progress-count"><span class="progress-count-num pend" id="cnt-pend">0</span><span class="progress-count-label">미검토</span></div>
+      </div>
+      <div class="progress-desc">조항을 클릭하면 판정 근거가 표시됩니다. 현재 <span class="hl">2개 검토 필요</span>, <span class="hl-r">1개 수용 불가</span> 감지.</div>
+    </div>
+
+    <!-- Verdict cards -->
+    <div class="verdicts-scroll">
+
+      <!-- 제3조 WARN -->
+      <div class="verdict-card" id="card-3_1">
+        <div class="verdict-card-header" onclick="toggleCard('3_1')">
+          <div class="verdict-icon-sm vi-warn">⚠</div>
+          <div class="verdict-card-clause">제3조 — 계약 기간</div>
+          <div class="verdict-card-status vs-warn">승인 필요</div>
+        </div>
+        <div class="verdict-card-body" id="body-3_1">
+          <div class="verdict-card-reason">기관이 계약 유효 기간을 <strong style="color:#e8e7e3;">24개월 → 36개월</strong>로 연장 요청했습니다. 내부 SOP 기준 초과로 계약담당자 검토가 필요합니다.</div>
+          <div class="verdict-ref">SOP CTA-001 · 표준 계약기간 24개월<br>ICH E6(R3) 4.9.1 · 계약기간 설정 기준</div>
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div>
+              <div class="inline-hist-result">원안 24개월 → <strong>30개월</strong>로 합의 (추적관찰 기간 고려)</div>
+            </div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2021-047 · 2021.03.20 · 폐암 2상 LC-PLUS-202</div>
+              <div class="inline-hist-result">원안 24개월 유지 (기간 연장 요청 없음)</div>
+            </div>
+            <div class="inline-hist-insight">💡 이 기관의 선례(30개월)를 고려하면 이번 36개월 요청은 초과분입니다. <strong>30개월 반협상</strong>을 권장합니다.</div>
+          </div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
+            <button class="verdict-action-btn btn-edit" onclick="editKrClause('3_1')">수정</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제7조 BLOCK -->
+      <div class="verdict-card" id="card-7_1">
+        <div class="verdict-card-header" onclick="toggleCard('7_1')">
+          <div class="verdict-icon-sm vi-block">✕</div>
+          <div class="verdict-card-clause">제7조 — SAE 보고 기한</div>
+          <div class="verdict-card-status vs-block">수용 불가</div>
+        </div>
+        <div class="verdict-card-body" id="body-7_1">
+          <div class="verdict-card-reason">기관이 중대한 이상반응(SAE) 보고 기한을 <strong style="color:#e8e7e3;">24시간 → 영업일 기준 48시간</strong>으로 완화 요청했습니다. KGCP 제18조에 명시된 법적 의무 위반으로 어떤 경우에도 수용 불가합니다.</div>
+          <div class="verdict-ref">KGCP 제18조 · SAE 24시간 이내 보고 (법적 의무)<br>ICH E6(R3) 4.11.1 · SAE 즉시보고 국제 표준<br>식약처 가이드라인 (2023.07) · 위반 시 임상시험 중단 사유</div>
+          <div class="suggestion-box">
+            <div class="suggestion-label">✦ AI 대안 제안</div>
+            <div class="suggestion-text" id="sug-text-7_1">연구자는 SAE 발생 인지 즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다.</div>
+            <div class="suggestion-actions">
+              <button class="suggestion-copy-btn" onclick="copyAlt('7_1')">문구 복사하기</button>
+              <button class="suggestion-accept-btn" id="accept-alt-7_1" onclick="acceptAltKr('7_1')">✓ 수용하기</button>
+            </div>
+          </div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제9조 WARN -->
+      <div class="verdict-card" id="card-9_1">
+        <div class="verdict-card-header" onclick="toggleCard('9_1')">
+          <div class="verdict-icon-sm vi-warn">⚠</div>
+          <div class="verdict-card-clause">제9조 — 연구비 지급 조건</div>
+          <div class="verdict-card-status vs-warn">승인 필요</div>
+        </div>
+        <div class="verdict-card-body" id="body-9_1">
+          <div class="verdict-card-reason">기관이 연구비 지급 주기를 <strong style="color:#e8e7e3;">분기별 → 월별</strong>로, 지급 기한을 <strong style="color:#e8e7e3;">30일 → 15일</strong>로 단축 요청했습니다. 내부 재무팀 확인이 필요합니다.</div>
+          <div class="verdict-ref">SOP FIN-003 · 표준 연구비 지급 주기 분기(3개월)<br>내부 재무 기준 · 월별 지급 전환 시 재무팀 별도 설정 필요</div>
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상 DM-KBIO-202</div>
+              <div class="inline-hist-result">분기 지급 유지 — 기관 연구비 지급 주기 변경 요청 없음</div>
+            </div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div>
+              <div class="inline-hist-result">분기 지급, 지급 기한 30일 유지</div>
+            </div>
+            <div class="inline-hist-insight">💡 동일 기관의 기존 계약에서 분기 지급을 유지한 이력이 있습니다. 이번 월별 요청은 이례적 — <strong>재무팀 확인 후 분기 유지 또는 격월 반협상</strong>을 권장합니다.</div>
+          </div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
+            <button class="verdict-action-btn btn-edit" onclick="editKrClause('9_1')">수정</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제12조 OK (data-changed) -->
+      <div class="verdict-card" id="card-12_1">
+        <div class="verdict-card-header" onclick="toggleCard('12_1')">
+          <div class="verdict-icon-sm vi-ok">✓</div>
+          <div class="verdict-card-clause">제12조 — 손해배상 책임 한도</div>
+          <div class="verdict-card-status vs-ok">수용 가능</div>
+        </div>
+        <div class="verdict-card-body" id="body-12_1">
+          <div class="verdict-card-reason">기관이 의뢰자 귀책 사유(프로토콜 위반, 시험약 결함)에 한해 연구비 총액 한도의 예외를 요청했습니다. 당사 SOP 및 KGCP 범위 내로 수용 가능합니다.</div>
+          <div class="verdict-ref">SOP LEG-005 · 의뢰자 귀책 시 책임 한도 예외 인정<br>KGCP 제25조 · 피험자 피해 보상 의뢰자 책임<br>→ 에스컬레이션 불필요</div>
+        </div>
+      </div>
+
+      <!-- OK 요약 -->
+      <div class="ok-summary">
+        <div class="ok-summary-label">✓ 검토 완료 — 기관 수정 없음</div>
+        <div class="ok-summary-list">전문 · 제1조 · 제2조 · 제4조 · 제5조 · 제6조 · 제8조 · 제10조 · 제11조 · 제13조 · 제14조</div>
+      </div>
+
+    </div>
+
+    <!-- MEMO -->
+    <div class="memo-panel">
+      <div class="memo-header">
+        <span class="memo-title">협상 메모</span>
+        <span class="memo-count" id="memo-count">2</span>
+      </div>
+      <div class="memo-list" id="memo-list">
+        <div class="memo-item">
+          <div class="memo-meta">
+            <span class="memo-av av-user">정</span>
+            <strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:22</span>
+          </div>
+          <div class="memo-text">제3조 기간 연장은 재무팀 확인 필요. 30개월 반협상 방향으로 준비.</div>
+        </div>
+        <div class="memo-item">
+          <div class="memo-meta">
+            <span class="memo-av av-triez">AI</span>
+            <strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:23</span>
+          </div>
+          <div class="memo-text">제7조 SAE 보고기한 변경은 KGCP 제18조 위반으로 수용 불가. 대안 문구를 제안했습니다.</div>
+        </div>
+      </div>
+      <div class="memo-input-row">
+        <input class="memo-input" id="memo-input" placeholder="메모를 입력하세요 — 협상 기록에 저장됩니다">
+        <button class="memo-send" onclick="addMemo()">전송</button>
+      </div>
+    </div>
+
+    <!-- ACTIVITY BAR -->
+    <div class="activity-bar" id="activity-bar">
+      <span id="activity-text">조항을 클릭하면 AI 판정 근거가 표시됩니다</span>
+    </div>
+  </div>
+
+</div><!-- /demo-main -->
+
+<!-- ESCALATION MODAL -->
+<div id="escalate-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;">
+  <div style="background:#fff;padding:28px;max-width:420px;width:90%;">
+    <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#d97706;margin-bottom:10px;">계약담당자 검토 요청</div>
+    <div style="font-size:16px;font-weight:800;color:#1a2d4a;margin-bottom:16px;">계약담당자에게 검토 요청</div>
+    <div style="font-size:12px;color:#566070;line-height:1.7;margin-bottom:16px;">
+      판정 근거, 기관 합의 이력, AI 제안 대안이 함께 첨부된 검토 패키지를 계약담당자에게 전송합니다.
+    </div>
+    <div style="background:#f4f6fb;padding:12px;margin-bottom:16px;font-size:11.5px;color:#374151;line-height:1.8;">
+      <div>판정: <span style="color:#d97706;font-weight:700;">승인 필요</span></div>
+      <div>요청자: 정담당 (계약팀)</div>
+      <div>수신: legal@kbiophama.com</div>
+    </div>
+    <div style="display:flex;gap:10px;" id="modal-btns">
+      <button onclick="closeEscalate()" style="flex:1;padding:10px;border:1px solid #dde6f0;background:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;">취소</button>
+      <button onclick="sendEscalate()" style="flex:1;padding:10px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;">계약담당자에게 전송</button>
+    </div>
+    <div id="modal-success" style="display:none;text-align:center;padding:10px 0;">
+      <div style="font-size:28px;margin-bottom:8px;">✓</div>
+      <div style="font-size:13px;font-weight:700;color:#1a2d4a;">계약담당자에게 전달되었습니다</div>
+      <div style="font-size:11px;color:#8a9ab0;margin-top:4px;">검토 요청 기록이 감사 추적 로그에 저장되었습니다</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let activeClause = null;
+
+function selectClause(el) {
+  if (activeClause) activeClause.classList.remove('active');
+  el.classList.add('active');
+  activeClause = el;
+  const id = el.dataset.id;
+  document.querySelectorAll('.verdict-card').forEach(c => c.classList.remove('highlighted'));
+  const card = document.getElementById('card-' + id);
+  if (card) {
+    card.classList.add('highlighted');
+    document.querySelectorAll('.verdict-card-body').forEach(b => b.classList.remove('open'));
+    const body = document.getElementById('body-' + id);
+    if (body) body.classList.add('open');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  const msgs = {
+    '3_1': '<span>AI</span>가 제3조 계약기간 변경을 감지했습니다 — 승인 필요',
+    '7_1': '<span>AI</span>가 제7조 SAE 보고기한 변경을 감지했습니다 — KGCP 위반',
+    '9_1': '<span>AI</span>가 제9조 연구비 지급 조건 변경을 감지했습니다 — 승인 필요',
+    '12_1': '<span>제12조</span> 손해배상 한도 예외 조항 — 수용 가능',
+  };
+  if (msgs[id]) document.getElementById('activity-text').innerHTML = msgs[id];
+  else document.getElementById('activity-text').innerHTML = '<span>§' + id.replace('_','.') + '</span> — 기관 수정 없음, 원안 유지';
+}
+
+function toggleCard(id) {
+  const body = document.getElementById('body-' + id);
+  if (body) {
+    const isOpen = body.classList.contains('open');
+    document.querySelectorAll('.verdict-card-body').forEach(b => b.classList.remove('open'));
+    if (!isOpen) body.classList.add('open');
+  }
+  const el = document.querySelector('[data-id="' + id + '"]');
+  if (el) selectClause(el);
+}
+
+function setView(mode) {
+  document.getElementById('btn-changes').classList.toggle('active', mode === 'changes');
+  document.getElementById('btn-original').classList.toggle('active', mode === 'original');
+  const panel = document.getElementById('contract-panel');
+  if (mode === 'original') {
+    panel.querySelectorAll('.ins-text').forEach(e => e.style.display = 'none');
+    panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = 'none'; e.style.color = 'inherit'; e.style.background = 'none'; });
+    panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
+  } else {
+    panel.querySelectorAll('.ins-text').forEach(e => e.style.display = '');
+    panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = ''; e.style.color = ''; e.style.background = ''; });
+    panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
+  }
+}
+
+function acceptAltKr(id) {
+  if (id === '7_1') {
+    const clauseEl = document.querySelector('[data-id="7_1"] .clause-text');
+    if (clauseEl) {
+      clauseEl.innerHTML = '① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">영업일 기준 2일(48시간) 이내</span><span class="ins-text">즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시</span>하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 보고서를, 15일 이내에 상세 보고서를 의뢰자에게 제출한다.';
+    }
+    const chip = document.querySelector('[data-id="7_1"] .clause-verdict-chip');
+    if (chip) { chip.className = 'clause-verdict-chip chip-ok'; chip.textContent = '✓ 대안 수용'; }
+    const clauseDiv = document.querySelector('[data-id="7_1"]');
+    if (clauseDiv) { clauseDiv.classList.remove('block'); clauseDiv.classList.add('ok'); }
+    const card = document.getElementById('card-7_1');
+    if (card) {
+      card.querySelector('.verdict-card-status').textContent = '대안 수용';
+      card.querySelector('.verdict-card-status').className = 'verdict-card-status vs-ok';
+      card.querySelector('.verdict-icon-sm').textContent = '✓';
+      card.querySelector('.verdict-icon-sm').className = 'verdict-icon-sm vi-ok';
+      card.style.borderColor = '#22c55e';
+    }
+    const btn = document.getElementById('accept-alt-7_1');
+    if (btn) { btn.disabled = true; btn.textContent = '✓ 수용 완료'; }
+    document.getElementById('cnt-block').textContent = '0';
+    document.getElementById('cnt-ok').textContent = '12';
+    document.getElementById('prog-pct').textContent = '85%';
+    document.getElementById('prog-fill').style.width = '85%';
+    addMemoAuto('제7조 — AI 대안 문구(24시간 보고 유지 + 지원 제공)를 수용하여 계약서에 반영했습니다.');
+    document.getElementById('activity-text').innerHTML = '<span>AI 대안</span>이 제7조에 트래킹 변경으로 자동 적용되었습니다';
+  }
+}
+
+function copyAlt(id) {
+  const text = document.getElementById('sug-text-' + id)?.textContent;
+  if (text) navigator.clipboard.writeText(text).catch(()=>{});
+}
+
+function editKrClause(id) {
+  const clauseEl = document.querySelector('[data-id="' + id + '"]');
+  if (!clauseEl) return;
+  clauseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  selectClause(clauseEl);
+  const textEl = clauseEl.querySelector('.clause-text');
+  if (!textEl || textEl.contentEditable === 'true') return;
+  textEl.contentEditable = 'true';
+  textEl.style.outline = '2px solid #3b82f6';
+  textEl.focus();
+  document.getElementById('activity-text').innerHTML = '<span>수정 모드</span> 활성 — 조항 텍스트를 직접 편집 후 클릭 외부로 이동하면 저장됩니다';
+  textEl.addEventListener('blur', () => {
+    textEl.contentEditable = 'false';
+    textEl.style.outline = '';
+    document.getElementById('activity-text').innerHTML = '<span>수정 내용</span>이 임시 저장되었습니다';
+  }, { once: true });
+}
+
+function focusMemo() {
+  document.getElementById('memo-input').focus();
+}
+
+function addMemo() {
+  const input = document.getElementById('memo-input');
+  const val = input.value.trim();
+  if (!val) return;
+  const list = document.getElementById('memo-list');
+  const item = document.createElement('div');
+  item.className = 'memo-item';
+  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-user">정</span><strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span></div><div class="memo-text">${val}</div>`;
+  list.appendChild(item);
+  input.value = '';
+  const cnt = document.getElementById('memo-count');
+  cnt.textContent = parseInt(cnt.textContent) + 1;
+  list.scrollTop = list.scrollHeight;
+}
+
+function addMemoAuto(text) {
+  const list = document.getElementById('memo-list');
+  const item = document.createElement('div');
+  item.className = 'memo-item';
+  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-triez">AI</span><strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span></div><div class="memo-text">${text}</div>`;
+  list.appendChild(item);
+  const cnt = document.getElementById('memo-count');
+  cnt.textContent = parseInt(cnt.textContent) + 1;
+  list.scrollTop = list.scrollHeight;
+}
+
+function openEscalate() {
+  const m = document.getElementById('escalate-modal');
+  m.style.display = 'flex';
+  document.getElementById('modal-btns').style.display = 'flex';
+  document.getElementById('modal-success').style.display = 'none';
+}
+function closeEscalate() {
+  document.getElementById('escalate-modal').style.display = 'none';
+}
+function sendEscalate() {
+  document.getElementById('modal-btns').style.display = 'none';
+  document.getElementById('modal-success').style.display = 'block';
+  setTimeout(closeEscalate, 2000);
+  addMemoAuto('계약담당자 검토 요청을 전송했습니다. 감사 추적 로그에 기록되었습니다.');
+  document.getElementById('activity-text').innerHTML = '<span>계약담당자 검토 요청</span>이 전송되었습니다';
+}
+
+// Auto-open 제7조 card on load
+setTimeout(() => {
+  const el = document.querySelector('[data-id="7_1"]');
+  if (el) selectClause(el);
+}, 400);
+</script>
+</body>
+</html>
