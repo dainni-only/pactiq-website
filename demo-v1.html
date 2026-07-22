@@ -223,6 +223,46 @@
   .activity-bar span { color: #4a7cff; font-weight: 700; }
 
   @media (max-width: 768px) { .ai-panel { display: none; } }
+
+  /* ── WORD-LIKE LAYOUT OVERRIDE ── */
+  .contract-panel { background: #c8c8c8; }
+  .contract-inner {
+    background: #fff;
+    padding: 60px 72px 80px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.18);
+    margin: 24px auto;
+  }
+  .contract-section-title {
+    font-size: 13px; font-weight: 800;
+    text-transform: none; letter-spacing: .02em;
+    color: #1a2d4a; text-align: center;
+    padding: 20px 0 6px; border-bottom: none; margin-bottom: 8px;
+  }
+  .contract-clause {
+    padding: 3px 10px !important;
+    margin: 0 -10px 10px !important;
+    background: none !important;
+    border-left: none !important;
+  }
+  .contract-clause:hover { background: rgba(74,124,255,.05) !important; }
+  .contract-clause.active { background: rgba(74,124,255,.09) !important; }
+  .contract-clause.warn.active { background: rgba(245,158,11,.08) !important; }
+  .contract-clause.block.active { background: rgba(239,68,68,.07) !important; }
+  .clause-num {
+    font-size: 13px; font-weight: 800; color: #1a2d4a;
+    font-family: inherit; letter-spacing: 0;
+  }
+  .contract-clause.warn .clause-num { color: #92400e; }
+  .contract-clause.block .clause-num { color: #991b1b; }
+  .contract-clause.ok[data-changed] .clause-num { color: #166534; }
+  .clause-text { font-size: 13px; line-height: 1.9; color: #2d3748; }
+  .contract-divider-thin { border-top-color: #ececec; margin: 6px 0; }
+  /* memo clause badge */
+  .memo-clause-tag {
+    display: inline-block; font-size: 9px; background: #e8eeff;
+    color: #1541c8; font-weight: 700; padding: 1px 6px; margin-left: 6px;
+    vertical-align: middle;
+  }
 </style>
 </head>
 <body>
@@ -606,15 +646,17 @@
           <div class="memo-meta">
             <span class="memo-av av-user">정</span>
             <strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:22</span>
+            <span class="memo-clause-tag">제17조</span>
           </div>
-          <div class="memo-text">제17조 기간 연장 요청 — 재무팀 확인 후 30개월 반협상 방향으로 준비.</div>
+          <div class="memo-text">기간 연장 요청 — 재무팀 확인 후 30개월 반협상 방향으로 준비.</div>
         </div>
         <div class="memo-item">
           <div class="memo-meta">
             <span class="memo-av av-triez">AI</span>
             <strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:23</span>
+            <span class="memo-clause-tag">제10조</span>
           </div>
-          <div class="memo-text">제10조 SAE 보고기한 48시간 요청은 KGCP 제18조 위반입니다. 대안 문구를 제안했습니다.</div>
+          <div class="memo-text">SAE 보고기한 48시간 요청은 KGCP 제18조 위반입니다. 대안 문구를 제안했습니다.</div>
         </div>
       </div>
       <div class="memo-input-row">
@@ -702,10 +744,12 @@ function setView(mode) {
     panel.querySelectorAll('.ins-text').forEach(e => e.style.display = 'none');
     panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = 'none'; e.style.color = 'inherit'; e.style.background = 'none'; });
     panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
+    panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
   } else {
     panel.querySelectorAll('.ins-text').forEach(e => e.style.display = '');
     panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = ''; e.style.color = ''; e.style.background = ''; });
     panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
+    panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
   }
 }
 
@@ -765,14 +809,22 @@ function focusMemo() {
   document.getElementById('memo-input').focus();
 }
 
+function getClauseTag() {
+  if (!activeClause) return '';
+  const num = activeClause.querySelector('.clause-num');
+  return num ? num.textContent.replace(/[()]/g, '').trim().split(' ')[0] : '';
+}
+
 function addMemo() {
   const input = document.getElementById('memo-input');
   const val = input.value.trim();
   if (!val) return;
+  const tag = getClauseTag();
+  const tagHtml = tag ? `<span class="memo-clause-tag">${tag}</span>` : '';
   const list = document.getElementById('memo-list');
   const item = document.createElement('div');
   item.className = 'memo-item';
-  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-user">정</span><strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span></div><div class="memo-text">${val}</div>`;
+  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-user">정</span><strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span>${tagHtml}</div><div class="memo-text">${val}</div>`;
   list.appendChild(item);
   input.value = '';
   const cnt = document.getElementById('memo-count');
@@ -780,11 +832,12 @@ function addMemo() {
   list.scrollTop = list.scrollHeight;
 }
 
-function addMemoAuto(text) {
+function addMemoAuto(text, clauseTag) {
+  const tagHtml = clauseTag ? `<span class="memo-clause-tag">${clauseTag}</span>` : (getClauseTag() ? `<span class="memo-clause-tag">${getClauseTag()}</span>` : '');
   const list = document.getElementById('memo-list');
   const item = document.createElement('div');
   item.className = 'memo-item';
-  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-triez">AI</span><strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span></div><div class="memo-text">${text}</div>`;
+  item.innerHTML = `<div class="memo-meta"><span class="memo-av av-triez">AI</span><strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">방금</span>${tagHtml}</div><div class="memo-text">${text}</div>`;
   list.appendChild(item);
   const cnt = document.getElementById('memo-count');
   cnt.textContent = parseInt(cnt.textContent) + 1;

@@ -861,6 +861,53 @@
   .pcm-num{font-weight:700;color:#4f6ef7;margin-right:3px}
   .pcm-hl-badge{display:inline-block;margin-left:8px;padding:2px 8px;background:#6a3cba;color:#fff;border-radius:10px;font-size:10px;font-weight:700;vertical-align:middle}
   .pcm-stamp{margin-top:18px;padding:12px 16px;background:#f0f4ff;border-radius:8px;font-size:12px;color:#555;line-height:1.8}
+
+  /* ── WORD-LIKE LAYOUT OVERRIDE ── */
+  .contract-scroll { background: #c8c8c8; padding: 20px 32px; }
+  .contract-doc-title, .contract-doc-sub, .contract-parties, .contract-section {
+    background: #fff;
+  }
+  .contract-section {
+    background: #fff;
+    padding: 0 48px;
+    margin-bottom: 0;
+  }
+  .contract-section:first-child { padding-top: 40px; }
+  .contract-section:last-child { padding-bottom: 60px; }
+  .contract-doc-title { padding: 40px 48px 4px; margin-bottom: 0; }
+  .contract-doc-sub { padding: 0 48px 24px; margin-bottom: 0; }
+  .contract-parties { margin: 0 48px 24px; }
+  .contract-section-title {
+    font-size: 11px; font-weight: 800;
+    text-transform: none; letter-spacing: .02em;
+    color: #1a2d4a; border-bottom: none;
+    padding-bottom: 4px; margin-bottom: 10px;
+  }
+  .contract-clause {
+    padding: 3px 10px !important;
+    margin: 0 -10px 8px !important;
+    background: none !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
+  .contract-clause:hover { background: rgba(74,124,255,.05) !important; }
+  .contract-clause.active { background: rgba(74,124,255,.09) !important; border-left: none !important; }
+  .contract-clause.ok { background: none !important; border-left: none !important; }
+  .contract-clause.warn { background: none !important; border-left: none !important; }
+  .contract-clause.block { background: none !important; border-left: none !important; }
+  .contract-clause.warn.active { background: rgba(245,158,11,.08) !important; }
+  .contract-clause.block.active { background: rgba(239,68,68,.07) !important; }
+  .clause-num { color: #566070 !important; }
+  .contract-clause.warn .clause-num { color: #92400e !important; }
+  .contract-clause.block .clause-num { color: #991b1b !important; }
+  .contract-clause.ok[data-changed] .clause-num { color: #166534 !important; }
+  .clause-text { font-size: 13px; line-height: 1.9; }
+  /* memo clause badge */
+  .memo-clause-tag {
+    display: inline-block; font-size: 9px; background: #e8eeff;
+    color: #1541c8; font-weight: 700; padding: 1px 6px; margin-left: 6px;
+    vertical-align: middle; border-radius: 2px;
+  }
   </style>
 </head>
 <body>
@@ -1612,21 +1659,21 @@
         <div class="memo-item">
           <div class="memo-avatar av-green">임</div>
           <div class="memo-bubble">
-            <div class="memo-meta"><strong>임계장 · 아주대병원</strong> &nbsp;·&nbsp; 14:22</div>
+            <div class="memo-meta"><strong>임계장 · 아주대병원</strong> &nbsp;·&nbsp; 14:22<span class="memo-clause-tag">§ 2.3</span></div>
             <div class="memo-text">§2.3 EDC 입력 기한 관련 — 방사선 결과 수령 지연 건으로 10일 요청드립니다. 이전 계약(No.0100987)에서도 동일 조건 적용된 사례 있습니다.</div>
           </div>
         </div>
         <div class="memo-item">
           <div class="memo-avatar av-amber">정</div>
           <div class="memo-bubble">
-            <div class="memo-meta"><strong>정담당 · Sangsang Med 계약팀</strong> &nbsp;·&nbsp; 14:35</div>
+            <div class="memo-meta"><strong>정담당 · Sangsang Med 계약팀</strong> &nbsp;·&nbsp; 14:35<span class="memo-clause-tag">§ 2.3 · § 3.2</span></div>
             <div class="memo-text">§3.2 15% 추가보상 요청은 Master CTA 위반으로 수용 불가. §2.3은 개별 사유 검토 후 CTM 판단 필요.</div>
           </div>
         </div>
         <div class="memo-item">
           <div class="memo-avatar av-blue">김</div>
           <div class="memo-bubble">
-            <div class="memo-meta"><strong>김민준 · CTM</strong> &nbsp;·&nbsp; 14:41</div>
+            <div class="memo-meta"><strong>김민준 · CTM</strong> &nbsp;·&nbsp; 14:41<span class="memo-clause-tag">§ 2.3 · § 3.2</span></div>
             <div class="memo-text">§2.3 방사선 판독 지연 사례 확인됨. 8 영업일로 절충안 제시 예정. §3.2는 원안 유지.</div>
           </div>
         </div>
@@ -1667,10 +1714,14 @@
       aiPanel.style.opacity = '.35';
       aiPanel.style.pointerEvents = 'none';
       document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>원본 초안 보기 중';
+      document.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
+      document.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
     } else {
       aiPanel.style.opacity = '1';
       aiPanel.style.pointerEvents = '';
       document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>실시간 검토 중';
+      document.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
+      document.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
     }
   }
 
@@ -2429,14 +2480,14 @@
     const input = document.getElementById('memo-input');
     const text = input.value.trim();
     if (!text) return;
-    addMemoText(text, '임', 'av-green', '임계장 · 아주대병원');
+    const clauseLabel = activeClause ? (activeClause.querySelector('.clause-num')?.textContent?.trim() || '') : '';
+    addMemoText(text, '임', 'av-green', '임계장 · 아주대병원', clauseLabel);
     input.value = '';
-    // TRIEZ AI auto-responds after short delay
     setTimeout(() => showTyping(), 800);
     setTimeout(() => {
       removeTyping();
       const reply = getTriezReply(text);
-      addMemoText(reply, 'T', 'av-triez', 'TRIEZ AI');
+      addMemoText(reply, 'T', 'av-triez', 'TRIEZ AI', clauseLabel);
       document.getElementById('activity-text').innerHTML = '<span>TRIEZ</span>가 메모에 대한 검토 결과를 제공했습니다';
     }, 2400);
   }
@@ -2497,15 +2548,16 @@
     if (el) el.remove();
   }
 
-  function addMemoText(text, initial, avatarClass, name) {
+  function addMemoText(text, initial, avatarClass, name, clauseLabel) {
     const now = new Date();
     const time = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    const tagHtml = clauseLabel ? `<span class="memo-clause-tag">${clauseLabel}</span>` : '';
     const item = document.createElement('div');
     item.className = 'memo-item';
     item.innerHTML = `
       <div class="memo-avatar ${avatarClass}">${initial}</div>
       <div class="memo-bubble">
-        <div class="memo-meta"><strong>${name}</strong> &nbsp;·&nbsp; ${time}</div>
+        <div class="memo-meta"><strong>${name}</strong> &nbsp;·&nbsp; ${time}${tagHtml}</div>
         <div class="memo-text">${text}</div>
       </div>`;
     const list = document.getElementById('memo-list');
