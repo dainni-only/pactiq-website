@@ -1181,9 +1181,9 @@
       <span class="ct-doc-name">CTA_Order_410598.docx</span>
       <span class="ct-spacer"></span>
       <div class="view-toggle" id="view-toggle">
-        <button class="vt-btn" data-mode="all" onclick="setView('all')">전체</button>
-        <button class="vt-btn active" data-mode="changes" onclick="setView('changes')">변경</button>
         <button class="vt-btn" data-mode="original" onclick="setView('original')">원본</button>
+        <button class="vt-btn active" data-mode="changes" onclick="setView('changes')">변경</button>
+        <button class="vt-btn" data-mode="all" onclick="setView('all')">전체</button>
       </div>
       <div class="ct-status">
         <span class="ct-status-dot"></span>
@@ -1716,12 +1716,14 @@
       document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>원본 초안 보기 중';
       document.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
       document.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
+      document.querySelectorAll('.clause-num').forEach(e => { e.style.color = ''; e.style.fontWeight = ''; });
     } else {
       aiPanel.style.opacity = '1';
       aiPanel.style.pointerEvents = '';
       document.querySelector('.ai-scanning').innerHTML = '<span class="scan-dot"></span>실시간 검토 중';
       document.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
       document.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
+      document.querySelectorAll('.clause-num').forEach(e => { e.style.color = ''; e.style.fontWeight = ''; });
     }
   }
 
