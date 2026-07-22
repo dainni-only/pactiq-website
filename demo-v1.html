@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TRIEZ — 국문 CTA 데모</title>
+<title>TRIEZ — 국문 임상시험계약서 데모</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -258,9 +258,6 @@
     <div class="ai-dot"></div>
     AI 실시간 검토 중
   </div>
-  <span style="font-size:10px;color:#8a9ab0;margin-left:16px;">AI 판정 결과</span>
-  <div class="ai-dot" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 1.5s infinite;margin-left:4px;"></div>
-  <span style="font-size:10px;color:#8a9ab0;margin-left:2px;">실시간 검토 중</span>
 </div>
 
 <!-- MAIN -->
@@ -276,163 +273,191 @@
         <div class="contract-parties">
           <strong>의뢰자:</strong> ㈜케이바이오파마 (대표이사 김한국, 서울특별시 마포구 월드컵북로 400)<br>
           <strong>기관:</strong> ○○대학교 의과대학부속병원 (병원장 이병원, 서울특별시 종로구 대학로 101)<br>
-          <strong>연구자(PI):</strong> 이민준 교수 (종양내과, ○○대학교 의과대학부속병원)
+          <strong>연구자(주된 연구자):</strong> 이민준 교수 (종양내과, ○○대학교 의과대학부속병원)
         </div>
       </div>
 
       <hr class="contract-divider">
 
       <!-- 전문 -->
-      <div class="contract-section-title">전문</div>
+      <div class="contract-section-title">전 문</div>
       <div class="contract-clause ok" data-id="pre" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">전문</span>
-        </div>
-        <div class="clause-text">의뢰자인 ㈜케이바이오파마(이하 "의뢰자")와 연구기관인 ○○대학교 의과대학부속병원(이하 "기관") 및 연구자 이민준(이하 "연구자")은 "진행성 간세포암(HCC) 환자를 대상으로 KBP-301의 유효성 및 안전성을 평가하기 위한 다기관, 무작위배정, 이중눈가림, 위약 대조 제3상 임상시험"(이하 "본 임상시험")의 수행에 관하여 「의약품 임상시험 관리기준(KGCP)」, 「생명윤리 및 안전에 관한 법률」, 기타 관계 법령 및 ICH 가이드라인을 준수하여 아래와 같이 계약을 체결한다.</div>
+        <div class="clause-header"><span class="clause-num">전문</span></div>
+        <div class="clause-text">의뢰자인 ㈜케이바이오파마(이하 "의뢰자")와 기관인 ○○대학교 의과대학부속병원(이하 "기관") 및 연구자 이민준(이하 "연구자")은, "진행성 간세포암(HCC) 환자를 대상으로 KBP-301의 유효성 및 안전성을 평가하기 위한 다기관, 무작위배정, 이중눈가림, 위약 대조 제3상 임상시험"(이하 "임상시험")의 수행에 관하여 「의약품 임상시험 관리기준」(이하 "KGCP"), 「약사법」, 「생명윤리 및 안전에 관한 법률」(이하 "생명윤리법"), ICH E6(R3) 가이드라인 및 기타 관계 법령을 준수하여 이 계약을 체결한다.</div>
       </div>
 
       <hr class="contract-divider-thin">
 
-      <!-- 제1조 ~ 제2조 -->
-      <div class="contract-section-title">제1장 &nbsp; 총칙</div>
+      <!-- 제1장 총칙 -->
+      <div class="contract-section-title">제1장 &nbsp; 총 칙</div>
 
-      <div class="contract-clause ok" data-id="1_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제1조 (목적)</span>
-        </div>
-        <div class="clause-text">본 계약은 의뢰자와 기관 및 연구자 간의 권리·의무를 명확히 하고, 본 임상시험이 관계 법령 및 윤리적 기준에 따라 적절하게 수행될 수 있도록 하는 것을 목적으로 한다.</div>
+      <div class="contract-clause ok" data-id="1" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제1조 (목적)</span></div>
+        <div class="clause-text">이 계약은 의뢰자, 기관 및 연구자 간의 권리·의무를 명확히 하고, 임상시험이 관계 법령, 윤리적 기준 및 과학적 원칙에 따라 적절하게 수행될 수 있도록 함을 목적으로 한다.</div>
       </div>
 
-      <div class="contract-clause ok" data-id="1_2" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제2조 (정의)</span>
-        </div>
-        <div class="clause-text">① "임상시험의약품(IP)"이란 KBP-301 및 대조약을 말한다. ② "이상반응(AE)"이란 임상시험 중 발생한 모든 바람직하지 않은 의학적 사건을 말한다. ③ "중대한 이상반응(SAE)"이란 사망, 생명을 위협하는 상황, 입원 또는 입원 기간 연장, 영구적 손상 등을 초래하는 이상반응을 말한다. ④ "시험담당자"란 기관에서 연구자의 감독하에 임상시험을 수행하는 자를 말한다.</div>
+      <div class="contract-clause ok" data-id="2" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제2조 (정의)</span></div>
+        <div class="clause-text">① "임상시험의약품(IP)"이란 이 임상시험에서 사용되는 KBP-301 및 대조약(위약)을 말한다. ② "이상반응(AE)"이란 임상시험 중 발생한 모든 바람직하지 않은 의학적 사건으로서 당해 치료와의 인과관계 여부를 불문한다. ③ "중대한 이상반응(SAE)"이란 사망, 생명을 위협하는 상황, 입원 또는 입원 기간 연장, 영구적이거나 심각한 장애 또는 기능 저하, 선천성 기형 또는 출생 시 이상을 초래하는 이상반응을 말한다. ④ "원자료(source data)"란 임상시험 대상자의 의무기록, 실험실 검사 결과 등 임상시험 사실 확인의 근거가 되는 원본 자료를 말한다. ⑤ "시험담당자"란 기관에서 연구자의 감독 하에 임상시험 관련 업무를 수행하는 의사, 간호사, 약사 등을 말한다.</div>
       </div>
 
-      <hr class="contract-divider-thin">
-
-      <!-- 제3조 계약기간 WARN -->
-      <div class="contract-section-title">제2장 &nbsp; 계약 기간 및 임상시험 수행</div>
-
-      <div class="contract-clause warn" data-id="3_1" data-changed onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제3조 (계약 기간)</span>
-          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
-        </div>
-        <div class="clause-text">본 계약의 유효 기간은 IRB 최초 승인일로부터 <span class="del-text">24개월</span><span class="ins-text">36개월</span>로 하되, 양 당사자의 서면 합의에 의하여 연장할 수 있다. 단, 피험자 등록 종료 후에도 최종 피험자의 추적 관찰 완료 시까지 계약의 효력은 유지된다.</div>
-        <div class="clause-warn-label">⚠ 승인 필요</div>
-      </div>
-
-      <div class="contract-clause ok" data-id="4_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제4조 (임상시험 수행)</span>
-        </div>
-        <div class="clause-text">① 연구자는 KGCP, 본 계약 및 IRB가 승인한 프로토콜에 따라 임상시험을 수행한다. ② 연구자는 모든 피험자로부터 IRB가 승인한 동의서 양식으로 서면 동의를 취득한다. ③ 연구자는 프로토콜 또는 본 계약을 변경하고자 하는 경우 의뢰자 및 IRB의 사전 서면 승인을 받아야 한다.</div>
-      </div>
-
-      <div class="contract-clause ok" data-id="5_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제5조 (의뢰자의 의무)</span>
-        </div>
-        <div class="clause-text">① 의뢰자는 임상시험 프로토콜, 브로슈어 및 관련 문서를 연구자에게 제공한다. ② 의뢰자는 임상시험 수행에 필요한 임상시험의약품을 연구자에게 무상으로 공급하며, 필요한 교육·훈련을 실시한다. ③ 의뢰자는 본 임상시험과 관련하여 발생하는 피험자 피해 보상에 관한 임상시험 배상 보험을 유지한다.</div>
+      <div class="contract-clause ok" data-id="3" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제3조 (적용 법령 및 우선순위)</span></div>
+        <div class="clause-text">① 임상시험의 수행에 관하여는 KGCP, 약사법, 생명윤리법 및 식품의약품안전처 고시·가이드라인이 우선하여 적용된다. ② 이 계약에 명시되지 않은 사항은 관계 법령 및 ICH E6(R3) 가이드라인에 따른다. ③ 이 계약의 특정 조항이 관계 법령에 위반되는 경우 해당 조항은 법령의 범위 내에서 최소한으로 수정된 것으로 보며, 나머지 조항의 효력에는 영향을 미치지 아니한다.</div>
       </div>
 
       <hr class="contract-divider-thin">
 
-      <!-- 제6조 ~ 제7조 -->
-      <div class="contract-section-title">제3장 &nbsp; 시험약 관리 및 안전성 보고</div>
+      <!-- 제2장 기관·연구자 및 의뢰자의 의무 -->
+      <div class="contract-section-title">제2장 &nbsp; 기관·연구자 및 의뢰자의 의무</div>
 
-      <div class="contract-clause ok" data-id="6_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제6조 (임상시험의약품 관리)</span>
-        </div>
-        <div class="clause-text">① 연구자는 의뢰자가 제공한 임상시험의약품을 KGCP 및 관련 법령에 따라 적절히 보관·관리한다. ② 임상시험의약품은 임상시험의 목적 외에 사용하지 아니한다. ③ 잔여 임상시험의약품은 임상시험 종료 후 의뢰자에게 반환하거나 의뢰자의 서면 지시에 따라 폐기하며, 폐기 기록을 유지한다.</div>
+      <div class="contract-clause ok" data-id="4" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제4조 (연구자 및 기관의 의무)</span></div>
+        <div class="clause-text">① 연구자는 KGCP, 이 계약 및 IRB가 승인한 임상시험 계획서(이하 "프로토콜")에 따라 임상시험을 수행한다. ② 연구자는 임상시험 관련 업무를 수행할 자격이 있는 시험담당자를 지정하고, 이들이 임상시험을 올바르게 수행할 수 있도록 적절히 교육하고 감독한다. ③ 기관은 임상시험의 적절한 수행을 위한 시설·장비 및 인력을 제공하고, 임상시험 수행에 적합한 환경을 유지한다. ④ 연구자는 임상시험 기간 중 동시에 수행하는 다른 임상시험을 포함한 업무로 인하여 이 계약에 따른 임상시험 수행에 지장이 없도록 하며, 업무 과중이 우려되는 경우 사전에 의뢰자에게 서면으로 통보한다. ⑤ 연구자 또는 주요 시험담당자가 교체될 경우 연구자는 즉시 의뢰자 및 IRB에 서면으로 통보하여야 한다.</div>
       </div>
 
-      <!-- 제7조 SAE BLOCK -->
-      <div class="contract-clause block" data-id="7_1" data-changed onclick="selectClause(this)">
+      <div class="contract-clause ok" data-id="5" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제5조 (의뢰자의 의무)</span></div>
+        <div class="clause-text">① 의뢰자는 임상시험 계획서, 브로슈어(IB) 및 관련 문서를 연구자에게 제공하고, 프로토콜 및 문서의 변경이 있는 경우 즉시 연구자에게 최신본을 제공한다. ② 의뢰자는 임상시험에 필요한 임상시험의약품 및 관련 소모품을 기관에 무상으로 공급하며, 이에 필요한 교육·훈련을 실시한다. ③ 의뢰자는 임상시험 수행에 필요한 전자 시스템(EDC, IVRS/IXRS 등) 및 이를 활용하기 위한 교육을 제공한다. ④ 의뢰자는 본 임상시험과 관련하여 발생하는 피험자 피해 보상을 위한 임상시험 배상 책임보험을 계약 기간 동안 유지하고, 보험 증서 사본을 기관에 제공한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제3장 IRB, 동의취득 및 피험자 보호 -->
+      <div class="contract-section-title">제3장 &nbsp; IRB 승인, 피험자 동의 및 보호</div>
+
+      <div class="contract-clause ok" data-id="6" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제6조 (IRB 승인 및 임상시험 변경)</span></div>
+        <div class="clause-text">① 연구자는 임상시험 개시 전에 기관 내 IRB로부터 프로토콜, 동의서 양식, 연구자 자격, 기타 관련 문서에 대한 최초 승인을 득한다. ② 프로토콜, 동의서 양식 또는 이 계약을 변경하고자 하는 경우, 의뢰자와 연구자가 협의하여 서면으로 합의하고, 연구자는 IRB의 사전 승인을 받아야 한다. 단, 피험자 안전에 즉각적인 위험이 있는 경우 IRB 승인 전에 긴급 조치를 취할 수 있으며, 이 경우 즉시 의뢰자 및 IRB에 통보한다. ③ 연구자는 IRB의 최초 승인 이후 연간 정기 갱신을 포함한 모든 IRB 승인 현황을 의뢰자에게 지체 없이 통보한다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="7" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제7조 (피험자 동의취득 및 보호)</span></div>
+        <div class="clause-text">① 연구자는 임상시험 관련 모든 절차 수행 전에 IRB가 승인한 동의서 양식을 사용하여 피험자(또는 법정대리인)로부터 자유의사에 의한 서면 동의를 취득한다. ② 연구자는 동의 취득 과정에서 피험자에게 임상시험의 목적, 절차, 예상되는 위험 및 이익, 참여 철회 권리 등을 충분히 설명하고 질문에 답한다. ③ 연구자는 피험자가 동의를 언제든지 철회할 수 있음을 고지하고, 동의 철회가 이후의 치료나 처우에 불이익을 주지 않음을 보장한다. ④ 피험자 또는 법정대리인이 서명한 동의서 원본은 기관이 보관하고, 사본은 피험자에게 교부한다. ⑤ 기관과 연구자는 피험자의 신원 및 개인정보를 보호하기 위하여 「개인정보 보호법」 및 「생명윤리법」이 정하는 바에 따른다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="8" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제8조 (피험자 피해 보상)</span></div>
+        <div class="clause-text">① 임상시험 참여로 인하여 피험자에게 손해가 발생한 경우, 의뢰자는 해당 손해가 피험자 또는 연구자의 귀책 사유로 발생한 것임이 명백한 경우를 제외하고 이를 신속히 보상한다. ② 의뢰자는 KGCP 및 식약처 가이드라인에 따라 피험자 피해보상 기준을 마련하고, 이를 동의서에 명시한다. ③ 의뢰자가 제5조 제④항에 따라 유지하는 배상 책임보험은 임상시험 기간 중 발생하는 피험자 손해를 포함하여야 하며, 보험 한도액 및 주요 조건을 기관에 서면으로 통지한다. ④ 피험자가 임상시험 참여와 관련하여 입원한 경우, 의뢰자는 임상시험과의 인과관계 판단과 무관하게 우선 의료비를 지원하고 이후 인과관계 여부를 검토한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제4장 시험약 관리 및 이상반응 보고 -->
+      <div class="contract-section-title">제4장 &nbsp; 임상시험의약품 관리 및 이상반응 보고</div>
+
+      <div class="contract-clause ok" data-id="9pre" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제9조 (임상시험의약품 관리)</span></div>
+        <div class="clause-text">① 연구자는 의뢰자가 제공한 임상시험의약품을 KGCP 및 약사법에 따라 적절한 조건으로 보관·관리하며, 수령·불출·반납·폐기 기록을 유지한다. ② 임상시험의약품은 임상시험 목적 외에 사용하지 아니하며, 수령된 수량, 불출 수량 및 잔여 수량을 정확히 기록한다. ③ 잔여 임상시험의약품은 임상시험 종료 후 의뢰자에게 반납하거나 의뢰자의 서면 지시에 따라 적법하게 폐기하며, 폐기 시에는 폐기 확인서를 작성·보관한다. ④ 연구자는 임상시험의약품의 보관 조건(온도, 습도 등) 이탈 또는 오염이 발생한 경우 즉시 의뢰자에게 보고한다.</div>
+      </div>
+
+      <!-- 제10조 SAE BLOCK -->
+      <div class="contract-clause block" data-id="10" data-changed onclick="selectClause(this)">
         <div class="clause-header">
-          <span class="clause-num">제7조 (이상반응 보고)</span>
+          <span class="clause-num">제10조 (이상반응 및 중대한 이상반응 보고)</span>
           <span class="clause-verdict-chip chip-block">✕ 수용 불가</span>
         </div>
-        <div class="clause-text">① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">즉시(24시간 이내)</span><span class="ins-text">영업일 기준 2일(48시간) 이내</span> 의뢰자에게 초기 보고하여야 한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 보고서를, 15일 이내에 상세 보고서를 의뢰자에게 제출한다.</div>
-        <div class="clause-block-label">✕ 수용 불가 — KGCP 제18조 위반</div>
+        <div class="clause-text">① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록하고, 의뢰자가 정한 기준에 따라 분류한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">영업일 기준 2일(48시간) 이내</span><span class="ins-text">즉시(24시간 이내)</span> 의뢰자에게 초기 보고하여야 한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 상세 보고서를, 추가 정보 입수 시 15일 이내에 추적 보고서를 제출한다. ④ 의뢰자는 SAE 보고 접수 후 관계 규정에 따라 규제기관에 보고하고, 연구자에게 후속 조치 및 추가 정보 요청 사항을 신속히 통보한다.</div>
+        <div class="clause-block-label">✕ 수용 불가 — KGCP 제18조 위반 (SAE 24시간 이내 보고 법적 의무)</div>
       </div>
 
       <hr class="contract-divider-thin">
 
-      <!-- 제8조 ~ 제9조 -->
-      <div class="contract-section-title">제4장 &nbsp; 기록, 보고 및 연구비</div>
+      <!-- 제5장 모니터링, 감사 및 기록 -->
+      <div class="contract-section-title">제5장 &nbsp; 모니터링, 감사 및 기록 보관</div>
 
-      <div class="contract-clause ok" data-id="8_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제8조 (기록 및 자료 보관)</span>
-        </div>
-        <div class="clause-text">① 연구자는 임상시험 관련 원자료(source data) 및 기록을 임상시험 종료 후 3년간 보관한다. ② 의뢰자의 모니터 요원 또는 감사 담당자, 식약처 조사관은 임상시험 관련 자료를 열람할 수 있다. ③ 연구자는 기록의 소재와 접근 가능 여부를 의뢰자에게 즉시 알려야 한다.</div>
+      <div class="contract-clause ok" data-id="11" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제11조 (모니터링 및 감사)</span></div>
+        <div class="clause-text">① 의뢰자는 임상시험의 적절한 수행 여부를 확인하기 위하여 모니터 요원을 기관에 파견할 수 있으며, 연구자 및 기관은 이에 협조한다. ② 의뢰자의 감사 담당자 및 식품의약품안전처 조사관은 임상시험 관련 문서, 시설 및 원자료를 열람할 수 있으며, 연구자 및 기관은 이를 위한 합리적인 접근을 제공한다. ③ 연구자는 모니터링 또는 감사 중 발견된 문제점에 대하여 의뢰자와 협의하여 적절한 시정 조치를 취한다. ④ 의뢰자는 모니터링 방문 일정을 사전에 연구자 및 기관과 협의하며, 긴급한 경우 사전 통보 없이 방문할 수 있다.</div>
       </div>
 
-      <!-- 제9조 연구비 WARN -->
-      <div class="contract-clause warn" data-id="9_1" data-changed onclick="selectClause(this)">
+      <div class="contract-clause ok" data-id="12pre" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제12조 (기록 및 자료 보관)</span></div>
+        <div class="clause-text">① 연구자 및 기관은 임상시험 관련 필수 문서(essential documents) 및 원자료를 KGCP 및 관계 규정에서 정하는 기간(임상시험 종료 후 최소 3년, 의뢰자의 신약 허가 신청 기간에 따라 연장될 수 있음) 동안 보관한다. ② 자료 보관 기간 중 기록의 이동, 손상, 폐기 또는 접근 불가 상황이 발생하는 경우 즉시 의뢰자에게 서면으로 통보한다. ③ 의뢰자가 원자료의 전자화(electronic source data) 또는 직접 데이터 입력(direct data entry)을 요청하는 경우, 기관은 시스템 검증(validation) 결과 및 접근 권한 관리 현황을 의뢰자에게 제공한다. ④ 자료 보관 기간 만료 전에 의뢰자에게 통보하여 자료 처리 방법을 협의한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <!-- 제6장 연구비 -->
+      <div class="contract-section-title">제6장 &nbsp; 연 구 비</div>
+
+      <!-- 제13조 연구비 WARN -->
+      <div class="contract-clause warn" data-id="13" data-changed onclick="selectClause(this)">
         <div class="clause-header">
-          <span class="clause-num">제9조 (연구비 지급)</span>
+          <span class="clause-num">제13조 (연구비 지급)</span>
           <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
         </div>
-        <div class="clause-text">① 의뢰자는 별첨 예산서에 따라 연구비를 지급한다. ② 연구비 지급은 <span class="del-text">분기별(3개월마다)</span><span class="ins-text">월별(매월)</span>로 하며, 지급일은 각 지급 기간 종료 후 <span class="del-text">30일 이내</span><span class="ins-text">15일 이내</span>로 한다. ③ 연구비는 기관이 지정한 아래의 계좌로 입금한다.</div>
-        <div class="clause-warn-label">⚠ 승인 필요</div>
+        <div class="clause-text">① 의뢰자는 별첨 예산서(붙임 1)에 따라 산정된 연구비를 기관에 지급한다. 연구비는 피험자 등록 진행 현황 및 완료 마일스톤에 연동하여 지급함을 원칙으로 한다. ② 연구비 지급 주기는 <span class="del-text">분기별(3개월마다)</span><span class="ins-text">월별(매월)</span>로 하며, 각 지급 기간 종료 후 <span class="del-text">30일 이내</span><span class="ins-text">15일 이내</span>에 기관이 지정한 계좌로 입금한다. ③ 의뢰자는 연구비 지급 시 지급 명세(기간, 마일스톤, 금액 등)를 서면으로 기관에 통보한다. ④ 임상시험이 의뢰자 귀책 사유로 중단되는 경우, 의뢰자는 중단 시점까지 발생한 비용을 기관에 지급한다.</div>
+        <div class="clause-warn-label">⚠ 승인 필요 — 지급 주기·기한 내부 재무팀 확인 필요</div>
       </div>
 
       <hr class="contract-divider-thin">
 
-      <!-- 제10조 ~ 제14조 -->
-      <div class="contract-section-title">제5장 &nbsp; 비밀유지, 지식재산권 및 손해배상</div>
+      <!-- 제7장 지식재산권, 비밀유지 -->
+      <div class="contract-section-title">제7장 &nbsp; 지식재산권 및 비밀유지</div>
 
-      <div class="contract-clause ok" data-id="10_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제10조 (비밀유지)</span>
-        </div>
-        <div class="clause-text">① 각 당사자는 상대방으로부터 제공받은 기밀 정보를 본 계약의 목적을 위해서만 사용하며, 제3자에게 공개하여서는 아니 된다. ② 본 조의 비밀유지 의무는 계약 종료 후 5년간 존속한다. ③ 법령에 의한 공개, 공지사실 또는 독립적으로 개발된 정보는 비밀 정보에서 제외된다.</div>
+      <div class="contract-clause ok" data-id="14" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제14조 (지식재산권 및 연구결과 발표)</span></div>
+        <div class="clause-text">① 이 임상시험의 결과 및 데이터로부터 발생하는 지식재산권은 의뢰자에게 귀속된다. ② 연구자가 임상시험 결과를 학술지 투고, 학회 발표 등의 형태로 공표하고자 하는 경우, 사전에 원고(또는 발표 자료)를 의뢰자에게 제출하여야 하며, 의뢰자는 수령 후 60일 이내에 검토 의견을 제시하거나 발표를 승인한다. ③ 의뢰자는 중요한 영업 비밀 보호 또는 특허 출원을 위한 합리적인 유예기간(최대 60일) 요청을 제외하고는 발표를 금지할 수 없다. ④ 다기관 공동 발표의 경우 연구자의 기여도에 따라 공동 저자 자격을 인정하며, 의뢰자는 발표 논문에 임상시험 등록번호 및 지원 출처를 명시하도록 한다.</div>
       </div>
 
-      <div class="contract-clause ok" data-id="11_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제11조 (지식재산권 및 연구결과 발표)</span>
-        </div>
-        <div class="clause-text">① 본 임상시험 결과로 발생하는 지식재산권은 의뢰자에게 귀속된다. ② 연구자는 임상시험 결과를 발표하고자 하는 경우 의뢰자에게 사전에 원고를 제출하며, 의뢰자는 수령 후 60일 이내에 검토 의견을 제시한다. ③ 의뢰자는 중요한 영업 비밀 보호 등 합리적인 사유가 없는 한 발표를 금지할 수 없다.</div>
+      <div class="contract-clause ok" data-id="15" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제15조 (비밀유지)</span></div>
+        <div class="clause-text">① 각 당사자는 상대방으로부터 제공받거나 임상시험 수행 중 취득한 기밀 정보(임상시험 데이터, 프로토콜, IB, 연구 결과, 영업 정보 등)를 이 계약의 목적 이외의 용도로 사용하거나 제3자에게 공개하여서는 아니 된다. ② 본 조의 비밀유지 의무는 이 계약 종료 후 5년간 존속한다. ③ 다음 각 호에 해당하는 정보는 기밀 정보에서 제외된다: (1) 이미 공공에 알려진 정보 또는 수령 당사자의 귀책 없이 공공에 알려진 정보, (2) 수령 당사자가 기밀유지 의무 없이 제3자로부터 적법하게 취득한 정보, (3) 법령 또는 규제기관의 요청에 의해 공개가 강제되는 정보. ④ 제③항 제3호에 따른 공개의 경우 수령 당사자는 공개 전에 상대방에게 즉시 서면으로 통보하여야 한다.</div>
       </div>
 
-      <!-- 제12조 손해배상 OK (data-changed, 수용 가능) -->
-      <div class="contract-clause ok" data-id="12_1" data-changed onclick="selectClause(this)">
+      <hr class="contract-divider-thin">
+
+      <!-- 제8장 손해배상 및 책임 -->
+      <div class="contract-section-title">제8장 &nbsp; 손해배상 및 책임 제한</div>
+
+      <!-- 제16조 손해배상 OK (data-changed, 수용 가능) -->
+      <div class="contract-clause ok" data-id="16" data-changed onclick="selectClause(this)">
         <div class="clause-header">
-          <span class="clause-num">제12조 (손해배상 및 책임 한도)</span>
+          <span class="clause-num">제16조 (손해배상 및 배상 책임 제한)</span>
           <span class="clause-verdict-chip chip-ok">✓ 수용 가능</span>
         </div>
-        <div class="clause-text">① 의뢰자는 임상시험과 관련하여 피험자에게 발생한 손해 중 연구자 또는 기관의 과실이 없는 경우 이를 배상한다. ② 기관의 의뢰자에 대한 손해배상책임은 본 계약에 따라 지급된 연구비 총액을 초과하지 않는다. 단, <span class="ins-text">의뢰자의 프로토콜 위반 또는 임상시험의약품 결함에 의한 손해의 경우에는 동 한도를 적용하지 아니한다.</span></div>
-      </div>
-
-      <hr class="contract-divider-thin">
-      <div class="contract-section-title">제6장 &nbsp; 계약의 해지 및 분쟁 해결</div>
-
-      <div class="contract-clause ok" data-id="13_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제13조 (계약의 해지)</span>
-        </div>
-        <div class="clause-text">① 각 당사자는 30일 전에 상대방에게 서면 통보함으로써 본 계약을 해지할 수 있다. ② 피험자 안전에 중대한 위험이 발생한 경우 즉시 계약을 종료할 수 있다. ③ 계약 해지 시 연구자는 의뢰자의 지시에 따라 임상시험의약품을 반환하고 관련 자료를 이관한다.</div>
-      </div>
-
-      <div class="contract-clause ok" data-id="14_1" onclick="selectClause(this)">
-        <div class="clause-header">
-          <span class="clause-num">제14조 (분쟁 해결 및 준거법)</span>
-        </div>
-        <div class="clause-text">① 본 계약으로부터 발생하는 분쟁은 먼저 당사자 간 협의로 해결한다. ② 협의가 이루어지지 않는 경우 대한민국 법원에 전속관할권을 인정한다. ③ 본 계약의 해석 및 이행은 대한민국 법률에 따른다.</div>
+        <div class="clause-text">① 각 당사자는 이 계약 위반 또는 과실로 인하여 상대방에게 발생한 손해를 배상할 책임을 진다. ② 기관의 의뢰자에 대한 배상 책임은 이 계약에 따라 기관에 지급된 연구비 총액을 초과하지 않는다. 단, <span class="ins-text">의뢰자의 프로토콜 위반 또는 임상시험의약품 결함에 기인한 손해의 경우에는 위 한도를 적용하지 아니하며, 의뢰자가 전적으로 배상 책임을 부담한다.</span> ③ 어느 당사자도 상대방에 대하여 간접 손해, 결과적 손해, 일실이익 또는 특별 손해에 대한 배상 책임을 지지 아니한다. 단, 당사자의 고의 또는 중대한 과실에 의한 경우에는 그러하지 아니한다.</div>
       </div>
 
       <hr class="contract-divider-thin">
 
-      <div style="text-align:center;font-size:11.5px;color:#374151;line-height:2.2;margin-top:16px;">
-        이상의 내용을 확인하고 계약을 체결함.<br>
-        <strong>의뢰자:</strong> ㈜케이바이오파마 &nbsp; 대표이사 &nbsp; 김한국 &nbsp; (인)&nbsp;&nbsp;&nbsp;
-        <strong>기관:</strong> ○○대학교 의과대학부속병원 &nbsp; 병원장 &nbsp; 이병원 &nbsp; (인)
+      <!-- 제9장 계약 기간 및 해지 -->
+      <div class="contract-section-title">제9장 &nbsp; 계약 기간, 해지 및 분쟁 해결</div>
+
+      <!-- 제17조 계약기간 WARN -->
+      <div class="contract-clause warn" data-id="17" data-changed onclick="selectClause(this)">
+        <div class="clause-header">
+          <span class="clause-num">제17조 (계약 기간)</span>
+          <span class="clause-verdict-chip chip-warn">⚠ 승인 필요</span>
+        </div>
+        <div class="clause-text">이 계약의 유효 기간은 IRB 최초 승인일로부터 <span class="del-text">24개월</span><span class="ins-text">36개월</span>로 하되, 양 당사자의 서면 합의에 따라 연장할 수 있다. 단, 피험자 등록이 종료된 이후에도 마지막 피험자의 추적 관찰 완료(Last Patient Last Visit), 데이터베이스 잠금(DB lock) 및 임상시험 종료 절차가 완료될 때까지 이 계약의 효력은 유지된다.</div>
+        <div class="clause-warn-label">⚠ 승인 필요 — 기관 내부 SOP 표준 기간(24개월) 초과</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="18" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제18조 (계약의 해지 및 임상시험 중단)</span></div>
+        <div class="clause-text">① 각 당사자는 30일 전에 상대방에게 서면 통보함으로써 이 계약을 해지할 수 있다. ② 다음 각 호에 해당하는 경우 즉시 계약을 해지하거나 임상시험을 중단할 수 있다: (1) 피험자 안전에 중대하고 즉각적인 위험이 발생하거나 발생할 우려가 있는 경우, (2) 의뢰자 또는 연구자가 이 계약 또는 KGCP를 중대하게 위반하고 30일 이내에 시정하지 않는 경우, (3) 식약처 또는 IRB가 임상시험 중단을 명령한 경우. ③ 계약 해지 또는 임상시험 중단 시 연구자는 피험자 안전을 최우선으로 하여 의뢰자와 협의된 절차에 따라 피험자 관리, 임상시험의약품 반납, 자료 이관 등의 종료 절차를 수행한다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="19" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제19조 (분쟁 해결 및 준거법)</span></div>
+        <div class="clause-text">① 이 계약과 관련하여 분쟁이 발생하는 경우 당사자 간 성실한 협의로 해결한다. ② 협의가 이루어지지 않는 경우 대한민국 법원을 전속 관할법원으로 하며, 소재지에 따라 서울중앙지방법원을 제1심 법원으로 한다. ③ 이 계약의 해석 및 이행에 관하여는 대한민국 법률이 적용된다.</div>
+      </div>
+
+      <div class="contract-clause ok" data-id="20" onclick="selectClause(this)">
+        <div class="clause-header"><span class="clause-num">제20조 (일반 조항)</span></div>
+        <div class="clause-text">① 이 계약은 동일 사항에 관하여 당사자 간에 이전에 체결된 모든 합의를 대체하며, 당사자 간의 완전한 합의를 구성한다. ② 이 계약의 변경은 양 당사자가 서명한 서면에 의하여야 한다. ③ 어느 당사자도 상대방의 사전 서면 동의 없이 이 계약상의 권리·의무를 제3자에게 양도할 수 없다. ④ 이 계약의 어느 조항도 포기하지 않은 것으로 보며, 이 계약상의 권리를 행사하지 않는 것이 해당 권리의 포기로 해석되지 아니한다. ⑤ 이 계약은 한국어를 정본으로 하며, 2부를 작성하여 각 당사자가 1부씩 보관한다.</div>
+      </div>
+
+      <hr class="contract-divider-thin">
+
+      <div style="text-align:center;font-size:11.5px;color:#374151;line-height:2.4;margin-top:20px;">
+        이상의 내용을 확인하고 본 계약을 체결함.<br>
+        <br>
+        <strong>의뢰자:</strong> ㈜케이바이오파마 &nbsp;&nbsp; 대표이사 &nbsp; 김 한 국 &nbsp; <span style="font-family:serif;">(印)</span><br>
+        <strong>기관:</strong> ○○대학교 의과대학부속병원 &nbsp;&nbsp; 병원장 &nbsp; 이 병 원 &nbsp; <span style="font-family:serif;">(印)</span><br>
+        <strong>연구자:</strong> 이 민 준 &nbsp; <span style="font-family:serif;">(印)</span>
       </div>
 
     </div>
@@ -449,11 +474,11 @@
     <div class="progress-section">
       <div class="progress-row">
         <span class="progress-label">검토 진행률</span>
-        <span class="progress-pct" id="prog-pct">78%</span>
+        <span class="progress-pct" id="prog-pct">81%</span>
       </div>
-      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:78%"></div></div>
+      <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:81%"></div></div>
       <div class="progress-counts">
-        <div class="progress-count"><span class="progress-count-num ok" id="cnt-ok">11</span><span class="progress-count-label">수용</span></div>
+        <div class="progress-count"><span class="progress-count-num ok" id="cnt-ok">16</span><span class="progress-count-label">수용</span></div>
         <div class="progress-count"><span class="progress-count-num warn" id="cnt-warn">2</span><span class="progress-count-label">검토필요</span></div>
         <div class="progress-count"><span class="progress-count-num block" id="cnt-block">1</span><span class="progress-count-label">수용불가</span></div>
         <div class="progress-count"><span class="progress-count-num pend" id="cnt-pend">0</span><span class="progress-count-label">미검토</span></div>
@@ -464,52 +489,22 @@
     <!-- Verdict cards -->
     <div class="verdicts-scroll">
 
-      <!-- 제3조 WARN -->
-      <div class="verdict-card" id="card-3_1">
-        <div class="verdict-card-header" onclick="toggleCard('3_1')">
-          <div class="verdict-icon-sm vi-warn">⚠</div>
-          <div class="verdict-card-clause">제3조 — 계약 기간</div>
-          <div class="verdict-card-status vs-warn">승인 필요</div>
-        </div>
-        <div class="verdict-card-body" id="body-3_1">
-          <div class="verdict-card-reason">기관이 계약 유효 기간을 <strong style="color:#e8e7e3;">24개월 → 36개월</strong>로 연장 요청했습니다. 내부 SOP 기준 초과로 계약담당자 검토가 필요합니다.</div>
-          <div class="verdict-ref">SOP CTA-001 · 표준 계약기간 24개월<br>ICH E6(R3) 4.9.1 · 계약기간 설정 기준</div>
-          <div class="inline-hist">
-            <div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div>
-            <div class="inline-hist-item">
-              <div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div>
-              <div class="inline-hist-result">원안 24개월 → <strong>30개월</strong>로 합의 (추적관찰 기간 고려)</div>
-            </div>
-            <div class="inline-hist-item">
-              <div class="inline-hist-meta">#OOUMC-2021-047 · 2021.03.20 · 폐암 2상 LC-PLUS-202</div>
-              <div class="inline-hist-result">원안 24개월 유지 (기간 연장 요청 없음)</div>
-            </div>
-            <div class="inline-hist-insight">💡 이 기관의 선례(30개월)를 고려하면 이번 36개월 요청은 초과분입니다. <strong>30개월 반협상</strong>을 권장합니다.</div>
-          </div>
-          <div class="verdict-action-row">
-            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
-            <button class="verdict-action-btn btn-edit" onclick="editKrClause('3_1')">수정</button>
-            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 제7조 BLOCK -->
-      <div class="verdict-card" id="card-7_1">
-        <div class="verdict-card-header" onclick="toggleCard('7_1')">
+      <!-- 제10조 BLOCK (SAE) -->
+      <div class="verdict-card" id="card-10">
+        <div class="verdict-card-header" onclick="toggleCard('10')">
           <div class="verdict-icon-sm vi-block">✕</div>
-          <div class="verdict-card-clause">제7조 — SAE 보고 기한</div>
+          <div class="verdict-card-clause">제10조 — SAE 보고 기한</div>
           <div class="verdict-card-status vs-block">수용 불가</div>
         </div>
-        <div class="verdict-card-body" id="body-7_1">
-          <div class="verdict-card-reason">기관이 중대한 이상반응(SAE) 보고 기한을 <strong style="color:#e8e7e3;">24시간 → 영업일 기준 48시간</strong>으로 완화 요청했습니다. KGCP 제18조에 명시된 법적 의무 위반으로 어떤 경우에도 수용 불가합니다.</div>
+        <div class="verdict-card-body" id="body-10">
+          <div class="verdict-card-reason">기관이 중대한 이상반응(SAE) 초기 보고 기한을 <strong style="color:#e8e7e3;">즉시(24시간) → 영업일 기준 48시간</strong>으로 완화 요청했습니다. KGCP 제18조에 명시된 법적 의무 위반으로 어떠한 경우에도 수용 불가합니다.</div>
           <div class="verdict-ref">KGCP 제18조 · SAE 24시간 이내 보고 (법적 의무)<br>ICH E6(R3) 4.11.1 · SAE 즉시보고 국제 표준<br>식약처 가이드라인 (2023.07) · 위반 시 임상시험 중단 사유</div>
           <div class="suggestion-box">
             <div class="suggestion-label">✦ AI 대안 제안</div>
-            <div class="suggestion-text" id="sug-text-7_1">연구자는 SAE 발생 인지 즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다.</div>
+            <div class="suggestion-text" id="sug-text-10">연구자는 SAE 발생 인지 즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다.</div>
             <div class="suggestion-actions">
-              <button class="suggestion-copy-btn" onclick="copyAlt('7_1')">문구 복사하기</button>
-              <button class="suggestion-accept-btn" id="accept-alt-7_1" onclick="acceptAltKr('7_1')">✓ 수용하기</button>
+              <button class="suggestion-copy-btn" onclick="copyAlt('10')">문구 복사하기</button>
+              <button class="suggestion-accept-btn" id="accept-alt-10" onclick="acceptAltKr('10')">✓ 수용하기</button>
             </div>
           </div>
           <div class="verdict-action-row">
@@ -519,20 +514,20 @@
         </div>
       </div>
 
-      <!-- 제9조 WARN -->
-      <div class="verdict-card" id="card-9_1">
-        <div class="verdict-card-header" onclick="toggleCard('9_1')">
+      <!-- 제13조 WARN (연구비) -->
+      <div class="verdict-card" id="card-13">
+        <div class="verdict-card-header" onclick="toggleCard('13')">
           <div class="verdict-icon-sm vi-warn">⚠</div>
-          <div class="verdict-card-clause">제9조 — 연구비 지급 조건</div>
+          <div class="verdict-card-clause">제13조 — 연구비 지급 조건</div>
           <div class="verdict-card-status vs-warn">승인 필요</div>
         </div>
-        <div class="verdict-card-body" id="body-9_1">
+        <div class="verdict-card-body" id="body-13">
           <div class="verdict-card-reason">기관이 연구비 지급 주기를 <strong style="color:#e8e7e3;">분기별 → 월별</strong>로, 지급 기한을 <strong style="color:#e8e7e3;">30일 → 15일</strong>로 단축 요청했습니다. 내부 재무팀 확인이 필요합니다.</div>
           <div class="verdict-ref">SOP FIN-003 · 표준 연구비 지급 주기 분기(3개월)<br>내부 재무 기준 · 월별 지급 전환 시 재무팀 별도 설정 필요</div>
           <div class="inline-hist">
             <div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div>
             <div class="inline-hist-item">
-              <div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상 DM-KBIO-202</div>
+              <div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div>
               <div class="inline-hist-result">분기 지급 유지 — 기관 연구비 지급 주기 변경 요청 없음</div>
             </div>
             <div class="inline-hist-item">
@@ -543,21 +538,51 @@
           </div>
           <div class="verdict-action-row">
             <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
-            <button class="verdict-action-btn btn-edit" onclick="editKrClause('9_1')">수정</button>
+            <button class="verdict-action-btn btn-edit" onclick="editKrClause('13')">수정</button>
             <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
           </div>
         </div>
       </div>
 
-      <!-- 제12조 OK (data-changed) -->
-      <div class="verdict-card" id="card-12_1">
-        <div class="verdict-card-header" onclick="toggleCard('12_1')">
+      <!-- 제17조 WARN (계약기간) -->
+      <div class="verdict-card" id="card-17">
+        <div class="verdict-card-header" onclick="toggleCard('17')">
+          <div class="verdict-icon-sm vi-warn">⚠</div>
+          <div class="verdict-card-clause">제17조 — 계약 기간</div>
+          <div class="verdict-card-status vs-warn">승인 필요</div>
+        </div>
+        <div class="verdict-card-body" id="body-17">
+          <div class="verdict-card-reason">기관이 계약 유효 기간을 <strong style="color:#e8e7e3;">24개월 → 36개월</strong>로 연장 요청했습니다. 내부 SOP 표준 기간 초과로 계약담당자 검토가 필요합니다.</div>
+          <div class="verdict-ref">SOP CTA-001 · 표준 계약기간 24개월<br>ICH E6(R3) 4.9.1 · 계약기간 설정 기준</div>
+          <div class="inline-hist">
+            <div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div>
+              <div class="inline-hist-result">원안 24개월 → <strong>30개월</strong>로 합의 (추적관찰 기간 고려)</div>
+            </div>
+            <div class="inline-hist-item">
+              <div class="inline-hist-meta">#OOUMC-2021-047 · 2021.03.20 · 폐암 2상</div>
+              <div class="inline-hist-result">원안 24개월 유지 (기간 연장 요청 없음)</div>
+            </div>
+            <div class="inline-hist-insight">💡 이 기관의 선례(30개월)를 고려하면 이번 36개월 요청은 초과분입니다. <strong>30개월 반협상</strong>을 권장합니다.</div>
+          </div>
+          <div class="verdict-action-row">
+            <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">계약담당자 검토 요청</button>
+            <button class="verdict-action-btn btn-edit" onclick="editKrClause('17')">수정</button>
+            <button class="verdict-action-btn btn-comment" onclick="focusMemo()">코멘트</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 제16조 OK (data-changed) -->
+      <div class="verdict-card" id="card-16">
+        <div class="verdict-card-header" onclick="toggleCard('16')">
           <div class="verdict-icon-sm vi-ok">✓</div>
-          <div class="verdict-card-clause">제12조 — 손해배상 책임 한도</div>
+          <div class="verdict-card-clause">제16조 — 손해배상 책임 한도</div>
           <div class="verdict-card-status vs-ok">수용 가능</div>
         </div>
-        <div class="verdict-card-body" id="body-12_1">
-          <div class="verdict-card-reason">기관이 의뢰자 귀책 사유(프로토콜 위반, 시험약 결함)에 한해 연구비 총액 한도의 예외를 요청했습니다. 당사 SOP 및 KGCP 범위 내로 수용 가능합니다.</div>
+        <div class="verdict-card-body" id="body-16">
+          <div class="verdict-card-reason">기관이 의뢰자 귀책 사유(프로토콜 위반, 시험약 결함)에 한해 연구비 총액 한도의 예외 및 간접 손해 배상 제한 조항을 추가 요청했습니다. 당사 SOP 및 KGCP 허용 범위 내로 수용 가능합니다.</div>
           <div class="verdict-ref">SOP LEG-005 · 의뢰자 귀책 시 책임 한도 예외 인정<br>KGCP 제25조 · 피험자 피해 보상 의뢰자 책임<br>→ 에스컬레이션 불필요</div>
         </div>
       </div>
@@ -565,7 +590,7 @@
       <!-- OK 요약 -->
       <div class="ok-summary">
         <div class="ok-summary-label">✓ 검토 완료 — 기관 수정 없음</div>
-        <div class="ok-summary-list">전문 · 제1조 · 제2조 · 제4조 · 제5조 · 제6조 · 제8조 · 제10조 · 제11조 · 제13조 · 제14조</div>
+        <div class="ok-summary-list">전문 · 제1조 · 제2조 · 제3조 · 제4조 · 제5조 · 제6조 · 제7조 · 제8조 · 제9조 · 제11조 · 제12조 · 제14조 · 제15조 · 제18조 · 제19조 · 제20조</div>
       </div>
 
     </div>
@@ -582,14 +607,14 @@
             <span class="memo-av av-user">정</span>
             <strong style="font-size:9.5px;">정담당 · 계약팀</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:22</span>
           </div>
-          <div class="memo-text">제3조 기간 연장은 재무팀 확인 필요. 30개월 반협상 방향으로 준비.</div>
+          <div class="memo-text">제17조 기간 연장 요청 — 재무팀 확인 후 30개월 반협상 방향으로 준비.</div>
         </div>
         <div class="memo-item">
           <div class="memo-meta">
             <span class="memo-av av-triez">AI</span>
             <strong style="font-size:9.5px;">TRIEZ AI</strong> &nbsp;·&nbsp; <span style="font-size:9px;color:#8a9ab0;">10:23</span>
           </div>
-          <div class="memo-text">제7조 SAE 보고기한 변경은 KGCP 제18조 위반으로 수용 불가. 대안 문구를 제안했습니다.</div>
+          <div class="memo-text">제10조 SAE 보고기한 48시간 요청은 KGCP 제18조 위반입니다. 대안 문구를 제안했습니다.</div>
         </div>
       </div>
       <div class="memo-input-row">
@@ -649,13 +674,13 @@ function selectClause(el) {
     card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
   const msgs = {
-    '3_1': '<span>AI</span>가 제3조 계약기간 변경을 감지했습니다 — 승인 필요',
-    '7_1': '<span>AI</span>가 제7조 SAE 보고기한 변경을 감지했습니다 — KGCP 위반',
-    '9_1': '<span>AI</span>가 제9조 연구비 지급 조건 변경을 감지했습니다 — 승인 필요',
-    '12_1': '<span>제12조</span> 손해배상 한도 예외 조항 — 수용 가능',
+    '10':  '<span>AI</span>가 제10조 SAE 보고기한 변경을 감지했습니다 — KGCP 제18조 위반',
+    '13':  '<span>AI</span>가 제13조 연구비 지급 조건 변경을 감지했습니다 — 승인 필요',
+    '17':  '<span>AI</span>가 제17조 계약기간 변경을 감지했습니다 — 승인 필요',
+    '16':  '<span>제16조</span> 손해배상 한도 예외 조항 — 수용 가능',
   };
   if (msgs[id]) document.getElementById('activity-text').innerHTML = msgs[id];
-  else document.getElementById('activity-text').innerHTML = '<span>§' + id.replace('_','.') + '</span> — 기관 수정 없음, 원안 유지';
+  else document.getElementById('activity-text').innerHTML = '<span>' + id.replace('pre','') + '조</span> — 기관 수정 없음, 원안 유지';
 }
 
 function toggleCard(id) {
@@ -685,16 +710,16 @@ function setView(mode) {
 }
 
 function acceptAltKr(id) {
-  if (id === '7_1') {
-    const clauseEl = document.querySelector('[data-id="7_1"] .clause-text');
+  if (id === '10') {
+    const clauseEl = document.querySelector('[data-id="10"] .clause-text');
     if (clauseEl) {
-      clauseEl.innerHTML = '① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">영업일 기준 2일(48시간) 이내</span><span class="ins-text">즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시</span>하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 보고서를, 15일 이내에 상세 보고서를 의뢰자에게 제출한다.';
+      clauseEl.innerHTML = '① 연구자는 임상시험 중 발생하는 모든 이상반응(AE)을 증례기록서(CRF)에 기록하고, 의뢰자가 정한 기준에 따라 분류한다. ② 연구자는 중대한 이상반응(SAE)이 발생하거나 이를 인지한 경우 <span class="del-text">영업일 기준 2일(48시간) 이내</span><span class="ins-text">즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시</span>하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다. ③ 연구자는 SAE 발생 후 7일 이내에 최초 상세 보고서를, 추가 정보 입수 시 15일 이내에 추적 보고서를 제출한다. ④ 의뢰자는 SAE 보고 접수 후 관계 규정에 따라 규제기관에 보고하고, 연구자에게 후속 조치 및 추가 정보 요청 사항을 신속히 통보한다.';
     }
-    const chip = document.querySelector('[data-id="7_1"] .clause-verdict-chip');
+    const chip = document.querySelector('[data-id="10"] .clause-verdict-chip');
     if (chip) { chip.className = 'clause-verdict-chip chip-ok'; chip.textContent = '✓ 대안 수용'; }
-    const clauseDiv = document.querySelector('[data-id="7_1"]');
+    const clauseDiv = document.querySelector('[data-id="10"]');
     if (clauseDiv) { clauseDiv.classList.remove('block'); clauseDiv.classList.add('ok'); }
-    const card = document.getElementById('card-7_1');
+    const card = document.getElementById('card-10');
     if (card) {
       card.querySelector('.verdict-card-status').textContent = '대안 수용';
       card.querySelector('.verdict-card-status').className = 'verdict-card-status vs-ok';
@@ -702,14 +727,14 @@ function acceptAltKr(id) {
       card.querySelector('.verdict-icon-sm').className = 'verdict-icon-sm vi-ok';
       card.style.borderColor = '#22c55e';
     }
-    const btn = document.getElementById('accept-alt-7_1');
+    const btn = document.getElementById('accept-alt-10');
     if (btn) { btn.disabled = true; btn.textContent = '✓ 수용 완료'; }
     document.getElementById('cnt-block').textContent = '0';
-    document.getElementById('cnt-ok').textContent = '12';
-    document.getElementById('prog-pct').textContent = '85%';
-    document.getElementById('prog-fill').style.width = '85%';
-    addMemoAuto('제7조 — AI 대안 문구(24시간 보고 유지 + 지원 제공)를 수용하여 계약서에 반영했습니다.');
-    document.getElementById('activity-text').innerHTML = '<span>AI 대안</span>이 제7조에 트래킹 변경으로 자동 적용되었습니다';
+    document.getElementById('cnt-ok').textContent = '17';
+    document.getElementById('prog-pct').textContent = '87%';
+    document.getElementById('prog-fill').style.width = '87%';
+    addMemoAuto('제10조 — AI 대안 문구(24시간 보고 유지 + 지원 제공)를 수용하여 계약서에 반영했습니다.');
+    document.getElementById('activity-text').innerHTML = '<span>AI 대안</span>이 제10조에 트래킹 변경으로 자동 적용되었습니다';
   }
 }
 
@@ -783,9 +808,9 @@ function sendEscalate() {
   document.getElementById('activity-text').innerHTML = '<span>계약담당자 검토 요청</span>이 전송되었습니다';
 }
 
-// Auto-open 제7조 card on load
+// Auto-open 제10조 card (SAE block)
 setTimeout(() => {
-  const el = document.querySelector('[data-id="7_1"]');
+  const el = document.querySelector('[data-id="10"]');
   if (el) selectClause(el);
 }, 400);
 </script>
