@@ -361,6 +361,15 @@
     <div class="step-title">추가 의견 & 연락처</div>
     <div class="step-sub">마지막 단계입니다. 솔직한 의견을 남겨주세요.</div>
 
+    <!-- 기프티콘 배너 -->
+    <div style="background:#fff8e8;border:1.5px solid #f59e0b;padding:16px 18px;margin-bottom:24px;display:flex;align-items:flex-start;gap:14px;">
+      <div style="font-size:26px;flex-shrink:0;">🎁</div>
+      <div>
+        <div style="font-size:13px;font-weight:800;color:#92400e;margin-bottom:4px;">설문 완료 시 스타벅스 아메리카노 기프티콘 증정</div>
+        <div style="font-size:12px;color:#78350f;line-height:1.6;">응답을 제출하시면 입력하신 연락처로 기프티콘을 발송드립니다.<br>연락처를 남기지 않으시면 기프티콘 발송이 어렵습니다.</div>
+      </div>
+    </div>
+
     <div class="q-block">
       <div class="q-label">Q17. 추가됐으면 하는 기능이나 시나리오가 있다면?</div>
       <textarea class="textarea-input" id="q17" placeholder="예: 국문 계약서 지원, 특정 조항 타입 추가 등"></textarea>
@@ -380,9 +389,23 @@
       </div>
     </div>
 
-    <div class="q-block">
-      <div class="q-label">Q20. 연락 가능한 이메일 <span class="q-sub">(선택 — 인터뷰·얼리액세스 초대 시 연락드립니다)</span></div>
-      <input type="email" class="text-input" id="q20" placeholder="example@hospital.kr">
+    <div style="border-top:1px solid #dde6f0;margin:8px 0 20px;padding-top:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#8a9ab0;text-transform:uppercase;margin-bottom:14px;">기프티콘 수령 및 추후 연락을 위한 정보</div>
+
+      <div class="q-block">
+        <div class="q-label">성함 <span class="q-sub">(선택)</span></div>
+        <input type="text" class="text-input" id="contact_name" placeholder="홍길동">
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">휴대폰 번호 <span class="q-sub">(기프티콘 수령 — 선택)</span></div>
+        <input type="tel" class="text-input" id="contact_phone" placeholder="010-0000-0000">
+      </div>
+
+      <div class="q-block">
+        <div class="q-label">이메일 주소 <span class="q-sub">(인터뷰·얼리액세스 초대 — 선택)</span></div>
+        <input type="email" class="text-input" id="contact_email" placeholder="example@hospital.kr">
+      </div>
     </div>
 
     <div class="btn-row">
@@ -396,9 +419,10 @@
     <div class="thank-icon">✅</div>
     <div class="thank-title">응답해 주셔서 감사합니다!</div>
     <div class="thank-text">
-      소중한 의견이 TRIEZ 개발에 큰 도움이 됩니다.<br>
-      심층 인터뷰 또는 얼리액세스 대상으로 선정되시면 별도로 연락드리겠습니다.<br><br>
-      문의사항: <a href="mailto:yangdain95@gmail.com" style="color:#4a7cff">yangdain95@gmail.com</a>
+      소중한 의견이 TRIEZ 개발에 큰 도움이 됩니다.<br><br>
+      🎁 <strong>기프티콘</strong>은 입력하신 휴대폰 번호로 <strong>영업일 기준 3일 이내</strong> 발송드립니다.<br>
+      심층 인터뷰 또는 얼리액세스 대상으로 선정되시면 이메일로 별도 연락드립니다.<br><br>
+      문의: <a href="mailto:contact@triez.com" style="color:#4a7cff">contact@triez.com</a>
     </div>
   </div>
 
@@ -473,7 +497,9 @@ function collectData() {
   data['q11_개선점'] = document.getElementById('q11').value;
   data['q17_추가기능요청'] = document.getElementById('q17').value;
   data['q18_전반의견'] = document.getElementById('q18').value;
-  data['q20_이메일'] = document.getElementById('q20').value;
+  data['연락처_성함'] = document.getElementById('contact_name').value;
+  data['연락처_휴대폰'] = document.getElementById('contact_phone').value;
+  data['연락처_이메일'] = document.getElementById('contact_email').value;
   return data;
 }
 
