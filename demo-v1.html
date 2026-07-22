@@ -773,6 +773,10 @@ function selectClause(el) {
   if (activeClause) activeClause.classList.remove('active');
   el.classList.add('active');
   activeClause = el;
+  // 변경 모드일 때만 플로팅 툴바 표시
+  if (document.getElementById('btn-changes').classList.contains('active')) {
+    showClauseToolbar(el);
+  }
   const id = el.dataset.id;
   document.querySelectorAll('.verdict-card').forEach(c => c.classList.remove('highlighted'));
   const card = document.getElementById('card-' + id);
@@ -808,17 +812,18 @@ function setView(mode) {
   document.getElementById('btn-changes').classList.toggle('active', mode === 'changes');
   document.getElementById('btn-original').classList.toggle('active', mode === 'original');
   const panel = document.getElementById('contract-panel');
+
+  // active 클래스 제거 (원본 모드에서 block.active 배경색 차단)
+  hideClauseToolbar();
+  panel.querySelectorAll('.contract-clause').forEach(e => e.classList.remove('active'));
+  activeClause = null;
+
   if (mode === 'original') {
     panel.querySelectorAll('.ins-text').forEach(e => e.style.display = 'none');
     panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = 'none'; e.style.color = 'inherit'; e.style.background = 'none'; });
     panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
     panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
     panel.querySelectorAll('.clause-num').forEach(e => { e.style.color = '#1a2d4a'; });
-    // 원본 모드: 붉은/노란 배경 및 좌측 보더 제거
-    panel.querySelectorAll('.contract-clause.warn, .contract-clause.block').forEach(e => {
-      e.style.background = '#fff';
-      e.style.borderLeft = '3px solid #dde6f0';
-    });
     document.getElementById('activity-bar').style.opacity = '0.4';
   } else {
     panel.querySelectorAll('.ins-text').forEach(e => e.style.display = '');
@@ -826,12 +831,124 @@ function setView(mode) {
     panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
     panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
     panel.querySelectorAll('.clause-num').forEach(e => { e.style.color = ''; });
-    // 변경 모드: 배경/보더 복원
-    panel.querySelectorAll('.contract-clause.warn').forEach(e => { e.style.background = ''; e.style.borderLeft = ''; });
-    panel.querySelectorAll('.contract-clause.block').forEach(e => { e.style.background = ''; e.style.borderLeft = ''; });
     document.getElementById('activity-bar').style.opacity = '1';
   }
 }
+
+// ── FLOATING CLAUSE TOOLBAR ──
+let clauseToolbarEl = null;
+let editingClause = null;
+
+function hideClauseToolbar() {
+  if (clauseToolbarEl) { clauseToolbarEl.remove(); clauseToolbarEl = null; }
+}
+
+function showClauseToolbar(clauseEl) {
+  hideClauseToolbar();
+  const rect = clauseEl.getBoundingClientRect();
+  const toolbar = document.createElement('div');
+  toolbar.id = 'clause-toolbar';
+  toolbar.style.cssText = `position:fixed;top:${rect.bottom - 2}px;left:${rect.left + 12}px;z-index:200;
+    display:flex;gap:6px;background:#1a2d4a;padding:5px 8px;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,.22);`;
+  const clauseId = clauseEl.dataset.id;
+  const clauseNumText = clauseEl.querySelector('.clause-num') ? clauseEl.querySelector('.clause-num').textContent : '조항';
+  const btns = [
+    { icon:'💬', label:'코멘트', action: () => { focusMemo('[' + clauseNumText + ']'); hideClauseToolbar(); } },
+    { icon:'✏️', label:'직접 수정', action: () => { startEditClause(clauseEl); hideClauseToolbar(); } },
+    { icon:'➕', label:'조항 추가', action: () => { addClauseBelow(clauseEl); hideClauseToolbar(); } },
+  ];
+  btns.forEach(b => {
+    const btn = document.createElement('button');
+    btn.style.cssText = 'background:none;border:none;color:#e2e8f5;font-size:11px;cursor:pointer;padding:3px 8px;border-radius:3px;font-family:inherit;white-space:nowrap;';
+    btn.innerHTML = `${b.icon} ${b.label}`;
+    btn.onmouseenter = () => btn.style.background = 'rgba(255,255,255,.12)';
+    btn.onmouseleave = () => btn.style.background = 'none';
+    btn.onclick = (ev) => { ev.stopPropagation(); b.action(); };
+    toolbar.appendChild(btn);
+  });
+  document.body.appendChild(toolbar);
+  clauseToolbarEl = toolbar;
+}
+
+function startEditClause(clauseEl) {
+  const textEl = clauseEl.querySelector('.clause-text');
+  if (!textEl) return;
+  editingClause = clauseEl;
+  const original = textEl.innerHTML;
+  textEl.contentEditable = 'true';
+  textEl.style.cssText += 'outline:2px solid #4a7cff;border-radius:2px;padding:4px;background:#f8fbff;';
+  textEl.focus();
+
+  // save / cancel bar
+  const bar = document.createElement('div');
+  bar.id = 'edit-bar';
+  bar.style.cssText = 'display:flex;gap:8px;margin-top:8px;align-items:center;';
+  bar.innerHTML = `<span style="font-size:10.5px;color:#8a9ab0;">직접 수정 중 — 저장 후 협상 메모에 기록됩니다</span>
+    <button id="save-edit-btn" style="margin-left:auto;padding:4px 14px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">저장</button>
+    <button id="cancel-edit-btn" style="padding:4px 14px;background:none;border:1px solid #dde6f0;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">취소</button>`;
+  clauseEl.appendChild(bar);
+
+  document.getElementById('save-edit-btn').onclick = () => saveEditClause(textEl, bar, original);
+  document.getElementById('cancel-edit-btn').onclick = () => cancelEditClause(textEl, bar, original);
+}
+
+function saveEditClause(textEl, bar, original) {
+  const newText = textEl.textContent.trim();
+  textEl.contentEditable = 'false';
+  textEl.style.outline = '';
+  textEl.style.background = '';
+  textEl.style.padding = '';
+  bar.remove();
+  editingClause = null;
+  addMemoAuto('조항을 직접 수정했습니다. 수정 전 내용이 추적변경 기록에 저장됩니다.', getClauseTag());
+  document.getElementById('activity-text').innerHTML = '<span>직접 수정</span> 저장됨 — 협상 메모에 기록되었습니다';
+}
+
+function cancelEditClause(textEl, bar, original) {
+  textEl.innerHTML = original;
+  textEl.contentEditable = 'false';
+  textEl.style.outline = '';
+  textEl.style.background = '';
+  textEl.style.padding = '';
+  bar.remove();
+  editingClause = null;
+}
+
+function addClauseBelow(refClauseEl) {
+  const newClause = document.createElement('div');
+  newClause.className = 'contract-clause ok';
+  newClause.dataset.id = 'new-' + Date.now();
+  newClause.onclick = function() { selectClause(this); };
+  newClause.innerHTML = `
+    <div class="clause-header"><span class="clause-num">신규 조항</span></div>
+    <div class="clause-text" contenteditable="true" style="outline:2px solid #4a7cff;border-radius:2px;padding:4px;background:#f8fbff;min-height:40px;" placeholder="조항 내용을 입력하세요...">조항 내용을 입력하세요...</div>
+    <div style="display:flex;gap:8px;margin-top:8px;">
+      <button onclick="finalizeNewClause(this)" style="padding:4px 14px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">저장</button>
+      <button onclick="this.closest('.contract-clause').remove()" style="padding:4px 14px;background:none;border:1px solid #dde6f0;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">취소</button>
+    </div>`;
+  refClauseEl.parentNode.insertBefore(newClause, refClauseEl.nextSibling);
+  newClause.querySelector('.clause-text').focus();
+  newClause.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function finalizeNewClause(btn) {
+  const clauseEl = btn.closest('.contract-clause');
+  const textEl = clauseEl.querySelector('.clause-text');
+  textEl.contentEditable = 'false';
+  textEl.style.outline = '';
+  textEl.style.background = '';
+  textEl.style.padding = '';
+  btn.parentElement.remove();
+  clauseEl.querySelector('.clause-num').textContent = '신규 조항 (추가됨)';
+  addMemoAuto('신규 조항을 추가했습니다.');
+}
+
+// 바깥 클릭 시 툴바 닫기
+document.addEventListener('click', (e) => {
+  if (clauseToolbarEl && !clauseToolbarEl.contains(e.target) && !e.target.closest('.contract-clause')) {
+    hideClauseToolbar();
+  }
+});
 
 function acceptAltKr(id) {
   if (id === '10') {
