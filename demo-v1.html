@@ -668,7 +668,6 @@
       <!-- OK 요약 -->
       <div class="ok-summary" data-prebaked="true">
         <div class="ok-summary-label">✓ 검토 완료 — 기관 수정 없음</div>
-        <div class="ok-summary-list">전문 · 제1조 · 제2조 · 제3조 · 제4조 · 제5조 · 제6조 · 제7조 · 제8조 · 제9조 · 제11조 · 제12조 · 제14조 · 제15조 · 제18조 · 제19조 · 제20조</div>
       </div>
 
     </div>
@@ -1700,8 +1699,8 @@ function closeGuide() {
   });
 })();
 
-// 초기 뷰: 원본
-setView('original');
+// 초기 뷰: 검토완료 예시
+setView('changes');
 
 // Auto-open 제10조 card (SAE block) — 변경 탭 전환 후에만 의미있으므로 제거
 // setTimeout(() => { const el = document.querySelector('[data-id="10"]'); if (el) selectClause(el); }, 400);
