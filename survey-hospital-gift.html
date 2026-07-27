@@ -107,23 +107,7 @@
     <div class="hero-badge">병원 / 의료기관 계약팀 대상</div>
     <h1>TRIEZ 베타 체험 설문</h1>
     <p>임상시험 계약서 AI 검토 솔루션 TRIEZ의 첫 사용자 의견을 듣고 있습니다.<br>
-    아래 데모를 먼저 체험하신 후 응답해 주시면 큰 도움이 됩니다. <strong>약 10분</strong> 소요됩니다.</p>
-  </div>
-<a class="demo-link" href="https://pactiq-website.vercel.app/demo-v1.html" target="_blank">
-      <span class="demo-link-icon">🔗</span>
-      <div>
-        <div class="demo-link-text">TRIEZ 데모 — 국문 임상시험계약서 검토</div>
-        <div class="demo-link-sub">㈜케이바이오파마 × ○○대학교병원 · KBP-301 HCC 3상 · Draft 3 · 전문 20조</div>
-      </div>
-    </a>
-    <a class="demo-link" href="https://pactiq-website.vercel.app/demo.html" target="_blank">
-      <span class="demo-link-icon">🔗</span>
-      <div>
-        <div class="demo-link-text">TRIEZ 데모 — 영문 CTA 계약서 검토</div>
-        <div class="demo-link-sub">삼성바이오로직스 × 아주대학교병원 · LUMINOS-3 폐암 3상 · Draft v7</div>
-      </div>
-    </a>
-    <p class="demo-note">💡 조항을 클릭하면 AI 판정 결과와 근거가 오른쪽 패널에 실시간으로 표시됩니다. 수용불가 조항의 '수용하기' 버튼도 눌러보세요.</p>
+    솔직한 응답이 큰 도움이 됩니다. <strong>약 10분</strong> 소요됩니다.</p>
   </div>
 
   <div class="progress-wrap">
@@ -146,6 +130,9 @@
         <label class="radio-opt"><input type="radio" name="q1" value="종합병원"> <span>종합병원</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="대학병원"> <span>대학병원</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="기타 의료기관"> <span>기타 의료기관</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="교수 연구진 팀 소속"> <span>교수 / 연구진 팀 소속</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="병원 임상시험센터 소속"> <span>병원 임상시험센터 소속</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="기타"> <span>기타</span></label>
       </div>
     </div>
 
@@ -156,6 +143,8 @@
         <label class="radio-opt"><input type="radio" name="q2" value="임상시험 운영 + 계약 병행"> <span>임상시험 운영 + 계약 병행</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="법무/행정 지원"> <span>법무 / 행정 지원</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="기타"> <span>기타</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="계약서+연구비 전담"> <span>계약서 + 연구비 전담</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="연구비전담"> <span>연구비 전담</span></label>
       </div>
     </div>
 
@@ -171,12 +160,13 @@
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q4. 연간 평균 계약서 검토 건수 <span class="req">*</span></div>
+      <div class="q-label">Q4. 월간 평균 계약서 검토 건수 <span class="req">*</span></div>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="q4" value="10건 미만"> <span>10건 미만</span></label>
-        <label class="radio-opt"><input type="radio" name="q4" value="10~30건"> <span>10~30건</span></label>
-        <label class="radio-opt"><input type="radio" name="q4" value="30~60건"> <span>30~60건</span></label>
-        <label class="radio-opt"><input type="radio" name="q4" value="60건 이상"> <span>60건 이상</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="1건 미만"> <span>1건 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="1~3건"> <span>1~3건</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="4~6건"> <span>4~6건</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="7~10건"> <span>7~10건</span></label>
+        <label class="radio-opt"><input type="radio" name="q4" value="10건 이상"> <span>10건 이상</span></label>
       </div>
     </div>
 
@@ -199,11 +189,14 @@
         <label class="check-opt"><input type="checkbox" name="q5" value="SOP·ICH·KGCP 기준 매번 검색 필요"> <span>SOP, ICH, KGCP 기준을 매번 따로 검색해야 함</span></label>
         <label class="check-opt"><input type="checkbox" name="q5" value="에스컬레이션 지연"> <span>법무팀·상위자 에스컬레이션 시 지연 발생</span></label>
         <label class="check-opt"><input type="checkbox" name="q5" value="스폰서와 협상 시 근거 자료 부족"> <span>스폰서와 협상 시 근거 자료가 부족</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="스폰서의 답장 지연"> <span>스폰서의 답장 지연</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="동시에 여러건의 계약서 리뷰로 혼란"> <span>동시에 여러 건의 계약서 리뷰로 혼란</span></label>
+        <label class="check-opt"><input type="checkbox" name="q5" value="과중한 업무로드로 계약서 검토 지연"> <span>과중한 업무로드로 계약서 검토 지연</span></label>
       </div>
     </div>
 
     <div class="q-block">
-      <div class="q-label">Q6. 계약서 1건당 평균 검토 소요 시간 <span class="req">*</span></div>
+      <div class="q-label">Q6. 초기계약서 draft1 초안 1건 당 평균 검토 소요 시간 <span class="req">*</span></div>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q6" value="2시간 미만"> <span>2시간 미만</span></label>
         <label class="radio-opt"><input type="radio" name="q6" value="2~4시간"> <span>2~4시간</span></label>
@@ -214,12 +207,24 @@
     </div>
 
     <div class="q-block">
+      <div class="q-label">Q6-2. 초기계약서 1건당 계약서 검토 완료까지 평균 소요 일수 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q6b" value="3일 미만"> <span>3일 미만</span></label>
+        <label class="radio-opt"><input type="radio" name="q6b" value="3~7일"> <span>3~7일</span></label>
+        <label class="radio-opt"><input type="radio" name="q6b" value="1~2주"> <span>1~2주</span></label>
+        <label class="radio-opt"><input type="radio" name="q6b" value="2~4주"> <span>2~4주</span></label>
+        <label class="radio-opt"><input type="radio" name="q6b" value="1개월 이상"> <span>1개월 이상</span></label>
+      </div>
+    </div>
+
+    <div class="q-block">
       <div class="q-label">Q7. 가장 시간이 걸리는 단계 <span class="req">*</span></div>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="q7" value="변경 조항 파악 및 버전 비교"> <span>변경 조항 파악 및 버전 비교</span></label>
         <label class="radio-opt"><input type="radio" name="q7" value="수용 여부 판단"> <span>수용 여부 판단 (기준 확인)</span></label>
         <label class="radio-opt"><input type="radio" name="q7" value="에스컬레이션 후 회신 대기"> <span>에스컬레이션 후 회신 대기</span></label>
         <label class="radio-opt"><input type="radio" name="q7" value="최종 합의 문구 조율"> <span>최종 합의 문구 조율</span></label>
+        <label class="radio-opt"><input type="radio" name="q7" value="초기계약서 초안 검토"> <span>초기계약서 초안 검토</span></label>
       </div>
     </div>
 
@@ -232,7 +237,7 @@
   <!-- STEP 3 -->
   <div class="step" id="step-3">
     <div class="step-title">데모 사용성 평가</div>
-    <div class="step-sub">위 데모를 체험해보신 후 응답해 주세요. 아직 안 보셨다면 <a href="https://pactiq-website.vercel.app/demo-v1.html" target="_blank" style="color:#4a7cff">국문 데모</a> 또는 <a href="https://pactiq-website.vercel.app/demo.html" target="_blank" style="color:#4a7cff">영문 데모</a>를 먼저 확인해 주세요.</div>
+    <div class="step-sub">TRIEZ 데모 체험 후 아래 문항에 응답해 주세요.</div>
 
     <div class="q-block">
       <div class="q-label">Q8. 전반적인 사용 편의성 <span class="req">*</span></div>
@@ -465,7 +470,7 @@ function prevStep(from) {
 function collectData() {
   const data = { survey_type: '병원/의료기관 계약팀' };
   // Radios
-  ['q1','q2','q3','q4','q6','q7','q8','q12','q13','q14','q15','q16','q19'].forEach(n => {
+  ['q1','q2','q3','q4','q6','q6b','q7','q8','q12','q13','q14','q15','q16','q19'].forEach(n => {
     const el = document.querySelector(`input[name="${n}"]:checked`);
     data[n] = el ? el.value : '';
   });
