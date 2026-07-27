@@ -1178,6 +1178,71 @@ setTimeout(() => {
   const el = document.querySelector('[data-id="10"]');
   if (el) selectClause(el);
 }, 400);
+
+// ── 설문 플로팅 버튼 ──
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const nextUrl = params.get('next');
+  if (!nextUrl) return; // 랜딩 페이지 통해서 온 경우만 표시
+
+  const btn = document.createElement('a');
+  btn.href = nextUrl;
+  btn.id = 'survey-float-btn';
+  btn.innerHTML = `
+    <span style="font-size:18px;">📋</span>
+    <span>
+      <div style="font-size:13px;font-weight:800;line-height:1.2;">체험 완료! 설문 참여하기</div>
+      <div style="font-size:11px;opacity:.8;margin-top:2px;">약 5분 소요 · 기프티콘 증정</div>
+    </span>
+    <span style="font-size:16px;margin-left:4px;">→</span>`;
+  btn.style.cssText = `
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a2d4a;
+    color: #fff;
+    text-decoration: none;
+    padding: 16px 22px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(26,45,74,.35);
+    font-family: "Apple SD Gothic Neo", sans-serif;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    max-width: 280px;
+  `;
+  btn.onmouseenter = () => {
+    btn.style.transform = 'translateY(-3px)';
+    btn.style.boxShadow = '0 12px 40px rgba(26,45,74,.45)';
+  };
+  btn.onmouseleave = () => {
+    btn.style.transform = '';
+    btn.style.boxShadow = '0 8px 32px rgba(26,45,74,.35)';
+  };
+
+  // 기프티콘 없는 설문이면 기프티콘 문구 제거
+  if (nextUrl.includes('nogift')) {
+    btn.querySelector('div:last-of-type').textContent = '약 5분 소요';
+  }
+
+  document.body.appendChild(btn);
+
+  // 30초 후 살짝 pulse 애니메이션으로 주의 끌기
+  setTimeout(() => {
+    btn.style.animation = 'surveyPulse 1.2s ease 3';
+  }, 30000);
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes surveyPulse {
+      0%,100% { transform: scale(1); box-shadow: 0 8px 32px rgba(26,45,74,.35); }
+      50% { transform: scale(1.04); box-shadow: 0 12px 40px rgba(26,45,74,.5); }
+    }`;
+  document.head.appendChild(style);
+})();
 </script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRIEZ — 설문 참여</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    background: #f4f7fb;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .logo {
+    font-size: 15px; font-weight: 800; letter-spacing: -.02em;
+    color: #1a2d4a; margin-bottom: 48px;
+  }
+  .logo span { color: #1541c8; }
+  .card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 4px 32px rgba(26,45,74,.07);
+  }
+  .badge {
+    display: inline-block;
+    background: #fef3c7; color: #92400e;
+    font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    padding: 5px 14px; border-radius: 100px;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 24px; font-weight: 900; color: #1a2d4a;
+    line-height: 1.35; letter-spacing: -.02em;
+    margin-bottom: 10px; word-break: keep-all;
+  }
+  .sub {
+    font-size: 14px; color: #6b7a90; line-height: 1.65;
+    margin-bottom: 36px; word-break: keep-all;
+  }
+  .options { display: flex; flex-direction: column; gap: 14px; }
+  .opt {
+    display: flex; align-items: center; gap: 18px;
+    padding: 20px 22px;
+    border-radius: 14px;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: none;
+    transition: transform .12s, box-shadow .12s;
+    border: 2px solid transparent;
+  }
+  .opt:hover { transform: translateY(-2px); }
+  .opt-a {
+    background: #1a2d4a; color: #fff;
+    box-shadow: 0 4px 20px rgba(26,45,74,.22);
+  }
+  .opt-a:hover { box-shadow: 0 8px 28px rgba(26,45,74,.3); }
+  .opt-b {
+    background: #fff; color: #1a2d4a;
+    border-color: #dde6f0;
+    box-shadow: 0 2px 8px rgba(26,45,74,.05);
+  }
+  .opt-b:hover { border-color: #b0c0d8; box-shadow: 0 4px 16px rgba(26,45,74,.09); }
+  .opt-icon {
+    font-size: 28px; flex-shrink: 0;
+    width: 52px; height: 52px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+  }
+  .opt-a .opt-icon { background: rgba(255,255,255,.12); }
+  .opt-b .opt-icon { background: #f4f7fb; }
+  .opt-label { font-size: 15px; font-weight: 800; line-height: 1.3; margin-bottom: 3px; }
+  .opt-desc { font-size: 12px; opacity: .65; line-height: 1.4; }
+  .opt-a .opt-desc { opacity: .7; }
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    color: #b0bdd0; font-size: 11px; font-weight: 600;
+    margin: 2px 0;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: #e8eef5;
+  }
+  .gift-note {
+    margin-top: 28px;
+    font-size: 12px; color: #92400e;
+    background: #fffbeb; border: 1px solid #fde68a;
+    padding: 10px 16px; border-radius: 8px;
+    line-height: 1.55;
+  }
+  .time-note {
+    margin-top: 16px; font-size: 11px; color: #9aabbf;
+  }
+</style>
+</head>
+<body>
+<div class="logo">TRI<span>EZ</span></div>
+<div class="card">
+  <div class="badge">🎁 선착순 10명 기프티콘 증정</div>
+  <h1>임상시험 계약 AI 검토<br>데모 체험 & 설문</h1>
+  <p class="sub">제약사·CRO 임상운영팀을 위한 AI 계약 검토 서비스입니다.<br>아래 중 원하시는 방식을 선택해 주세요.</p>
+  <div class="options">
+    <a class="opt opt-a" href="demo-v1.html?next=survey-pharma-gift.html">
+      <div class="opt-icon">🖥️</div>
+      <div>
+        <div class="opt-label">데모 먼저 체험하기 → 설문</div>
+        <div class="opt-desc">AI 계약 검토 화면을 직접 써본 후 설문 참여 (약 10분)</div>
+      </div>
+    </a>
+    <div class="divider">또는</div>
+    <a class="opt opt-b" href="survey-pharma-gift.html">
+      <div class="opt-icon">📋</div>
+      <div>
+        <div class="opt-label">바로 설문 참여하기</div>
+        <div class="opt-desc">데모 없이 설문만 참여 (약 5분)</div>
+      </div>
+    </a>
+  </div>
+  <div class="gift-note">🎁 선착순 10명 응답자께 소정의 기프티콘을 5일 이내 발송드립니다</div>
+  <div class="time-note">소요 시간 — 데모+설문 약 10분 · 설문만 약 5분</div>
+</div>
+</body>
+</html>
