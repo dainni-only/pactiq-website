@@ -195,9 +195,8 @@
   .btn-comment:hover { background: #f0f4f8; }
 
   /* OK summary */
-  .ok-summary { border: 1px solid #dde6f0; padding: 12px 14px; margin-top: 4px; }
-  .ok-summary-label { font-size: 9.5px; font-weight: 700; color: #4ade80; letter-spacing: .06em; margin-bottom: 8px; }
-  .ok-summary-list { font-size: 10.5px; color: #686864; line-height: 2.1; }
+  .ok-summary { border: 1.5px solid #22c55e; background: #f0fdf4; padding: 16px 18px; margin-top: 8px; border-radius: 10px; }
+  .ok-summary-label { font-size: 13px; font-weight: 800; color: #15803d; letter-spacing: -.01em; }
 
   /* Memo panel */
   .memo-panel { border-top: 1px solid #e2e8f0; background: #f8fafc; flex-shrink: 0; max-height: 200px; display: flex; flex-direction: column; }
@@ -294,8 +293,8 @@
   <div class="doc-tab-name">임상시험계약서_KBP301_○○대_Draft3.hwp</div>
   <div class="view-btn-group">
     <button class="view-btn active" id="btn-original" onclick="setView('original')">원본</button>
-    <button class="view-btn" id="btn-review" onclick="setView('review')" style="display:none;">검토</button>
-    <button class="view-btn" id="btn-changes" onclick="setView('changes')">검토완료</button>
+    <button class="view-btn" id="btn-review" onclick="setView('review')">검토</button>
+    <button class="view-btn" id="btn-changes" onclick="setView('changes')">예시</button>
   </div>
   <div class="ai-live-badge" style="margin-left:auto;">
     <div class="ai-dot"></div>
@@ -666,7 +665,7 @@
       </div>
 
       <!-- OK 요약 -->
-      <div class="ok-summary" data-prebaked="true">
+      <div class="ok-summary" id="ok-summary-box" style="display:none;">
         <div class="ok-summary-label">✓ 검토 완료 — 기관 수정 없음</div>
       </div>
 
@@ -880,13 +879,15 @@ function setView(mode) {
     document.getElementById('activity-bar').style.opacity = '1';
     aiPanel.style.display = '';
     emptyState.style.display = 'none';
-    // Show user cards, hide pre-baked cards
+    // Show user cards only, hide pre-baked cards
     document.querySelectorAll('[data-prebaked]').forEach(c => c.style.display = 'none');
     document.querySelectorAll('[data-user-card]').forEach(c => c.style.display = '');
     const hasUserCards = document.querySelectorAll('[data-user-card]').length > 0;
-    reviewEmpty.style.display = hasUserCards ? 'none' : 'block';
+    reviewEmpty.style.display = 'none';
+    const okBox = document.getElementById('ok-summary-box');
+    if (okBox) okBox.style.display = hasUserCards ? 'none' : 'block';
 
-  } else { // 'changes' = 검토완료
+  } else { // 'changes' = 예시
     // Restore every clause to pre-baked hospital changes HTML
     panel.querySelectorAll('.contract-clause').forEach(cl => {
       const textEl = cl.querySelector('.clause-text');
@@ -902,6 +903,8 @@ function setView(mode) {
     aiPanel.style.display = '';
     emptyState.style.display = 'none';
     reviewEmpty.style.display = 'none';
+    const okBox2 = document.getElementById('ok-summary-box');
+    if (okBox2) okBox2.style.display = 'none';
     // Show pre-baked cards, hide user cards
     document.querySelectorAll('[data-prebaked]').forEach(c => c.style.display = '');
     document.querySelectorAll('[data-user-card]').forEach(c => c.style.display = 'none');
@@ -994,7 +997,6 @@ function saveEditClause(textEl, bar, originalText, originalHtml, clauseEl) {
   clauseEl.dataset.userEdited = 'true';
   editingClause = null;
   // Show 검토 tab button
-  document.getElementById('btn-review').style.display = '';
   addMemoAuto('조항을 직접 수정했습니다. 검토 탭에서 확인하세요.', getClauseTag());
   addDynamicAICard(clauseEl, originalText, newText);
 }
@@ -1032,7 +1034,6 @@ function deleteClause(clauseEl) {
   chip.className = 'clause-verdict-chip chip-warn';
   chip.textContent = '🗑 삭제됨';
   // Show 검토 tab
-  document.getElementById('btn-review').style.display = '';
   addMemoAuto(`${clauseLabel} — 조항을 삭제했습니다. 검토 탭에서 확인하세요.`);
   addDynamicAICard(clauseEl, originalText, '(삭제됨)');
 }
@@ -1397,7 +1398,6 @@ function finalizeNewClause(btn) {
   textEl.dataset.originalHtml = '';
   textEl.dataset.changesHtml = '';
   // Show 검토 tab
-  document.getElementById('btn-review').style.display = '';
   addMemoAuto('신규 조항을 추가했습니다. 검토 탭에서 확인하세요.');
   addDynamicAICard(clauseEl, '', newText);
 }
