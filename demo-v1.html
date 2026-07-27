@@ -555,9 +555,9 @@
       </div>
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:81%"></div></div>
       <div class="progress-counts">
-        <div class="progress-count"><span class="progress-count-num ok" id="cnt-ok">16</span><span class="progress-count-label">수용</span></div>
-        <div class="progress-count"><span class="progress-count-num warn" id="cnt-warn">2</span><span class="progress-count-label">검토필요</span></div>
-        <div class="progress-count"><span class="progress-count-num block" id="cnt-block">1</span><span class="progress-count-label">수용불가</span></div>
+        <div class="progress-count"><span class="progress-count-num ok" id="cnt-ok">0</span><span class="progress-count-label">수용</span></div>
+        <div class="progress-count"><span class="progress-count-num warn" id="cnt-warn">0</span><span class="progress-count-label">검토필요</span></div>
+        <div class="progress-count"><span class="progress-count-num block" id="cnt-block">0</span><span class="progress-count-label">수용불가</span></div>
         <div class="progress-count"><span class="progress-count-num pend" id="cnt-pend">0</span><span class="progress-count-label">미검토</span></div>
       </div>
       <div class="progress-desc">조항을 클릭하면 판정 근거가 표시됩니다. 현재 <span class="hl">2개 검토 필요</span>, <span class="hl-r">1개 수용 불가</span> 감지.</div>
@@ -1282,7 +1282,12 @@ function generateAIVerdict(clauseLabel, originalText, newText) {
 function addDynamicAICard(clauseEl, originalText, newText) {
   const clauseId = clauseEl.dataset.id;
   const cardId = 'card-user-' + clauseId;
-  if (document.getElementById(cardId)) document.getElementById(cardId).remove();
+  if (document.getElementById(cardId)) {
+    const old = document.getElementById(cardId);
+    const oldVerdict = old.dataset.verdict;
+    if (oldVerdict) { const el = document.getElementById('cnt-' + oldVerdict); if (el) el.textContent = Math.max(0, parseInt(el.textContent||0) - 1); }
+    old.remove();
+  }
   const numEl = clauseEl.querySelector('.clause-num');
   const clauseLabel = numEl ? numEl.textContent : '수정 조항';
 
@@ -1327,6 +1332,7 @@ function addDynamicAICard(clauseEl, originalText, newText) {
   card.id = cardId;
   card.dataset.clauseId = clauseId;
   card.dataset.userCard = 'true';
+  card.dataset.verdict = v.verdict;
   card.innerHTML = `
     <div class="verdict-card-header" onclick="toggleCard('user-${clauseId}')">
       <div class="verdict-icon-sm ${v.iconClass}">${v.icon}</div>
@@ -1347,8 +1353,8 @@ function addDynamicAICard(clauseEl, originalText, newText) {
   const scroll = document.querySelector('.verdicts-scroll');
   if (scroll) scroll.insertBefore(card, scroll.firstChild);
 
-  const warnEl = document.getElementById('cnt-warn');
-  if (warnEl) warnEl.textContent = parseInt(warnEl.textContent || 0) + 1;
+  const cntEl = document.getElementById('cnt-' + v.verdict);
+  if (cntEl) cntEl.textContent = parseInt(cntEl.textContent || 0) + 1;
 }
 
 function addClauseBelow(refClauseEl) {
