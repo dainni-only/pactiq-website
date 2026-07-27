@@ -334,7 +334,7 @@
         <label class="check-opt"><input type="checkbox" name="q14" value="에스컬레이션 건수 감소" onchange="limitCheck(this,'q14',2)"> <span>에스컬레이션 건수 감소</span></label>
         <label class="check-opt"><input type="checkbox" name="q14" value="누락 조항·판단 오류 방지" onchange="limitCheck(this,'q14',2)"> <span>누락 조항 / 판단 오류 방지</span></label>
         <label class="check-opt"><input type="checkbox" name="q14" value="이력 관리 및 감사 추적" onchange="limitCheck(this,'q14',2)"> <span>이력 관리 및 감사 추적 편의</span></label>
-        <label class="check-opt"><input type="checkbox" name="q14" value="신규 담당자 온보딩 단축" onchange="limitCheck(this,'q14',2)"> <span>신규 담당자 온보딩 단축</span></label>
+        <label class="check-opt"><input type="checkbox" name="q14" value="이메일·초안 협의 횟수 감소" onchange="limitCheck(this,'q14',2)"> <span>이메일 및 계약서 초안 협의 횟수 현저히 감소</span></label>
       </div>
     </div>
 
@@ -422,7 +422,6 @@
     <div class="thank-title">제출이 완료되었습니다!</div>
     <div class="thank-text">
       소중한 의견이 TRIEZ 개발에 큰 도움이 됩니다.<br><br>
-      🎁 연락처를 남겨주신 분께는 <strong>소정의 기프티콘</strong>을 <strong>5일 이내</strong> 발송드립니다.<br>
       심층 인터뷰 또는 얼리액세스 대상으로 선정되시면 이메일로 별도 연락드립니다.<br><br>
       문의: <a href="mailto:contact@triez.com" style="color:#4a7cff">contact@triez.com</a>
     </div>
@@ -537,6 +536,7 @@ async function submitSurvey() {
 
   document.querySelector('.step.active').style.display = 'none';
   document.querySelector('.progress-wrap').style.display = 'none';
+  document.querySelector('.hero').style.display = 'none';
   document.getElementById('thank-you').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
