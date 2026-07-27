@@ -92,6 +92,8 @@
 
   .del-text { text-decoration: line-through; color: #dc2626; background: #fff0f0; }
   .ins-text { text-decoration: underline; color: #1541c8; background: #f0f4ff; }
+  .user-del-text { text-decoration: line-through; color: #dc2626; background: #fff0f0; }
+  .user-ins-text { text-decoration: underline; color: #1541c8; background: #f0f4ff; }
 
   /* ── AI PANEL ── */
   .ai-panel {
@@ -292,7 +294,8 @@
   <div class="doc-tab-name">임상시험계약서_KBP301_○○대_Draft3.hwp</div>
   <div class="view-btn-group">
     <button class="view-btn active" id="btn-original" onclick="setView('original')">원본</button>
-    <button class="view-btn" id="btn-changes" onclick="setView('changes')">검토</button>
+    <button class="view-btn" id="btn-review" onclick="setView('review')" style="display:none;">검토</button>
+    <button class="view-btn" id="btn-changes" onclick="setView('changes')">검토완료</button>
   </div>
   <div class="ai-live-badge" style="margin-left:auto;">
     <div class="ai-dot"></div>
@@ -564,7 +567,7 @@
     <div class="verdicts-scroll">
 
       <!-- 제10조 BLOCK (SAE) -->
-      <div class="verdict-card" id="card-10">
+      <div class="verdict-card" id="card-10" data-prebaked="true">
         <div class="verdict-card-header" onclick="toggleCard('10')">
           <div class="verdict-icon-sm vi-block">✕</div>
           <div class="verdict-card-clause">제10조 — SAE 보고 기한</div>
@@ -589,7 +592,7 @@
       </div>
 
       <!-- 제13조 WARN (연구비) -->
-      <div class="verdict-card" id="card-13">
+      <div class="verdict-card" id="card-13" data-prebaked="true">
         <div class="verdict-card-header" onclick="toggleCard('13')">
           <div class="verdict-icon-sm vi-warn">⚠</div>
           <div class="verdict-card-clause">제13조 — 연구비 지급 조건</div>
@@ -619,7 +622,7 @@
       </div>
 
       <!-- 제17조 WARN (계약기간) -->
-      <div class="verdict-card" id="card-17">
+      <div class="verdict-card" id="card-17" data-prebaked="true">
         <div class="verdict-card-header" onclick="toggleCard('17')">
           <div class="verdict-icon-sm vi-warn">⚠</div>
           <div class="verdict-card-clause">제17조 — 계약 기간</div>
@@ -649,7 +652,7 @@
       </div>
 
       <!-- 제16조 OK (data-changed) -->
-      <div class="verdict-card" id="card-16">
+      <div class="verdict-card" id="card-16" data-prebaked="true">
         <div class="verdict-card-header" onclick="toggleCard('16')">
           <div class="verdict-icon-sm vi-ok">✓</div>
           <div class="verdict-card-clause">제16조 — 손해배상 책임 한도</div>
@@ -662,7 +665,7 @@
       </div>
 
       <!-- OK 요약 -->
-      <div class="ok-summary">
+      <div class="ok-summary" data-prebaked="true">
         <div class="ok-summary-label">✓ 검토 완료 — 기관 수정 없음</div>
         <div class="ok-summary-list">전문 · 제1조 · 제2조 · 제3조 · 제4조 · 제5조 · 제6조 · 제7조 · 제8조 · 제9조 · 제11조 · 제12조 · 제14조 · 제15조 · 제18조 · 제19조 · 제20조</div>
       </div>
@@ -829,45 +832,106 @@ function toggleCard(id) {
   if (el) selectClause(el);
 }
 
-function setView(mode) {
-  document.getElementById('btn-changes').classList.toggle('active', mode === 'changes');
-  document.getElementById('btn-original').classList.toggle('active', mode === 'original');
-  const panel = document.getElementById('contract-panel');
+function getAiEmptyState() {
+  let el = document.getElementById('ai-empty-state');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'ai-empty-state';
+    el.style.cssText = 'width:320px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;color:#9aabbf;text-align:center;gap:12px;border-left:1px solid #dde6f0;';
+    el.innerHTML = '<div style="font-size:36px;opacity:.4;">📄</div><div style="font-size:13px;font-weight:700;color:#1a2d4a;opacity:.5;">원본 문서입니다</div><div style="font-size:12px;line-height:1.6;word-break:keep-all;">조항을 클릭해 수정·코멘트·삭제를 직접 해보세요.<br>변경사항은 <strong style="color:#1541c8;">검토</strong> 탭에 기록됩니다.</div>';
+    document.querySelector('.ai-panel').parentNode.insertBefore(el, document.querySelector('.ai-panel').nextSibling);
+  }
+  return el;
+}
 
-  // active 클래스 제거 (원본 모드에서 block.active 배경색 차단)
+function getReviewEmptyState() {
+  let el = document.getElementById('review-empty-state');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'review-empty-state';
+    el.style.cssText = 'padding:32px 16px;text-align:center;color:#9aabbf;';
+    el.innerHTML = '<div style="font-size:28px;opacity:.3;margin-bottom:10px;">✏️</div><div style="font-size:12px;font-weight:700;color:#1a2d4a;opacity:.4;margin-bottom:6px;">아직 수정된 조항이 없습니다</div><div style="font-size:11px;line-height:1.6;word-break:keep-all;">원본 탭에서 조항을 클릭해<br>수정·추가·삭제해보세요.</div>';
+    document.querySelector('.verdicts-scroll').prepend(el);
+  }
+  return el;
+}
+
+function setView(mode) {
+  document.getElementById('btn-original').classList.toggle('active', mode === 'original');
+  document.getElementById('btn-review').classList.toggle('active', mode === 'review');
+  document.getElementById('btn-changes').classList.toggle('active', mode === 'changes');
+
+  const panel = document.getElementById('contract-panel');
   hideClauseToolbar();
   panel.querySelectorAll('.contract-clause').forEach(e => e.classList.remove('active'));
   activeClause = null;
 
+  const aiPanel = document.querySelector('.ai-panel');
+  const emptyState = getAiEmptyState();
+  const reviewEmpty = getReviewEmptyState();
+
   if (mode === 'original') {
-    panel.querySelectorAll('.ins-text').forEach(e => e.style.display = 'none');
-    panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = 'none'; e.style.color = 'inherit'; e.style.background = 'none'; });
-    panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
-    panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
-    panel.querySelectorAll('.clause-num').forEach(e => { e.style.color = '#1a2d4a'; });
+    // Restore every clause to its snapshot original HTML
+    panel.querySelectorAll('.contract-clause').forEach(cl => {
+      const textEl = cl.querySelector('.clause-text');
+      if (textEl && textEl.dataset.originalHtml !== undefined) {
+        textEl.innerHTML = textEl.dataset.originalHtml;
+      }
+      // Reset class, chips, labels to plain state
+      if (cl.dataset.origClass) cl.className = cl.dataset.origClass.replace(/\b(warn|block)\b/g, 'ok').trim();
+      cl.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
+      cl.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
+      cl.querySelectorAll('.clause-num').forEach(e => e.style.color = '');
+    });
     document.getElementById('activity-bar').style.opacity = '0.4';
-    // 원본 모드: AI 패널 숨기고 빈 상태 메시지 표시
-    document.querySelector('.ai-panel').style.display = 'none';
-    let emptyState = document.getElementById('ai-empty-state');
-    if (!emptyState) {
-      emptyState = document.createElement('div');
-      emptyState.id = 'ai-empty-state';
-      emptyState.style.cssText = 'width:320px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;color:#9aabbf;text-align:center;gap:12px;';
-      emptyState.innerHTML = '<div style="font-size:36px;opacity:.4;">🤖</div><div style="font-size:13px;font-weight:700;color:#1a2d4a;opacity:.5;">아직 AI 검토 결과가 없습니다</div><div style="font-size:12px;line-height:1.6;word-break:keep-all;">기관 담당자가 조항을 수정하면<br>TRIEZ가 자동으로 AI 판정을 시작합니다.</div>';
-      document.querySelector('.ai-panel').parentNode.insertBefore(emptyState, document.querySelector('.ai-panel').nextSibling);
-    }
+    aiPanel.style.display = 'none';
     emptyState.style.display = 'flex';
-  } else {
-    panel.querySelectorAll('.ins-text').forEach(e => e.style.display = '');
-    panel.querySelectorAll('.del-text').forEach(e => { e.style.textDecoration = ''; e.style.color = ''; e.style.background = ''; });
-    panel.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
-    panel.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
-    panel.querySelectorAll('.clause-num').forEach(e => { e.style.color = ''; });
+
+  } else if (mode === 'review') {
+    // Show user edits for edited clauses, original for others
+    panel.querySelectorAll('.contract-clause').forEach(cl => {
+      const textEl = cl.querySelector('.clause-text');
+      if (!textEl) return;
+      if (cl.dataset.userEdited && textEl.dataset.userHtml) {
+        textEl.innerHTML = textEl.dataset.userHtml;
+        cl.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
+        cl.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
+      } else {
+        if (textEl.dataset.originalHtml !== undefined) textEl.innerHTML = textEl.dataset.originalHtml;
+        if (cl.dataset.origClass) cl.className = cl.dataset.origClass.replace(/\b(warn|block)\b/g, 'ok').trim();
+        cl.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = 'none');
+        cl.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = 'none');
+        cl.querySelectorAll('.clause-num').forEach(e => e.style.color = '');
+      }
+    });
     document.getElementById('activity-bar').style.opacity = '1';
-    // 변경 모드: AI 패널 복원, 빈 상태 숨김
-    document.querySelector('.ai-panel').style.display = '';
-    const emptyState = document.getElementById('ai-empty-state');
-    if (emptyState) emptyState.style.display = 'none';
+    aiPanel.style.display = '';
+    emptyState.style.display = 'none';
+    // Show user cards, hide pre-baked cards
+    document.querySelectorAll('[data-prebaked]').forEach(c => c.style.display = 'none');
+    document.querySelectorAll('[data-user-card]').forEach(c => c.style.display = '');
+    const hasUserCards = document.querySelectorAll('[data-user-card]').length > 0;
+    reviewEmpty.style.display = hasUserCards ? 'none' : 'block';
+
+  } else { // 'changes' = 검토완료
+    // Restore every clause to pre-baked hospital changes HTML
+    panel.querySelectorAll('.contract-clause').forEach(cl => {
+      const textEl = cl.querySelector('.clause-text');
+      if (textEl && textEl.dataset.changesHtml !== undefined) {
+        textEl.innerHTML = textEl.dataset.changesHtml;
+      }
+      if (cl.dataset.origClass) cl.className = cl.dataset.origClass;
+      cl.querySelectorAll('.clause-verdict-chip').forEach(e => e.style.display = '');
+      cl.querySelectorAll('.clause-warn-label, .clause-block-label').forEach(e => e.style.display = '');
+      cl.querySelectorAll('.clause-num').forEach(e => e.style.color = '');
+    });
+    document.getElementById('activity-bar').style.opacity = '1';
+    aiPanel.style.display = '';
+    emptyState.style.display = 'none';
+    reviewEmpty.style.display = 'none';
+    // Show pre-baked cards, hide user cards
+    document.querySelectorAll('[data-prebaked]').forEach(c => c.style.display = '');
+    document.querySelectorAll('[data-user-card]').forEach(c => c.style.display = 'none');
   }
 }
 
@@ -945,8 +1009,9 @@ function saveEditClause(textEl, bar, originalText, originalHtml, clauseEl) {
     cancelEditClause(textEl, bar, originalHtml);
     return;
   }
-  // Render tracked change: del original + ins new
-  textEl.innerHTML = `<span class="del-text">${escapeHtml(originalText)}</span><span class="ins-text">${escapeHtml(newText)}</span>`;
+  // Render tracked change with user-del/user-ins classes
+  textEl.innerHTML = `<span class="user-del-text">${escapeHtml(originalText)}</span><span class="user-ins-text">${escapeHtml(newText)}</span>`;
+  textEl.dataset.userHtml = textEl.innerHTML; // store for review tab
   textEl.contentEditable = 'false';
   textEl.style.outline = '';
   textEl.style.background = '';
@@ -955,8 +1020,10 @@ function saveEditClause(textEl, bar, originalText, originalHtml, clauseEl) {
   clauseEl.dataset.changed = '';
   clauseEl.dataset.userEdited = 'true';
   editingClause = null;
-  addMemoAuto('조항을 직접 수정했습니다. 원본 대비 추적변경이 적용되었습니다.', getClauseTag());
-  onUserEdit(clauseEl, originalText, newText);
+  // Show 검토 tab button
+  document.getElementById('btn-review').style.display = '';
+  addMemoAuto('조항을 직접 수정했습니다. 검토 탭에서 확인하세요.', getClauseTag());
+  addDynamicAICard(clauseEl, originalText, newText);
 }
 
 function cancelEditClause(textEl, bar, originalHtml) {
@@ -974,11 +1041,12 @@ function deleteClause(clauseEl) {
   const originalText = textEl ? textEl.innerText.trim() : '';
   const numEl = clauseEl.querySelector('.clause-num');
   const clauseLabel = numEl ? numEl.textContent : '조항';
-  // mark as deleted with strikethrough in 원본 view
   clauseEl.dataset.changed = '';
   clauseEl.dataset.userEdited = 'true';
   clauseEl.dataset.userDeleted = 'true';
-  if (textEl) textEl.innerHTML = `<span class="del-text">${escapeHtml(originalText)}</span>`;
+  // user-del only (deletion = strike through, no ins)
+  const userHtml = `<span class="user-del-text">${escapeHtml(originalText)}</span>`;
+  if (textEl) { textEl.innerHTML = userHtml; textEl.dataset.userHtml = userHtml; }
   clauseEl.classList.remove('ok', 'warn', 'block');
   clauseEl.classList.add('warn');
   let chip = clauseEl.querySelector('.clause-verdict-chip');
@@ -990,21 +1058,14 @@ function deleteClause(clauseEl) {
   }
   chip.className = 'clause-verdict-chip chip-warn';
   chip.textContent = '🗑 삭제됨';
-  addMemoAuto(`${clauseLabel} — 조항을 삭제했습니다.`);
-  onUserEdit(clauseEl, originalText, '(삭제됨)');
+  // Show 검토 tab
+  document.getElementById('btn-review').style.display = '';
+  addMemoAuto(`${clauseLabel} — 조항을 삭제했습니다. 검토 탭에서 확인하세요.`);
+  addDynamicAICard(clauseEl, originalText, '(삭제됨)');
 }
 
 function escapeHtml(str) {
   return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function onUserEdit(clauseEl, originalText, newText) {
-  addDynamicAICard(clauseEl, originalText, newText);
-  setView('changes');
-  setTimeout(() => {
-    clauseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    selectClause(clauseEl);
-  }, 80);
 }
 
 function addDynamicAICard(clauseEl, originalText, newText) {
@@ -1031,6 +1092,7 @@ function addDynamicAICard(clauseEl, originalText, newText) {
   card.className = 'verdict-card highlighted';
   card.id = cardId;
   card.dataset.clauseId = clauseId;
+  card.dataset.userCard = 'true';
   card.innerHTML = `
     <div class="verdict-card-header" onclick="toggleCard('user-${clauseId}')">
       <div class="verdict-icon-sm vi-warn">⚠</div>
@@ -1094,11 +1156,17 @@ function finalizeNewClause(btn) {
   btn.parentElement.remove();
   clauseEl.dataset.changed = '';
   clauseEl.dataset.userEdited = 'true';
+  clauseEl.dataset.originalHtml = ''; // new clause — original is empty
   clauseEl.querySelector('.clause-num').textContent = '신규 조항';
-  // wrap content as ins-text (new addition)
-  textEl.innerHTML = `<span class="ins-text">${escapeHtml(newText)}</span>`;
-  addMemoAuto('신규 조항을 추가했습니다.');
-  onUserEdit(clauseEl, '', newText);
+  const userHtml = `<span class="user-ins-text">${escapeHtml(newText)}</span>`;
+  textEl.innerHTML = userHtml;
+  textEl.dataset.userHtml = userHtml;
+  textEl.dataset.originalHtml = '';
+  textEl.dataset.changesHtml = '';
+  // Show 검토 tab
+  document.getElementById('btn-review').style.display = '';
+  addMemoAuto('신규 조항을 추가했습니다. 검토 탭에서 확인하세요.');
+  addDynamicAICard(clauseEl, '', newText);
 }
 
 // 바깥 클릭 시 툴바 닫기
@@ -1336,6 +1404,25 @@ function closeGuide() {
   document.getElementById('guide-overlay').style.display = 'none';
   setView('original');
 }
+
+// ── 초기화: 각 조항의 HTML 스냅샷 저장 ──
+(function initSnapshots() {
+  document.querySelectorAll('.contract-clause').forEach(cl => {
+    // Store current class (pre-baked state with warn/block)
+    cl.dataset.origClass = cl.className;
+    const textEl = cl.querySelector('.clause-text');
+    if (!textEl) return;
+    // Store pre-baked hospital changes HTML
+    textEl.dataset.changesHtml = textEl.innerHTML;
+    // Derive original HTML: strip ins-text, flatten del-text to plain text
+    const clone = textEl.cloneNode(true);
+    clone.querySelectorAll('.ins-text').forEach(e => e.remove());
+    clone.querySelectorAll('.del-text').forEach(e => {
+      e.replaceWith(document.createTextNode(e.textContent));
+    });
+    textEl.dataset.originalHtml = clone.innerHTML;
+  });
+})();
 
 // 초기 뷰: 원본
 setView('original');
