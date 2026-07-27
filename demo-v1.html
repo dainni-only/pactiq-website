@@ -1070,129 +1070,242 @@ function escapeHtml(str) {
 
 function generateAIVerdict(clauseLabel, originalText, newText) {
   const isDelete = newText === '(삭제됨)';
-  const isNew = !originalText;
-  const label = clauseLabel.toLowerCase();
+  const isNew    = !originalText;
+  const lbl  = clauseLabel;
+  const newL = (newText     || '').toLowerCase();
+  const oldL = (originalText|| '').toLowerCase();
 
-  // keyword-based analysis for realistic demo responses
+  // ── 조항 삭제 ──────────────────────────────────────────────────────────
   if (isDelete) {
+    const isMandatory = /이상반응|sae|irb|동의|피험자|비밀|보상|손해배상|지식재산|위탁/.test(lbl.toLowerCase());
+    if (isMandatory) {
+      return {
+        verdict:'block', icon:'✕', iconClass:'vi-block', status:'수용 불가', statusClass:'vs-block',
+        chipClass:'chip-block', chipText:'✕ 삭제 불가', clauseClass:'block',
+        reason:`<strong style="color:#e8e7e3;">${lbl}</strong>은 임상시험계약서에 반드시 포함되어야 하는 필수 조항입니다. ICH E6(R3) 5.1 및 KGCP 제3조는 피험자 보호·데이터 무결성·책임 범위에 관한 조항을 계약서에 명시하도록 요구합니다. 삭제 수용 불가합니다.`,
+        ref:`ICH E6(R3) 5.1 · 의뢰자 일반 의무 (필수 계약 조항 명시)\nKGCP 제3조 · 임상시험 계약서 필수 기재사항\n약사법 제34조 · 임상시험 실시 기준 준수 의무`,
+        history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div><div class="inline-hist-result">동일 조항 삭제 요청 → 수용 불가, 원안 유지</div></div><div class="inline-hist-insight">💡 이 기관은 과거에도 동일 조항 삭제를 시도했으나 거절된 이력이 있습니다.</div></div>`,
+        suggestion:null, actionLabel:'삭제 요청 거절 — 원안 유지'
+      };
+    }
     return {
-      icon: '✕', iconClass: 'vi-block', status: '검토 필요', statusClass: 'vs-block',
-      chipClass: 'chip-block', chipText: '⚠ 삭제 검토',
-      clauseClass: 'warn',
-      reason: `<strong style="color:#e8e7e3;">${escapeHtml(clauseLabel)}</strong> 조항이 삭제되었습니다. 해당 조항은 계약서의 핵심 의무 또는 책임 조항일 수 있습니다. TRIEZ 계약 히스토리 검토 결과, 동일 기관 과거 계약에서 해당 조항이 필수 포함된 사례가 있습니다. 삭제 전 법무팀 또는 계약담당자 확인을 권장합니다.`,
-      ref: `SOP CONTR-005 · 핵심 계약 조항 임의 삭제 금지\nICH E6(R3) 5.1 · 의뢰자 책임 관련 조항 필수 포함`,
-      suggestion: null,
-      actionLabel: '삭제 재검토 요청'
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 삭제 검토', clauseClass:'warn',
+      reason:`<strong style="color:#e8e7e3;">${lbl}</strong> 조항이 삭제되었습니다. 법정 필수 조항은 아니나 스폰서 내부 SOP에 따라 표준 계약서 포함이 권장됩니다. 삭제 시 책임 범위 및 분쟁 해결 근거가 약화될 수 있습니다.`,
+      ref:`SOP CONTR-005 · 표준 계약 조항 유지 권장\nICH E6(R3) 5.1 · 의뢰자·기관 간 계약 요건`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div><div class="inline-hist-result">동일 조항 포함 — 삭제 요청 없음</div></div></div>`,
+      suggestion:null, actionLabel:'계약담당자 삭제 승인 요청'
     };
   }
+
+  // ── 신규 조항 추가 ──────────────────────────────────────────────────────
   if (isNew) {
+    const hasRestriction = /금지|불허|제한|불가|배제/.test(newL);
+    if (hasRestriction) {
+      return {
+        verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+        chipClass:'chip-warn', chipText:'⚠ 신규 — 제한 조항', clauseClass:'warn',
+        reason:`추가된 조항에 행위를 제한·금지하는 내용이 포함되어 있습니다. ICH E6(R3) 5.1 범위 내인지, 스폰서 SOP에 위배되지 않는지 계약담당자 확인이 필요합니다.`,
+        ref:`ICH E6(R3) 5.1 · 의뢰자 일반 의무 범위\nKGCP 제4조 · 계약 내용의 법령 준수 여부`,
+        history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10</div><div class="inline-hist-result">유사 제한 조항 추가 시도 → 협상 후 범위 축소 수용</div></div></div>`,
+        suggestion:null, actionLabel:'신규 조항 법무 검토 요청'
+      };
+    }
     return {
-      icon: '⚠', iconClass: 'vi-warn', status: '검토 필요', statusClass: 'vs-warn',
-      chipClass: 'chip-warn', chipText: '⚠ 신규 조항',
-      clauseClass: 'warn',
-      reason: `신규 조항이 추가되었습니다. TRIEZ가 기존 계약 히스토리 및 SOP와 상충 여부를 검토합니다. 추가된 내용이 <strong style="color:#e8e7e3;">"${escapeHtml((newText||'').slice(0,40))}…"</strong> — 계약 범위 및 의무 관계에 영향을 줄 수 있어 계약담당자 확인이 필요합니다.`,
-      ref: `SOP CONTR-009 · 계약 조항 추가 시 법무 검토 필요\nKGCP 제4조 · 계약 내용의 법령 준수 여부 확인`,
-      suggestion: null,
-      actionLabel: '신규 조항 검토 요청'
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 신규 조항', clauseClass:'warn',
+      reason:`신규 조항이 추가되었습니다. 기존 계약 체계·SOP·GCP 규정과 충돌 여부를 검토합니다.`,
+      ref:`ICH E6(R3) 5.1 · 의뢰자 계약 관련 일반 의무\nKGCP 제4조 · 임상시험계약서 기재사항 준수\nSOP CONTR-009 · 비표준 조항 추가 시 법무 검토 필요`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15</div><div class="inline-hist-result">비표준 조항 추가 → 협상 후 수용 (범위 제한 명시)</div></div></div>`,
+      suggestion:null, actionLabel:'신규 조항 계약담당자 검토 요청'
     };
   }
 
-  // keyword matching for specific clause types
-  const oldL = (originalText || '').toLowerCase();
-  const newL = (newText || '').toLowerCase();
-
-  // SAE / 이상반응 / 보고
-  if (label.includes('이상반응') || label.includes('sae') || label.includes('보고') || newL.includes('이상반응') || newL.includes('보고')) {
-    const hasLoosenedDeadline = /\d+시간/.test(newL) && !/즉시/.test(newL);
+  // ── SAE / 이상반응 보고 기한 ───────────────────────────────────────────
+  if (/이상반응|중대한.*반응|sae|보고기한/.test(lbl.toLowerCase()+newL)) {
+    const weakened = /48시간|영업일.*2일|2.*영업일|72시간/.test(newL) ||
+                     (!/즉시|24시간/.test(newL) && /즉시|24시간/.test(oldL));
+    if (weakened) {
+      return {
+        verdict:'block', icon:'✕', iconClass:'vi-block', status:'수용 불가', statusClass:'vs-block',
+        chipClass:'chip-block', chipText:'✕ 수용 불가', clauseClass:'block',
+        reason:`SAE 초기 보고 기한이 완화되었습니다. <strong style="color:#e8e7e3;">KGCP 제18조 제1항</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 4.11.1</strong>은 연구자가 SAE 인지 즉시(24시간 이내) 의뢰자에게 보고하도록 법적으로 의무화합니다. 이는 재량의 여지 없이 반드시 준수해야 할 법정 의무이며 어떠한 경우에도 완화 수용 불가합니다.`,
+        ref:`KGCP 제18조 제1항 · SAE 즉시보고 — 법적 의무, 예외 없음\nICH E6(R3) 4.11.1 · Investigator Reporting of SAEs — immediate\n약사법 시행규칙 제30조 · 이상사례 보고 기준\n식약처 임상시험 이상사례 보고 가이드라인 (2023.07)`,
+        history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div><div class="inline-hist-result">SAE 기한 완화 요청 → 수용 불가, 24시간 원안 유지</div></div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div><div class="inline-hist-result">동일 요청 반복 → 거절, KGCP 근거 서면 전달</div></div><div class="inline-hist-insight">💡 이 기관은 과거 2회 동일 요청 시 거절 이력이 있습니다. 대안으로 "초기 구두보고 24h + 서면보고 7일" 구조를 제안하세요.</div></div>`,
+        suggestion:`연구자는 SAE 발생 인지 즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다. 연구자는 SAE 발생 후 7일 이내에 최초 상세 서면보고서를 제출한다.`,
+        actionLabel:'수용 불가 — 원안 복원 요청'
+      };
+    }
     return {
-      icon: hasLoosenedDeadline ? '✕' : '⚠', iconClass: hasLoosenedDeadline ? 'vi-block' : 'vi-warn',
-      status: hasLoosenedDeadline ? '수용 불가' : '검토 필요', statusClass: hasLoosenedDeadline ? 'vs-block' : 'vs-warn',
-      chipClass: hasLoosenedDeadline ? 'chip-block' : 'chip-warn', chipText: hasLoosenedDeadline ? '✕ 수용 불가' : '⚠ 검토 필요',
-      clauseClass: hasLoosenedDeadline ? 'block' : 'warn',
-      reason: `SAE 보고 기한 관련 조항이 수정되었습니다. KGCP 제18조에 따라 중대한 이상반응은 <strong style="color:#e8e7e3;">즉시(24시간 이내)</strong> 의뢰자에게 보고해야 합니다. 수정된 내용이 이 기준을 충족하는지 확인이 필요합니다.`,
-      ref: `KGCP 제18조 · SAE 24시간 이내 보고 (법적 의무)\nICH E6(R3) 4.11.1 · SAE 즉시보고 국제 표준\n식약처 가이드라인(2023.07) · 위반 시 임상시험 중단 사유`,
-      suggestion: '연구자는 SAE 발생 인지 즉시(24시간 이내) 의뢰자에게 초기 구두·이메일 보고를 실시하며, 의뢰자는 서면 보고서 작성을 위한 표준 양식 및 작성 지원을 기관에 제공한다.',
-      actionLabel: '법무팀 검토 요청'
+      verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+      chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+      reason:`수정된 SAE 보고 조항이 <strong style="color:#e8e7e3;">KGCP 제18조 제1항</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 4.11.1</strong>의 즉시(24시간 이내) 보고 의무를 충족합니다. 규정 준수 범위 내의 수정으로 수용 가능합니다.`,
+      ref:`KGCP 제18조 제1항 · SAE 즉시보고 의무 충족 확인\nICH E6(R3) 4.11.1 · SAE Reporting Requirements — 준수`,
+      history:'', suggestion:null, actionLabel:'수용 완료 처리'
     };
   }
 
-  // 연구비 / 지급 / 비용
-  if (label.includes('연구비') || label.includes('비용') || label.includes('지급') || newL.includes('연구비') || newL.includes('지급')) {
+  // ── 연구비 / 지급 조건 ──────────────────────────────────────────────────
+  if (/연구비|지급.*조건|지급.*기한|지급.*주기|비용.*지급/.test(lbl.toLowerCase()+newL)) {
+    const fasterPayment = /월별|매월|15일/.test(newL) && !/분기|3개월|30일/.test(newL);
     return {
-      icon: '⚠', iconClass: 'vi-warn', status: '승인 필요', statusClass: 'vs-warn',
-      chipClass: 'chip-warn', chipText: '⚠ 승인 필요',
-      clauseClass: 'warn',
-      reason: `연구비 지급 조건이 수정되었습니다. TRIEZ 검토 결과, ○○대학교병원과의 기존 합의 이력에서 표준 지급 주기(분기)와 기한(30일)을 유지한 사례가 확인됩니다. 수정된 조건이 내부 재무 SOP 기준을 초과하는지 재무팀 확인이 필요합니다.`,
-      ref: `SOP FIN-003 · 표준 연구비 지급 주기 분기(3개월)\n내부 재무 기준 · 지급 기한 30일 이내\n과거 계약 이력 #OOUMC-2023-089 참조`,
-      suggestion: '연구비는 분기별로 지급하며, 각 지급 기간 종료 후 30일 이내에 기관이 제출하는 청구서에 따라 지급한다.',
-      actionLabel: '재무팀 검토 요청'
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 승인 필요', clauseClass:'warn',
+      reason:`연구비 지급 조건이 수정되었습니다. ICH E6(R3)에 직접 규정은 없으나 스폰서 내부 SOP FIN-003은 <strong style="color:#e8e7e3;">분기별 지급, 기한 30일</strong>을 표준으로 명시합니다. ${fasterPayment ? '월별 지급·15일 기한 단축은 재무팀 별도 설정이 필요합니다.' : '변경된 지급 조건이 SOP 기준과 다를 경우 재무팀 확인이 필요합니다.'}`,
+      ref:`SOP FIN-003 · 표준 연구비 지급 주기: 분기(3개월)\nSOP FIN-003 §2 · 지급 기한: 청구 후 30일 이내\nICH E6(R3) 5.9 · 연구비 관련 의뢰자 의무 (협상 가능 영역)`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div><div class="inline-hist-result">분기 지급 유지 — 기관 지급 주기 변경 요청 없음</div></div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div><div class="inline-hist-result">분기 지급·기한 30일 유지 합의</div></div><div class="inline-hist-insight">💡 동일 기관은 분기 지급을 일관 유지한 이력이 있습니다. ${fasterPayment ? '월별 요청은 이례적 — 격월(2개월) 반협상을 권장합니다.' : '현 변경 조건을 재무팀과 검토하세요.'}</div></div>`,
+      suggestion:fasterPayment ? `연구비는 분기별(3개월마다)로 지급하며, 각 지급 기간 종료 후 기관의 청구서 수령일로부터 30일 이내에 지급한다.` : null,
+      actionLabel:'재무팀 승인 요청'
     };
   }
 
-  // 계약기간 / 유효기간
-  if (label.includes('기간') || newL.includes('개월') || newL.includes('기간')) {
+  // ── 계약 기간 ───────────────────────────────────────────────────────────
+  if (/계약.*기간|유효.*기간|기간.*연장|제17조/.test(lbl.toLowerCase()+newL) || (/개월/.test(newL) && /기간/.test(lbl.toLowerCase()))) {
+    const extended = /36개월|3년|48개월/.test(newL) && /24개월|2년/.test(oldL);
     return {
-      icon: '⚠', iconClass: 'vi-warn', status: '승인 필요', statusClass: 'vs-warn',
-      chipClass: 'chip-warn', chipText: '⚠ 기간 변경',
-      clauseClass: 'warn',
-      reason: `계약 기간이 수정되었습니다. 내부 SOP 기준 표준 임상시험 계약 기간은 <strong style="color:#e8e7e3;">IRB 승인일로부터 24개월</strong>입니다. 변경된 기간이 SOP 기준을 초과하는 경우 별도 승인 절차가 필요합니다.`,
-      ref: `SOP CONTR-012 · 표준 계약 기간 24개월\nICH E6(R3) 5.6 · 계약 기간 관련 의뢰자 의무`,
-      suggestion: null,
-      actionLabel: '계약담당자 검토 요청'
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 기간 변경', clauseClass:'warn',
+      reason:`계약 유효 기간이 수정되었습니다. ICH E6(R3)는 기간을 직접 규정하지 않으나 스폰서 SOP CONTR-012는 표준 기간을 <strong style="color:#e8e7e3;">IRB 최초 승인일로부터 24개월</strong>로 명시합니다. ${extended ? '36개월 연장은 SOP 초과 — 계약담당자 서면 승인이 필요합니다.' : 'SOP 기준과의 편차를 계약담당자와 확인하세요.'}`,
+      ref:`SOP CONTR-012 · 표준 임상시험 계약 기간: IRB 승인일로부터 24개월\nICH E6(R3) 5.6 · 계약 관리 의무 (기간 협상 가능 영역)\nKGCP 제4조 · 임상시험계약서 유효 기간 명시 의무`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div><div class="inline-hist-result">계약 기간 24개월 유지 — 기관 변경 요청 없음</div></div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div><div class="inline-hist-result">24개월→30개월 연장 협상 → 24개월 유지 합의</div></div><div class="inline-hist-insight">💡 이 기관은 과거에도 기간 연장을 시도했으나 24개월로 합의한 이력이 있습니다.</div></div>`,
+      suggestion:extended ? `이 계약의 유효 기간은 IRB 최초 승인일로부터 24개월로 한다. 단, 임상시험 진행 상황에 따라 양 당사자 서면 합의로 연장할 수 있다.` : null,
+      actionLabel:'계약담당자 기간 승인 요청'
     };
   }
 
-  // 손해배상 / 배상 / 책임
-  if (label.includes('배상') || label.includes('책임') || newL.includes('배상') || newL.includes('책임')) {
+  // ── 손해배상 / 배상 책임 ────────────────────────────────────────────────
+  if (/배상|손해.*책임|책임.*한도|배상.*한도/.test(lbl.toLowerCase()+newL)) {
+    const exemptAdded = /의뢰자.*귀책|프로토콜.*위반|의약품.*결함|의뢰자.*전적/.test(newL);
+    if (exemptAdded) {
+      return {
+        verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+        chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+        reason:`손해배상 조항에 의뢰자 귀책 사유(프로토콜 위반·임상시험의약품 결함) 발생 시 의뢰자 전적 배상 책임 예외 조항이 추가되었습니다. <strong style="color:#e8e7e3;">ICH E6(R3) 5.8</strong>에 따른 의뢰자 배상 책임 원칙에 부합하며 스폰서에 불리하지 않습니다.`,
+        ref:`ICH E6(R3) 5.8 · 의뢰자 배상 책임 원칙 — 귀책 사유별 책임 분리\nKGCP 제19조 · 피험자 피해보상 의뢰자 책임\n약사법 제35조 · 임상시험 피해보상 의무`,
+        history:'', suggestion:null, actionLabel:'수용 완료 처리'
+      };
+    }
     return {
-      icon: '✓', iconClass: 'vi-ok', status: '수용 가능', statusClass: 'vs-ok',
-      chipClass: 'chip-ok', chipText: '✓ 수용 가능',
-      clauseClass: 'ok',
-      reason: `손해배상 관련 조항이 수정되었습니다. TRIEZ 검토 결과, 수정된 내용이 의뢰자에게 유리하거나 기존 SOP 범위 내에 있는 것으로 판단됩니다. 단, 책임 한도 또는 면책 범위가 포함된 경우 법무팀 최종 확인을 권장합니다.`,
-      ref: `SOP LEGAL-007 · 손해배상 조항 검토 기준\nICH E6(R3) 5.8 · 의뢰자 배상 책임 관련 기준`,
-      suggestion: null,
-      actionLabel: '법무팀 최종 확인'
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 승인 필요', clauseClass:'warn',
+      reason:`손해배상 조항이 수정되었습니다. 배상 범위 변경이 의뢰자에게 불리하게 작용하는지 법무팀 검토가 필요합니다. ICH E6(R3) 5.8은 협상 가능 범위를 인정하나 귀책 원칙은 반드시 유지되어야 합니다.`,
+      ref:`ICH E6(R3) 5.8 · 의뢰자 배상 책임 — 협상 가능 범위\nKGCP 제19조 · 피험자 피해보상\n약사법 제35조 · 배상 책임 기준`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15 · HER2+ 유방암 2상</div><div class="inline-hist-result">배상 한도 협상 → 연구비 총액 한도 유지, 의뢰자 귀책 예외 추가 합의</div></div></div>`,
+      suggestion:null, actionLabel:'법무팀 배상 조항 검토 요청'
     };
   }
 
-  // 비밀유지 / 기밀
-  if (newL.includes('비밀') || newL.includes('기밀') || label.includes('비밀')) {
+  // ── 비밀유지 ────────────────────────────────────────────────────────────
+  if (/비밀|기밀/.test(lbl.toLowerCase()+newL)) {
+    const periodShortened = /[1-3]년/.test(newL) && !/5년|6년|7년/.test(newL);
+    if (periodShortened) {
+      return {
+        verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+        chipClass:'chip-warn', chipText:'⚠ 기간 단축', clauseClass:'warn',
+        reason:`비밀유지 기간이 단축되었습니다. <strong style="color:#e8e7e3;">ICH E6(R3) 8.1</strong>은 필수 문서를 임상시험 종료 후 최소 2년간 보관하도록 요구하며, 스폰서 SOP LEGAL-002는 비밀유지 기간을 <strong style="color:#e8e7e3;">계약 종료 후 5년</strong>으로 규정합니다.`,
+        ref:`ICH E6(R3) 8.1 · 필수 문서 보관 — 임상시험 종료 후 최소 2년\nSOP LEGAL-002 · 비밀유지 최소 기간: 계약 종료 후 5년\nKGCP 제41조 · 임상시험 기록 보존 의무`,
+        history:'',
+        suggestion:`각 당사자는 계약 기간 및 계약 종료 후 5년간 상대방의 비밀정보를 제3자에게 공개하지 아니한다.`,
+        actionLabel:'법무팀 비밀유지 기간 검토 요청'
+      };
+    }
     return {
-      icon: '⚠', iconClass: 'vi-warn', status: '검토 필요', statusClass: 'vs-warn',
-      chipClass: 'chip-warn', chipText: '⚠ 검토 필요',
-      clauseClass: 'warn',
-      reason: `비밀유지 관련 조항이 수정되었습니다. 비밀유지 기간 단축 또는 범위 축소는 의뢰자의 영업 비밀 보호에 영향을 줄 수 있습니다. 기존 계약 이력과 비교 검토 후 법무팀 확인이 필요합니다.`,
-      ref: `SOP LEGAL-002 · 비밀유지 최소 기간 계약 종료 후 5년\nICH E6(R3) 8.1 · 필수 문서 보관 및 기밀 유지`,
-      suggestion: null,
-      actionLabel: '법무팀 검토 요청'
+      verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+      chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+      reason:`비밀유지 조항이 수정되었습니다. <strong style="color:#e8e7e3;">ICH E6(R3) 8.1</strong>의 문서 보관 기준 및 SOP LEGAL-002의 5년 기준을 충족합니다. 수용 가능합니다.`,
+      ref:`ICH E6(R3) 8.1 · 필수 문서 보관 기준 충족\nSOP LEGAL-002 · 비밀유지 기간 기준 충족\nKGCP 제41조 · 기록 보존 의무 준수`,
+      history:'', suggestion:null, actionLabel:'수용 완료 처리'
     };
   }
 
-  // IRB / 승인
-  if (newL.includes('irb') || newL.includes('승인') || label.includes('irb')) {
+  // ── IRB / 윤리위원회 ────────────────────────────────────────────────────
+  if (/irb|윤리위원회|연구심의/.test(lbl.toLowerCase()+newL)) {
+    const preApprovalRemoved = /사전.*없이|승인.*없이/.test(newL);
+    if (preApprovalRemoved) {
+      return {
+        verdict:'block', icon:'✕', iconClass:'vi-block', status:'수용 불가', statusClass:'vs-block',
+        chipClass:'chip-block', chipText:'✕ 수용 불가', clauseClass:'block',
+        reason:`IRB 사전 승인 의무를 변경하는 조항입니다. <strong style="color:#e8e7e3;">KGCP 제9조</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 3.1.2</strong>는 임상시험 개시 전 IRB 승인을 법적으로 의무화합니다. 계약으로 변경하거나 생략할 수 없습니다.`,
+        ref:`KGCP 제9조 · IRB 심의 및 승인 의무 — 법적 의무\nICH E6(R3) 3.1.2 · IEC/IRB Review — mandatory\n약사법 제34조 제2항 · IRB 승인 전 임상시험 개시 금지`,
+        history:'', suggestion:null, actionLabel:'IRB 조항 원안 복원 요청'
+      };
+    }
     return {
-      icon: '✓', iconClass: 'vi-ok', status: '수용 가능', statusClass: 'vs-ok',
-      chipClass: 'chip-ok', chipText: '✓ 수용 가능',
-      clauseClass: 'ok',
-      reason: `IRB 관련 조항이 수정되었습니다. TRIEZ 검토 결과, 수정 내용이 KGCP 및 식약처 규정 범위 내에 있으며 기존 합의 이력과 일치합니다. 수용 가능한 것으로 판단됩니다.`,
-      ref: `KGCP 제9조 · IRB 승인 의무\nICH E6(R3) 3.1 · IRB 구성 및 기능`,
-      suggestion: null,
-      actionLabel: '담당자 확인'
+      verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+      chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+      reason:`수정된 IRB 관련 조항이 <strong style="color:#e8e7e3;">KGCP 제9조</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 3.1</strong>의 IRB 승인 의무를 충족합니다. 수용 가능합니다.`,
+      ref:`KGCP 제9조 · IRB 심의 의무 — 준수 확인\nICH E6(R3) 3.1 · IRB/IEC Review Requirements — 충족`,
+      history:'', suggestion:null, actionLabel:'수용 완료 처리'
     };
   }
 
-  // default: generic but structured
+  // ── 피험자 동의 ─────────────────────────────────────────────────────────
+  if (/동의|피험자.*동의|동의서/.test(lbl.toLowerCase()+newL)) {
+    const consentWeakened = /서면.*없이|구두.*동의|사후.*동의/.test(newL);
+    if (consentWeakened) {
+      return {
+        verdict:'block', icon:'✕', iconClass:'vi-block', status:'수용 불가', statusClass:'vs-block',
+        chipClass:'chip-block', chipText:'✕ 수용 불가', clauseClass:'block',
+        reason:`피험자 서면 동의 의무가 약화되었습니다. <strong style="color:#e8e7e3;">KGCP 제12조</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 4.8</strong>은 임상시험 참여 전 자발적 서면 동의를 절대적으로 의무화합니다. 계약으로 변경·생략할 수 없는 법정 요건입니다.`,
+        ref:`KGCP 제12조 · 피험자 서면 동의 의무 — 법적 의무, 예외 없음\nICH E6(R3) 4.8 · Informed Consent — mandatory\n약사법 제34조 · 임상시험 피험자 보호\n헬싱키 선언 §25 · 자발적 서면 동의 원칙`,
+        history:'', suggestion:null, actionLabel:'동의 조항 원안 복원 — 협상 불가'
+      };
+    }
+    return {
+      verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+      chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+      reason:`수정된 피험자 동의 조항이 <strong style="color:#e8e7e3;">KGCP 제12조</strong> 및 <strong style="color:#e8e7e3;">ICH E6(R3) 4.8</strong>의 서면 동의 의무를 유지합니다. 수용 가능합니다.`,
+      ref:`KGCP 제12조 · 피험자 서면 동의 의무 — 준수\nICH E6(R3) 4.8 · Informed Consent Requirements — 충족`,
+      history:'', suggestion:null, actionLabel:'수용 완료 처리'
+    };
+  }
+
+  // ── 지식재산권 ──────────────────────────────────────────────────────────
+  if (/지식재산|특허|발명|저작권|데이터.*귀속/.test(lbl.toLowerCase()+newL)) {
+    const ipToSite = /기관.*귀속|연구자.*귀속|공동.*소유/.test(newL);
+    if (ipToSite) {
+      return {
+        verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+        chipClass:'chip-warn', chipText:'⚠ IP 귀속 변경', clauseClass:'warn',
+        reason:`지식재산권 귀속 조항이 기관·연구자 귀속 또는 공동 소유로 변경되었습니다. ICH E6(R3)는 협상 가능 영역으로 분류하나, 스폰서 내부 SOP IP-001은 임상시험 데이터 및 결과의 의뢰자 단독 귀속을 원칙으로 합니다.`,
+        ref:`SOP IP-001 · 임상시험 결과 IP 의뢰자 귀속 원칙\nICH E6(R3) 5.1 · 의뢰자 데이터 관리 의무 (협상 가능 영역)`,
+        history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10</div><div class="inline-hist-result">IP 공동 소유 요청 → 거절, 의뢰자 단독 귀속 유지</div></div></div>`,
+        suggestion:null, actionLabel:'법무팀·IP팀 검토 요청'
+      };
+    }
+    return {
+      verdict:'ok', icon:'✓', iconClass:'vi-ok', status:'수용 가능', statusClass:'vs-ok',
+      chipClass:'chip-ok', chipText:'✓ 수용 가능', clauseClass:'ok',
+      reason:`지식재산권 조항이 수정되었습니다. 수정된 내용이 의뢰자 IP 귀속 원칙(SOP IP-001)을 유지합니다. 수용 가능합니다.`,
+      ref:`SOP IP-001 · 임상시험 결과 IP 의뢰자 귀속 원칙 — 충족\nICH E6(R3) 5.1 · 의뢰자 데이터 관리 의무 — 준수`,
+      history:'', suggestion:null, actionLabel:'수용 완료 처리'
+    };
+  }
+
+  // ── 결과 발표 / 게재 ────────────────────────────────────────────────────
+  if (/발표|게재|출판|논문|공표/.test(lbl.toLowerCase()+newL)) {
+    const reviewPeriodShortened = /30일|15일/.test(newL) && /60일/.test(oldL);
+    return {
+      verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+      chipClass:'chip-warn', chipText:'⚠ 승인 필요', clauseClass:'warn',
+      reason:`결과 발표 관련 조항이 수정되었습니다. ${reviewPeriodShortened ? '의뢰자 검토 기간이 60일에서 단축되었습니다. SOP PUB-002는 IP 보호를 위해 최소 60일 검토 기간을 요구합니다.' : 'ICH E6(R3) 5.1은 데이터 소유권이 의뢰자에게 있음을 전제로 발표 절차를 규정합니다. 변경 조건이 이를 충족하는지 확인하세요.'}`,
+      ref:`SOP PUB-002 · 발표 검토 기간 최소 60일\nICH E6(R3) 5.1 · 의뢰자 데이터 소유권 원칙 (협상 가능 영역)\nKGCP 제4조 · 임상시험 결과 관리 의무`,
+      history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2022-105 · 2022.08.15</div><div class="inline-hist-result">검토 기간 60일 유지, 공동 저자 인정 조항 추가 합의</div></div></div>`,
+      suggestion:reviewPeriodShortened ? `의뢰자는 원고 수령 후 60일 이내에 검토 의견을 제시하거나 발표를 승인하며, 중요한 영업 비밀 보호 또는 특허 출원을 위한 경우 추가 60일 유예를 요청할 수 있다.` : null,
+      actionLabel:'법무팀 발표 조항 검토 요청'
+    };
+  }
+
+  // ── 기본 판정 ───────────────────────────────────────────────────────────
   return {
-    icon: '⚠', iconClass: 'vi-warn', status: '검토 필요', statusClass: 'vs-warn',
-    chipClass: 'chip-warn', chipText: '⚠ AI 검토 완료',
-    clauseClass: 'warn',
-    reason: `<strong style="color:#e8e7e3;">${escapeHtml(clauseLabel)}</strong> 조항이 수정되었습니다. TRIEZ가 계약 히스토리 및 SOP 기준과 비교한 결과, 수정된 내용이 기존 합의 조건과 일부 차이가 있습니다. 내용 검토 후 수용 여부를 결정하세요.`,
-    ref: `SOP CONTR-001 · 표준 계약 조항 검토 기준\nICH E6(R3) 5.1 · 의뢰자 일반 의무`,
-    suggestion: null,
-    actionLabel: '계약담당자 검토 요청'
+    verdict:'warn', icon:'⚠', iconClass:'vi-warn', status:'승인 필요', statusClass:'vs-warn',
+    chipClass:'chip-warn', chipText:'⚠ 승인 필요', clauseClass:'warn',
+    reason:`<strong style="color:#e8e7e3;">${lbl}</strong> 조항이 수정되었습니다. TRIEZ가 GCP·KGCP·약사법 기준과 대조한 결과 법적 의무 직접 위반은 감지되지 않았습니다. 수정된 내용이 스폰서 SOP 및 기존 기관 합의 이력과 편차가 있는지 계약담당자 확인이 필요합니다.`,
+    ref:`ICH E6(R3) 5.1 · 의뢰자 일반 의무 — 직접 위반 없음\nKGCP 제4조 · 임상시험계약서 기재사항 — 충족\nSOP CONTR-001 · 비표준 변경 시 계약담당자 검토`,
+    history:`<div class="inline-hist"><div class="inline-hist-title">🏥 기관 합의 이력 · ○○대학교병원</div><div class="inline-hist-item"><div class="inline-hist-meta">#OOUMC-2023-089 · 2023.04.10 · 당뇨병 2상</div><div class="inline-hist-result">유사 조항 협상 — 스폰서 원안 기준 합의</div></div></div>`,
+    suggestion:null, actionLabel:'계약담당자 검토 요청'
   };
 }
-
 function addDynamicAICard(clauseEl, originalText, newText) {
   const clauseId = clauseEl.dataset.id;
   const cardId = 'card-user-' + clauseId;
@@ -1251,6 +1364,7 @@ function addDynamicAICard(clauseEl, originalText, newText) {
       ${diffHtml}
       <div class="verdict-card-reason">${v.reason}</div>
       <div class="verdict-ref">${v.ref.replace(/\n/g,'<br>')}</div>
+      ${v.history || ''}
       ${suggestionHtml}
       <div class="verdict-action-row">
         <button class="verdict-action-btn btn-comment" onclick="focusMemo('[${escapeHtml(clauseLabel)}]')">코멘트</button>
