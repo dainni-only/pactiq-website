@@ -322,7 +322,7 @@
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;">
         <div style="width:26px;height:26px;border-radius:50%;background:#1a2d4a;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
-        <div style="font-size:13px;color:#374151;line-height:1.6;padding-top:3px;"><strong>검토완료 탭</strong> — AI 판정이 완료된 데모 예시를 먼저 확인하세요</div>
+        <div style="font-size:13px;color:#374151;line-height:1.6;padding-top:3px;"><strong>예시 탭</strong> — AI 판정이 완료된 데모 예시를 먼저 확인하세요</div>
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;">
         <div style="width:26px;height:26px;border-radius:50%;background:#1a2d4a;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
@@ -904,7 +904,7 @@ function setView(mode) {
     emptyState.style.display = 'none';
     reviewEmpty.style.display = 'none';
     const okBox2 = document.getElementById('ok-summary-box');
-    if (okBox2) okBox2.style.display = 'none';
+    if (okBox2) okBox2.style.display = 'block';
     // Show pre-baked cards, hide user cards
     document.querySelectorAll('[data-prebaked]').forEach(c => c.style.display = '');
     document.querySelectorAll('[data-user-card]').forEach(c => c.style.display = 'none');
@@ -1677,7 +1677,7 @@ function sendHandoff() {
 // 가이드 팝업 닫기
 function closeGuide() {
   document.getElementById('guide-overlay').style.display = 'none';
-  setView('original');
+  setView('changes');
 }
 
 // ── 초기화: 각 조항의 HTML 스냅샷 저장 ──
