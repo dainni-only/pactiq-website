@@ -284,7 +284,7 @@
   <div class="demo-topbar-right">
     <div class="demo-user">정담당 · 계약팀</div>
     <button class="export-btn" onclick="openExportModal()">↓ 문서 내보내기</button>
-    <button class="handoff-btn" onclick="openHandoffModal()">기관에 전달 →</button>
+    <button class="handoff-btn" onclick="openHandoffModal()">스폰서 계약담당자에 전달 →</button>
   </div>
 </div>
 
@@ -330,7 +330,7 @@
       </div>
       <div style="display:flex;gap:12px;align-items:flex-start;">
         <div style="width:26px;height:26px;border-radius:50%;background:#1a2d4a;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;">4</div>
-        <div style="font-size:13px;color:#374151;line-height:1.6;padding-top:3px;"><strong>문서 내보내기</strong>(Track Changes / 클린본) · <strong>기관에 전달</strong> 버튼 체험</div>
+        <div style="font-size:13px;color:#374151;line-height:1.6;padding-top:3px;"><strong>문서 내보내기</strong>(Track Changes / 클린본) · <strong>스폰서 계약담당자에 전달</strong> 버튼 체험</div>
       </div>
     </div>
     <button onclick="closeGuide()" style="width:100%;padding:13px;background:#1a2d4a;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;">체험 시작하기 →</button>
@@ -712,20 +712,20 @@
 <!-- HANDOFF MODAL -->
 <div id="handoff-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;">
   <div style="background:#fff;padding:28px;max-width:420px;width:90%;border-radius:4px;">
-    <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#1a2d4a;margin-bottom:10px;">기관에 전달</div>
-    <div style="font-size:16px;font-weight:800;color:#1a2d4a;margin-bottom:16px;">○○대학교병원 계약팀에 전달</div>
+    <div style="font-size:9px;font-weight:800;letter-spacing:.1em;color:#1a2d4a;margin-bottom:10px;">스폰서 계약담당자에 전달</div>
+    <div style="font-size:16px;font-weight:800;color:#1a2d4a;margin-bottom:16px;">㈜케이바이오파마 계약담당자에 전달</div>
     <div style="background:#f4f6fb;padding:12px;margin-bottom:16px;font-size:11.5px;color:#374151;line-height:1.8;border-radius:3px;">
-      <div>수신: <strong>contract@hospital.ac.kr</strong></div>
-      <div>제목: [KBP301] 임상시험계약서 검토의견 회신 (Draft 3)</div>
+      <div>수신: <strong>cta@kbiopharma.co.kr</strong></div>
+      <div>제목: [KBP301] ○○대학교병원 계약서 검토의견 회신 (Draft 3)</div>
       <div style="margin-top:6px;color:#566070;font-size:11px;">첨부: 추적변경본 .docx + TRIEZ 검토 리포트</div>
     </div>
-    <textarea id="handoff-msg" style="width:100%;box-sizing:border-box;height:100px;border:1px solid #dde6f0;padding:10px;font-size:12px;font-family:inherit;color:#374151;resize:none;margin-bottom:14px;border-radius:3px;">안녕하세요, 케이바이오파마 계약팀 정담당입니다.
+    <textarea id="handoff-msg" style="width:100%;box-sizing:border-box;height:100px;border:1px solid #dde6f0;padding:10px;font-size:12px;font-family:inherit;color:#374151;resize:none;margin-bottom:14px;border-radius:3px;">안녕하세요, ○○대학교병원 임상시험센터 계약팀입니다.
 
 Draft 3 검토 결과를 첨부 파일로 공유드립니다.
 
-• 제10조 SAE 보고기한 — 원안(24시간) 유지 요청
-• 제13조 연구비 지급 — 재무팀 협의 후 회신 예정
-• 제17조 계약기간 — 30개월 반협상 제안
+• 제10조 SAE 보고기한 — 원안(24시간) 유지 요청드립니다
+• 제13조 연구비 지급 — 내부 재무팀 협의 후 별도 회신 예정
+• 제17조 계약기간 — 30개월로 반협상 제안드립니다
 
 확인 후 회신 부탁드립니다. 감사합니다.</textarea>
     <div style="display:flex;gap:10px;" id="handoff-btns">
@@ -734,7 +734,7 @@ Draft 3 검토 결과를 첨부 파일로 공유드립니다.
     </div>
     <div id="handoff-success" style="display:none;text-align:center;padding:10px 0;">
       <div style="font-size:28px;margin-bottom:8px;">✓</div>
-      <div style="font-size:13px;font-weight:700;color:#1a2d4a;">기관에 전달이 완료되었습니다</div>
+      <div style="font-size:13px;font-weight:700;color:#1a2d4a;">스폰서 계약담당자에게 전달이 완료되었습니다</div>
       <div style="font-size:11px;color:#8a9ab0;margin-top:4px;">추적변경본 및 검토 리포트가 발송되었습니다</div>
       <button onclick="closeHandoffModal()" style="margin-top:16px;padding:8px 24px;background:#1a2d4a;color:#fff;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:inherit;border-radius:3px;">닫기</button>
     </div>
