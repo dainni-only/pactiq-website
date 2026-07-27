@@ -546,6 +546,7 @@ async function submitSurvey() {
     });
   } catch(e) { /* ignore */ }
 
+  document.querySelector('.hero').style.display = 'none';
   document.querySelector('.step.active').style.display = 'none';
   document.querySelector('.progress-wrap').style.display = 'none';
   document.getElementById('thank-you').style.display = 'block';
