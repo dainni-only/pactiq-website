@@ -169,6 +169,16 @@
       </div>
     </div>
 
+    <div class="q-block">
+      <div class="q-label">Q4-2. 본인 소속 팀의 계약서 담당자 수 <span class="req">*</span></div>
+      <div class="radio-group">
+        <label class="radio-opt"><input type="radio" name="q4b" value="1명(본인만)"> <span>1명 (본인만)</span></label>
+        <label class="radio-opt"><input type="radio" name="q4b" value="2~3명"> <span>2~3명</span></label>
+        <label class="radio-opt"><input type="radio" name="q4b" value="4~5명"> <span>4~5명</span></label>
+        <label class="radio-opt"><input type="radio" name="q4b" value="6명 이상"> <span>6명 이상</span></label>
+      </div>
+    </div>
+
     <div class="btn-row">
       <button class="btn-next" onclick="nextStep(1)">다음 →</button>
     </div>
@@ -477,7 +487,7 @@ function limitCheck(el, name, max) {
 function collectData() {
   const data = { survey_type: '병원/의료기관 계약팀' };
   // Radios
-  ['q1','q2','q3','q4','q6','q6b','q7','q8','q12','q13','q15','q16','q19'].forEach(n => {
+  ['q1','q2','q3','q4','q4b','q6','q6b','q7','q8','q12','q13','q15','q16','q19'].forEach(n => {
     const el = document.querySelector(`input[name="${n}"]:checked`);
     data[n] = el ? el.value : '';
   });
