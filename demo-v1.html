@@ -292,7 +292,7 @@
   <div class="doc-tab-name">임상시험계약서_KBP301_○○대_Draft3.hwp</div>
   <div class="view-btn-group">
     <button class="view-btn active" id="btn-original" onclick="setView('original')">원본</button>
-    <button class="view-btn" id="btn-changes" onclick="setView('changes')">변경</button>
+    <button class="view-btn" id="btn-changes" onclick="setView('changes')">검토</button>
   </div>
   <div class="ai-live-badge" style="margin-left:auto;">
     <div class="ai-dot"></div>
@@ -892,6 +892,7 @@ function showClauseToolbar(clauseEl) {
     { icon:'💬', label:'코멘트', action: () => { focusMemo('[' + clauseNumText + ']'); hideClauseToolbar(); } },
     { icon:'✏️', label:'직접 수정', action: () => { startEditClause(clauseEl); hideClauseToolbar(); } },
     { icon:'➕', label:'조항 추가', action: () => { addClauseBelow(clauseEl); hideClauseToolbar(); } },
+    { icon:'🗑️', label:'조항 삭제', action: () => { deleteClause(clauseEl); hideClauseToolbar(); } },
   ];
   btns.forEach(b => {
     const btn = document.createElement('button');
@@ -910,73 +911,194 @@ function startEditClause(clauseEl) {
   const textEl = clauseEl.querySelector('.clause-text');
   if (!textEl) return;
   editingClause = clauseEl;
-  const original = textEl.innerHTML;
+  // capture visible plain text (what user sees, not raw HTML with hidden spans)
+  const originalText = textEl.innerText.trim();
+  const originalHtml = textEl.innerHTML;
+  textEl.innerText = originalText; // flatten to plain text for clean editing
   textEl.contentEditable = 'true';
   textEl.style.cssText += 'outline:2px solid #4a7cff;border-radius:2px;padding:4px;background:#f8fbff;';
   textEl.focus();
 
-  // save / cancel bar
+  // move caret to end
+  const range = document.createRange();
+  range.selectNodeContents(textEl);
+  range.collapse(false);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+
   const bar = document.createElement('div');
   bar.id = 'edit-bar';
   bar.style.cssText = 'display:flex;gap:8px;margin-top:8px;align-items:center;';
-  bar.innerHTML = `<span style="font-size:10.5px;color:#8a9ab0;">직접 수정 중 — 저장 후 협상 메모에 기록됩니다</span>
+  bar.innerHTML = `<span style="font-size:10.5px;color:#8a9ab0;">직접 수정 중 — 저장하면 AI 검토가 시작됩니다</span>
     <button id="save-edit-btn" style="margin-left:auto;padding:4px 14px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">저장</button>
     <button id="cancel-edit-btn" style="padding:4px 14px;background:none;border:1px solid #dde6f0;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">취소</button>`;
   clauseEl.appendChild(bar);
 
-  document.getElementById('save-edit-btn').onclick = () => saveEditClause(textEl, bar, original);
-  document.getElementById('cancel-edit-btn').onclick = () => cancelEditClause(textEl, bar, original);
+  document.getElementById('save-edit-btn').onclick = () => saveEditClause(textEl, bar, originalText, originalHtml, clauseEl);
+  document.getElementById('cancel-edit-btn').onclick = () => cancelEditClause(textEl, bar, originalHtml);
 }
 
-function saveEditClause(textEl, bar, original) {
-  const newText = textEl.textContent.trim();
+function saveEditClause(textEl, bar, originalText, originalHtml, clauseEl) {
+  const newText = textEl.innerText.trim();
+  if (!newText || newText === originalText) {
+    cancelEditClause(textEl, bar, originalHtml);
+    return;
+  }
+  // Render tracked change: del original + ins new
+  textEl.innerHTML = `<span class="del-text">${escapeHtml(originalText)}</span><span class="ins-text">${escapeHtml(newText)}</span>`;
+  textEl.contentEditable = 'false';
+  textEl.style.outline = '';
+  textEl.style.background = '';
+  textEl.style.padding = '';
+  bar.remove();
+  clauseEl.dataset.changed = '';
+  clauseEl.dataset.userEdited = 'true';
+  editingClause = null;
+  addMemoAuto('조항을 직접 수정했습니다. 원본 대비 추적변경이 적용되었습니다.', getClauseTag());
+  onUserEdit(clauseEl, originalText, newText);
+}
+
+function cancelEditClause(textEl, bar, originalHtml) {
+  textEl.innerHTML = originalHtml;
   textEl.contentEditable = 'false';
   textEl.style.outline = '';
   textEl.style.background = '';
   textEl.style.padding = '';
   bar.remove();
   editingClause = null;
-  addMemoAuto('조항을 직접 수정했습니다. 수정 전 내용이 추적변경 기록에 저장됩니다.', getClauseTag());
-  document.getElementById('activity-text').innerHTML = '<span>직접 수정</span> 저장됨 — 협상 메모에 기록되었습니다';
 }
 
-function cancelEditClause(textEl, bar, original) {
-  textEl.innerHTML = original;
-  textEl.contentEditable = 'false';
-  textEl.style.outline = '';
-  textEl.style.background = '';
-  textEl.style.padding = '';
-  bar.remove();
-  editingClause = null;
+function deleteClause(clauseEl) {
+  const textEl = clauseEl.querySelector('.clause-text');
+  const originalText = textEl ? textEl.innerText.trim() : '';
+  const numEl = clauseEl.querySelector('.clause-num');
+  const clauseLabel = numEl ? numEl.textContent : '조항';
+  // mark as deleted with strikethrough in 원본 view
+  clauseEl.dataset.changed = '';
+  clauseEl.dataset.userEdited = 'true';
+  clauseEl.dataset.userDeleted = 'true';
+  if (textEl) textEl.innerHTML = `<span class="del-text">${escapeHtml(originalText)}</span>`;
+  clauseEl.classList.remove('ok', 'warn', 'block');
+  clauseEl.classList.add('warn');
+  let chip = clauseEl.querySelector('.clause-verdict-chip');
+  if (!chip) {
+    chip = document.createElement('span');
+    chip.className = 'clause-verdict-chip chip-warn';
+    const header = clauseEl.querySelector('.clause-header');
+    if (header) header.appendChild(chip);
+  }
+  chip.className = 'clause-verdict-chip chip-warn';
+  chip.textContent = '🗑 삭제됨';
+  addMemoAuto(`${clauseLabel} — 조항을 삭제했습니다.`);
+  onUserEdit(clauseEl, originalText, '(삭제됨)');
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function onUserEdit(clauseEl, originalText, newText) {
+  addDynamicAICard(clauseEl, originalText, newText);
+  setView('changes');
+  setTimeout(() => {
+    clauseEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    selectClause(clauseEl);
+  }, 80);
+}
+
+function addDynamicAICard(clauseEl, originalText, newText) {
+  const clauseId = clauseEl.dataset.id;
+  const cardId = 'card-user-' + clauseId;
+  if (document.getElementById(cardId)) document.getElementById(cardId).remove();
+  const numEl = clauseEl.querySelector('.clause-num');
+  const clauseLabel = numEl ? numEl.textContent : '수정 조항';
+
+  // add verdict chip to clause
+  let chip = clauseEl.querySelector('.clause-verdict-chip');
+  if (!chip) {
+    chip = document.createElement('span');
+    chip.className = 'clause-verdict-chip chip-warn';
+    const header = clauseEl.querySelector('.clause-header');
+    if (header) header.appendChild(chip);
+  }
+  chip.className = 'clause-verdict-chip chip-warn';
+  chip.textContent = '⚠ AI 검토 중';
+  clauseEl.classList.remove('ok');
+  clauseEl.classList.add('warn');
+
+  const card = document.createElement('div');
+  card.className = 'verdict-card highlighted';
+  card.id = cardId;
+  card.dataset.clauseId = clauseId;
+  card.innerHTML = `
+    <div class="verdict-card-header" onclick="toggleCard('user-${clauseId}')">
+      <div class="verdict-icon-sm vi-warn">⚠</div>
+      <div class="verdict-card-clause">${escapeHtml(clauseLabel)} — 수정 반영</div>
+      <div class="verdict-card-status vs-warn">검토 필요</div>
+    </div>
+    <div class="verdict-card-body open" id="body-user-${clauseId}">
+      <div class="verdict-card-reason" style="margin-bottom:10px;">
+        <strong style="color:#e8e7e3;">수정 전:</strong> ${escapeHtml(originalText || '(내용 없음)')}<br><br>
+        <strong style="color:#e8e7e3;">수정 후:</strong> ${escapeHtml(newText || '(내용 없음)')}
+      </div>
+      <div style="background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:6px;padding:10px 12px;font-size:11.5px;color:#d4b862;line-height:1.6;margin-bottom:10px;">
+        ✦ TRIEZ가 계약 히스토리·SOP·GCP 기반으로 수정 내용을 검토합니다.<br>
+        변경 사항이 기존 합의 조건 또는 규정과 상충하는지 확인 중입니다.
+      </div>
+      <div class="verdict-action-row">
+        <button class="verdict-action-btn btn-comment" onclick="focusMemo('[${escapeHtml(clauseLabel)}]')">코멘트</button>
+        <button class="verdict-action-btn btn-escalate" onclick="openEscalate()">담당자 검토 요청</button>
+      </div>
+    </div>`;
+  // insert at top of verdicts-scroll
+  const scroll = document.querySelector('.verdicts-scroll');
+  if (scroll) scroll.insertBefore(card, scroll.firstChild);
+
+  // update progress counts
+  const warnEl = document.getElementById('cnt-warn');
+  if (warnEl) warnEl.textContent = parseInt(warnEl.textContent || 0) + 1;
+  const pendEl = document.getElementById('cnt-pend');
+  if (pendEl) pendEl.textContent = Math.max(0, parseInt(pendEl.textContent || 0) - 1);
 }
 
 function addClauseBelow(refClauseEl) {
   const newClause = document.createElement('div');
+  const newId = 'new-' + Date.now();
   newClause.className = 'contract-clause ok';
-  newClause.dataset.id = 'new-' + Date.now();
+  newClause.dataset.id = newId;
   newClause.onclick = function() { selectClause(this); };
   newClause.innerHTML = `
     <div class="clause-header"><span class="clause-num">신규 조항</span></div>
-    <div class="clause-text" contenteditable="true" style="outline:2px solid #4a7cff;border-radius:2px;padding:4px;background:#f8fbff;min-height:40px;" placeholder="조항 내용을 입력하세요...">조항 내용을 입력하세요...</div>
-    <div style="display:flex;gap:8px;margin-top:8px;">
-      <button onclick="finalizeNewClause(this)" style="padding:4px 14px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">저장</button>
+    <div class="clause-text" contenteditable="true" style="outline:2px solid #4a7cff;border-radius:2px;padding:4px;background:#f8fbff;min-height:40px;">조항 내용을 입력하세요...</div>
+    <div id="new-clause-bar-${newId}" style="display:flex;gap:8px;margin-top:8px;">
+      <span style="font-size:10.5px;color:#8a9ab0;">조항 추가 중 — 저장하면 AI 검토가 시작됩니다</span>
+      <button onclick="finalizeNewClause(this)" style="margin-left:auto;padding:4px 14px;background:#1541c8;color:#fff;border:none;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">저장</button>
       <button onclick="this.closest('.contract-clause').remove()" style="padding:4px 14px;background:none;border:1px solid #dde6f0;cursor:pointer;font-size:11px;font-weight:700;font-family:inherit;border-radius:3px;">취소</button>
     </div>`;
   refClauseEl.parentNode.insertBefore(newClause, refClauseEl.nextSibling);
-  newClause.querySelector('.clause-text').focus();
+  const textEl = newClause.querySelector('.clause-text');
+  textEl.focus();
+  textEl.addEventListener('focus', () => { if (textEl.innerText.trim() === '조항 내용을 입력하세요...') { textEl.innerText = ''; } });
   newClause.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function finalizeNewClause(btn) {
   const clauseEl = btn.closest('.contract-clause');
   const textEl = clauseEl.querySelector('.clause-text');
+  const newText = textEl.innerText.trim();
   textEl.contentEditable = 'false';
   textEl.style.outline = '';
   textEl.style.background = '';
   textEl.style.padding = '';
   btn.parentElement.remove();
-  clauseEl.querySelector('.clause-num').textContent = '신규 조항 (추가됨)';
+  clauseEl.dataset.changed = '';
+  clauseEl.dataset.userEdited = 'true';
+  clauseEl.querySelector('.clause-num').textContent = '신규 조항';
+  // wrap content as ins-text (new addition)
+  textEl.innerHTML = `<span class="ins-text">${escapeHtml(newText)}</span>`;
   addMemoAuto('신규 조항을 추가했습니다.');
+  onUserEdit(clauseEl, '', newText);
 }
 
 // 바깥 클릭 시 툴바 닫기
