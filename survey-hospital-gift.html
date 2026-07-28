@@ -130,7 +130,10 @@
         <label class="radio-opt"><input type="radio" name="q1" value="종합병원"> <span>종합병원</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="대학병원"> <span>대학병원</span></label>
         <label class="radio-opt"><input type="radio" name="q1" value="기타 의료기관"> <span>기타 의료기관</span></label>
-        <label class="radio-opt"><input type="radio" name="q1" value="기타"> <span>기타</span></label>
+        <label class="radio-opt"><input type="radio" name="q1" value="기타" onclick="document.getElementById('q1-other-wrap').style.display='block'"> <span>기타</span></label>
+      </div>
+      <div id="q1-other-wrap" style="display:none;margin-top:8px;margin-left:26px;">
+        <input type="text" class="text-input" id="q1-other" placeholder="직접 입력해 주세요" style="max-width:320px;">
       </div>
     </div>
 
@@ -143,7 +146,10 @@
         <label class="radio-opt"><input type="radio" name="q2" value="임상시험 운영 + 계약 병행"> <span>임상시험 운영 + 계약 병행</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="CRC(임상시험코디네이터)"> <span>CRC (임상시험코디네이터)</span></label>
         <label class="radio-opt"><input type="radio" name="q2" value="법무/행정 지원"> <span>법무 / 행정 지원</span></label>
-        <label class="radio-opt"><input type="radio" name="q2" value="기타"> <span>기타</span></label>
+        <label class="radio-opt"><input type="radio" name="q2" value="기타" onclick="document.getElementById('q2-other-wrap').style.display='block'"> <span>기타</span></label>
+      </div>
+      <div id="q2-other-wrap" style="display:none;margin-top:8px;margin-left:26px;">
+        <input type="text" class="text-input" id="q2-other" placeholder="직접 입력해 주세요" style="max-width:320px;">
       </div>
     </div>
 
@@ -491,6 +497,15 @@ function collectData() {
     const el = document.querySelector(`input[name="${n}"]:checked`);
     data[n] = el ? el.value : '';
   });
+  // Q1/Q2 기타 직접입력 병합
+  if (data['q1'] === '기타') {
+    const q1o = document.getElementById('q1-other');
+    if (q1o && q1o.value.trim()) data['q1'] = '기타: ' + q1o.value.trim();
+  }
+  if (data['q2'] === '기타') {
+    const q2o = document.getElementById('q2-other');
+    if (q2o && q2o.value.trim()) data['q2'] = '기타: ' + q2o.value.trim();
+  }
   // Checkboxes
   const q5vals = Array.from(document.querySelectorAll('input[name="q5"]:checked')).map(e => e.value);
   const q5other = document.getElementById('q5-other-text');
